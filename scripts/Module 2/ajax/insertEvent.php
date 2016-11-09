@@ -1,5 +1,8 @@
 <?php
+	// TODO LIST -->
+	// - Validar los permisos de los usuarios
 	session_start();
+	$_SESSION['id'] = 1;
 	require_once("../../../inc/MySQLConnection.php");
 
 	$id = trim(filter_input(INPUT_POST, "id", FILTER_SANITIZE_NUMBER_INT));
@@ -18,19 +21,32 @@
 	$from = trim($_POST['from']);
 	$to = trim($_POST['to']);
 
-	$sql = "INSERT INTO apartados () values () ";
+	mysqli_query($connection, "START TRANSACTION");
+	$sql = "INSERT INTO apartados 
+				(AP_RESID, AP_DATE, AP_START, AP_END, 
+				AP_USERID, AP_USERADDR, AP_GRADE, AP_LESSON, 
+				AP_AREAID, AP_LENDTO, AP_COMMENTS) 
+			values ('$id', '$date', '$start', '$end',  
+				'$user', '$address', '$grade', '$lesson',  
+				'$area', '$lendTo', '$comments')";
 	$query = mysqli_query($connection, $sql) or die(mysqli_error($connection));
 
-	if(mysqli_num_rows($query) > 0) {
-		$resources = "";
-		while($row = mysqli_fetch_assoc($query)) {
-			$resources .= "<option value='$row[RE_ID]'>$row[RE_ALIAS]</option>";
-		}
-	} else {
-		$resources = "<option value='na'>Unavailable resources...</option>";
-	}
+	$sql = "SELECT AP_ID FROM apartados ORDER BY AP_ID DESC LIMIT 1";
+	$selQuery = mysqli_query($connection, $sql) or die(mysqli_error($connection));
 
-	echo $resources;
+	$event = array();
+	if(mysqli_num_rows($selQuery) > 0) {
+		$fetch = mysqli_fetch_assoc($selQuery);
+		$ap_id = $fetch["AP_ID"];
+
+
+		array_push($event, $fact);
+	} else {
+		//$event = ;
+	}
+	mysqli_query($connection, "COMMIT");
+
+	echo json_encode($event);
 
 	function validateDate($date) {
         list($year,$month,$day) = array_pad(preg_split("/[\/\\-]/",$date,3),3,0);

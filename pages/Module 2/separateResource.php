@@ -78,6 +78,71 @@ include_once("../../inc/MySQLConnection.php");
                                     <label for="endDate">Fecha de fin</label>
                                     <input type="text" class="form-control datepick" name="" id="endDate">
                                 </div>
+                                <div class="form-group">
+                                    <label>Días a apartar</label>
+                                    <div class="form-group">
+                                        <label class="col-sm-4" for="sun">
+                                            <input type="checkbox" name="days" id="sun" class="daysOfTheWeek" value="0">
+                                            Dom</label>
+                                        <label class="col-sm-4" for="mon">
+                                            <input type="checkbox" name="days" id="mon" class="daysOfTheWeek" value="1">
+                                            Lun</label>
+                                        <label class="col-sm-4" for="tue">
+                                            <input type="checkbox" name="days" id="tue" class="daysOfTheWeek" value="2">
+                                            Mar</label>
+                                        <label class="col-sm-4" for="wed">
+                                            <input type="checkbox" name="days" id="wed" class="daysOfTheWeek" value="3">
+                                            Mie</label>
+                                        <label class="col-sm-4" for="thu">
+                                            <input type="checkbox" name="days" id="thu" class="daysOfTheWeek" value="4">
+                                            Jue</label>
+                                        <label class="col-sm-4" for="fri">
+                                            <input type="checkbox" name="days" id="fri" class="daysOfTheWeek" value="5">
+                                            Vie</label>
+                                        <label class="col-sm-4" for="sat">
+                                            <input type="checkbox" name="days" id="sat" class="daysOfTheWeek" value="6">
+                                            Sab</label>
+                                    </div>
+                                </div>
+                                <legend> </legend>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="form-group">
+                                <label for="grade">Semestre (opcional)</label>
+                                <select name="" id="grade" class="form-control">
+                                    <option value="">Selecciona un semestre...</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="lesson">Materia / Actividad</label>
+                                <input type="text" name="" id="lesson" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="area">Licenciatura / Área</label>
+                                <select name="" id="area" class="form-control">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="lendTo">Solicitante</label>
+                                <input type="hidden" name="" id="from">
+                                <input type="hidden" name="" id="to">
+                                <select name="" id="lendTo" class="form-control">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="comments">Comentarios</label>
+                                <textarea name="" id="comments" cols="30" rows="5" class="form-control">
+                                </textarea>
                             </div>
                             <button class="btn btn-primary col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
                         </div>
