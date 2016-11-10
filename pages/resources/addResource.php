@@ -53,28 +53,28 @@ include_once("../../inc/nav.php");
                                 <input type="text" class="form-control" id="alias" name="alias" required>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 equipment">
                             <div>
                                 <label for="model">Modelo:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="model" name="model" required>
+                                <input type="text" class="form-control equipment" id="model" name="model" required>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 equipment">
                             <div>
                                 <label for="serial">Número de serie:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="serial" name="serial" required>
+                                <input type="text" class="form-control equipment" id="serial" name="serial" required>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 equipment">
                             <div>
                                 <label for="inventory">Número de inventorio:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="inventory" name="inventory" required>
+                                <input type="text" class="form-control equipment" id="inventory" name="inventory" required>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,7 @@ include_once("../../inc/nav.php");
                                     <label for="location">Seleccione</label>
                                 </div>
                                 <div>
-                                    <select id="location" name="location" required>
+                                    <select id="location" name="location" onchange="locationHandler(this.options[this.selectedIndex].text)" required>
                                         <option value="new">Nuevo</option>
                                         <?php
                                         $sql = mysqli_query($connection, "SELECT * FROM ubicaciones ORDER BY UB_CAMPUS");
@@ -103,9 +103,9 @@ include_once("../../inc/nav.php");
                                 </div>
                                 <div>
                                     <select class="form-control" id="campus" name="campus" required>
-                                        <option>Seleccione...</option>
-                                        <option value="TORRENTE">Torrente</option>
-                                        <option value="CALASANZ">Calasanz</option>
+                                        <option value="">Seleccione...</option>
+                                        <option value="TORRENTE">TORRENTE</option>
+                                        <option value="CALASANZ">CALASANZ</option>
                                     </select>
                                 </div>
                             </div>
