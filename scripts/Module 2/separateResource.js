@@ -5,7 +5,7 @@ $(function() {
     minSelection;
     maxSelection;
     input = {
-            "id": null,             //-integer: the resource's id
+            "resource": null,             //-integer: the resource's id
             "start": null,          //-string: a "yyyy-mm-dd" formatted date, the period's beginning date
             "end": null,            //-string: a "yyyy-mm-dd" formatted date, the period's ending date
             "grade": "",            //integer(opt): a number between 1 and 10 to declare the lesson's grade
@@ -13,12 +13,12 @@ $(function() {
             "area": null,           //integer: the id of the area in which the resource will be used
             "lendTo": null,         //integer: the benefited user's id 
             "comments": "",         //string(opt): general comments
-            "daysOfTheWeek": null,   //integer: day's number of the week where the resource will be separated (0-6)
+            "daysOfTheWeek": null,  //integer: number of the days separated by comma where the resource will be separated (0-6)
             "from": null,           //string: a "hh:mm:ss" formatted time, the resource won't be available from this hour
             "to": null              //string: a "hh:mm:ss" formatted time, the resource won't be available until this hour
         };
 
-    getDataFromTable("area", "AR_ID,AR_NAME", "area", false);
+    getDataFromTable("areas", "AR_ID,AR_NAME", "area", false);
     getDataFromTable("usuarios", "US_ID,US_NAME", "lendTo", true);
 
     $('#calendar').fullCalendar({
@@ -44,10 +44,9 @@ $(function() {
             minSelection = start;
             maxSelection = end;
             $(".type").change();
-            //$('#calendar').fullCalendar('unselect');
         },
         selectAllow: function(selectInfo) {
-            var startDate = selectInfo.start.format().split("T")[0];
+            var startDate = selectInfo.start;
             return canSeparateOn(startDate);
         }
     });
@@ -99,19 +98,21 @@ $(function() {
                         var day = minSelection._d.getDay();
                         if($(this).val() == day)
                             $(this).prop("checked", true);
+                        else
+                            $(this).prop("checked", false);
                     }).change();
                 } else {
                     $("#startDate").datepicker("setDate", "+0").change();
                     $("#endDate").datepicker("setDate", "+0").change();
                     $("#from").val("00:00:00").change();
-                    $("#to").val("00:00:00").change();
+                    $("#to").val("23:59:00").change();
                 }
             });
         }
     }).change();
 
     $("#resource").on("change", function() {
-        input.id = $(this).val();
+        input.resource = $(this).val();
     });
 
     $("#area").on("change", function() {
@@ -131,7 +132,7 @@ $(function() {
     });
 
     $("#comments").on("change", function() {
-        input.lendTo = $(this).val();
+        input.comments = $(this).val();
     });
 
     $("#from").on("change", function() {
@@ -144,6 +145,10 @@ $(function() {
 
     $("input:checkbox.daysOfTheWeek").on("change", function() {
         handleDaysOfTheWeek();
+    });
+
+    $("#separate").on("click", function() {
+        insertEvent(input);
     });
 });
 
@@ -176,11 +181,7 @@ function getDate(element) {
     the selection of previous days */
 function canSeparateOn(date) {
     var today = new Date();
-    var selected = new Date(date);
-    var d = date.split("-")[2];
-    if(d[0] == 0)
-        selected.setDate(selected.getDate() + 1);
-    if(selected <= today){
+    if(date._d < today){
         return false;
     }
     return true;
@@ -196,7 +197,7 @@ function getAvailableResources(resourceType) {
     $.ajax({
         data: { "resourceType": resourceType},
         dataType: "html",
-        error: function() {
+        error: function(e) {
             alert("Error al conseguir los recursos");
         },
         success: function(response) {
@@ -211,7 +212,7 @@ function getAvailableResources(resourceType) {
     Does an ajax request to separate a resource 
     Parameter: Object 
         input = {
-            "id": resourceId,           //integer: the resource's id
+            "resource": resourceId,     //integer: the resource's id
             "start": startDate,         //string: a "yyyy-mm-dd" formatted date, the period's beginning date
             "end": endDate,             //string: a "yyyy-mm-dd" formatted date, the period's ending date
             "grade": grade,             //integer(opt): a number between 1 and 10 to declare the lesson's grade
