@@ -83,12 +83,12 @@ include_once("../../inc/nav.php");
                     </div>
                     <div class="col-md-6">
                         <h2 class="sub-header">Ubicación</h2>
-                        <div>
+                        <div class="col-sm-7">
                             <div>
                                 <label for="location">Seleccione</label>
                             </div>
                             <div>
-                                <select id="location" name="location"
+                                <select class="form-control" id="location" name="location"
                                         onchange="locationHandler(this.options[this.selectedIndex].text)" required>
                                     <option value="new">Nuevo</option>
                                     <?php
