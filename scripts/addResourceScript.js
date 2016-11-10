@@ -8,17 +8,17 @@ function typeHandler(type){
 }
 
 function locationHandler(data){
-    if(data == "new"){
-        $("#campus").val("").prop("readonly", false);
+    if(data == "Nuevo"){
+        $("#campus").val("").prop("disabled", false);
+        $("#hidden-campus").val("").prop("disabled", true);
         $("#pile").val("").prop("readonly", false);
         $("#floor").val("").prop("readonly", false);
         $("#room").val("").prop("readonly", false);
     }else {
-        var d = data.replace(/:,/g, "");
-        alert(d);
+        var d = data.replace(/[:,]/g, "");
         var arr = d.split(" ");
-        alert(data[0]);
-        $("#campus").val(arr[0]).prop("readonly", true);
+        $("#campus").val(arr[0]).prop("disabled", true);
+        $("#hidden-campus").val("").prop("disabled", false);
         $("#pile").val(arr[1]).prop("readonly", true);
         $("#floor").val(arr[2]).prop("readonly", true);
         $("#room").val(arr[3]).prop("readonly", true);

@@ -1,5 +1,5 @@
 <?php
-include_once("../../inc/validateLogin.php");
+//include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
 $type = filter_input(INPUT_POST, 'resource', FILTER_SANITIZE_STRING);

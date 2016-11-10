@@ -1,5 +1,5 @@
 <?php
-include_once("../../inc/validateLogin.php");
+//include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 //Tu código que necesites
 ?>
@@ -33,16 +33,17 @@ include_once("../../inc/nav.php");
             <form action="saveResource.php" method="post">
                 <div class="row">
                     <div class="col-md-6">
-                        <h2 class="page-header">Datos</h2>
+                        <h2 class="sub-header">Datos</h2>
                         <div>
                             <div>
                                 <label>Tipo de recurso:</label>
                             </div>
                             <div>
-                                <input type="radio" name="resource" id="equipment" value="EQUIPO" onclick="typeHandler(this.value)" checked><label for="equipment">Equipo</label>
-                            </div>
-                            <div>
-                                <input type="radio" name="resource" id="space" value="AULA" onclick="typeHandler(this.value)"><label for="space">Espacio</label>
+                                <input type="radio" name="resource" id="equipment" value="EQUIPO"
+                                       onclick="typeHandler(this.value)" checked><label
+                                    for="equipment">Equipo</label>
+                                <input type="radio" name="resource" id="space" value="AULA"
+                                       onclick="typeHandler(this.value)"><label for="space">Espacio</label>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -66,7 +67,8 @@ include_once("../../inc/nav.php");
                                 <label for="serial">Número de serie:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control equipment" id="serial" name="serial" required>
+                                <input type="text" class="form-control equipment" id="serial" name="serial"
+                                       required>
                             </div>
                         </div>
                         <div class="col-sm-6 equipment">
@@ -74,64 +76,65 @@ include_once("../../inc/nav.php");
                                 <label for="inventory">Número de inventorio:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control equipment" id="inventory" name="inventory" required>
+                                <input type="text" class="form-control equipment" id="inventory" name="inventory"
+                                       required>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="row">
-                            <h2 class="sub-header">Ubicación</h2>
+                        <h2 class="sub-header">Ubicación</h2>
+                        <div>
                             <div>
-                                <div>
-                                    <label for="location">Seleccione</label>
-                                </div>
-                                <div>
-                                    <select id="location" name="location" onchange="locationHandler(this.options[this.selectedIndex].text)" required>
-                                        <option value="new">Nuevo</option>
-                                        <?php
-                                        $sql = mysqli_query($connection, "SELECT * FROM ubicaciones ORDER BY UB_CAMPUS");
-                                        while ($row = mysqli_fetch_assoc($sql)){
-                                            echo "<option value='$row[UB_ID]'>$row[UB_CAMPUS]: $row[UB_PILE], $row[UB_FLOOR], $row[UB_ROOM]</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                                <label for="location">Seleccione</label>
                             </div>
-                            <div class="col-sm-6">
-                                <div>
-                                    <label for="campus">Campus:</label>
-                                </div>
-                                <div>
-                                    <select class="form-control" id="campus" name="campus" required>
-                                        <option value="">Seleccione...</option>
-                                        <option value="TORRENTE">TORRENTE</option>
-                                        <option value="CALASANZ">CALASANZ</option>
-                                    </select>
-                                </div>
+                            <div>
+                                <select id="location" name="location"
+                                        onchange="locationHandler(this.options[this.selectedIndex].text)" required>
+                                    <option value="new">Nuevo</option>
+                                    <?php
+                                    $sql = mysqli_query($connection, "SELECT * FROM ubicaciones ORDER BY UB_CAMPUS");
+                                    while ($row = mysqli_fetch_assoc($sql)) {
+                                        echo "<option value='$row[UB_ID]'>$row[UB_CAMPUS]: $row[UB_PILE], $row[UB_FLOOR], $row[UB_ROOM]</option>";
+                                    }
+                                    ?>
+                                </select>
                             </div>
-                            <div class="col-sm-6">
-                                <div>
-                                    <label for="pile">Edificio:</label>
-                                </div>
-                                <div>
-                                    <input type="text" class="form-control" id="pile" name="pile" required>
-                                </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <label for="campus">Campus:</label>
                             </div>
-                            <div class="col-sm-6">
-                                <div>
-                                    <label for="floor">Piso:</label>
-                                </div>
-                                <div>
-                                    <input type="text" class="form-control" id="floor" name="floor" required>
-                                </div>
+                            <div>
+                                <select class="form-control" id="campus" name="campus" required>
+                                    <option value="">Seleccione...</option>
+                                    <option value="TORRENTE">TORRENTE</option>
+                                    <option value="CALASANZ">CALASANZ</option>
+                                </select>
+                                <input type="hidden" name="campus" id="hidden-campus" disabled>
                             </div>
-                            <div class="col-sm-6">
-                                <div>
-                                    <label for="room">Habitación:</label>
-                                </div>
-                                <div>
-                                    <input type="text" class="form-control" id="room" name="room" required>
-                                </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <label for="pile">Edificio:</label>
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" id="pile" name="pile" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <label for="floor">Piso:</label>
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" id="floor" name="floor" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div>
+                                <label for="room">Habitación:</label>
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" id="room" name="room" required>
                             </div>
                         </div>
                     </div>
