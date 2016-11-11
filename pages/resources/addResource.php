@@ -7,7 +7,6 @@ $model = "";
 $alias = "";
 $serial = "";
 $inventory = "";
-$location = "";
 
 $campus = "";
 $pile = "";
@@ -77,6 +76,10 @@ include_once("../../inc/nav.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <form action="saveResource.php" method="post">
+                <?php
+                    if(isset($id))
+                        echo "<input type='hidden' name='idResource' value='$id'>";
+                ?>
                 <div class="row">
                     <div class="col-md-6">
                         <h2 class="sub-header">Datos</h2>
@@ -86,7 +89,7 @@ include_once("../../inc/nav.php");
                             </div>
                             <div>
                                 <input type="radio" name="resource" id="equipment" value="EQUIPO"
-                                       onclick="typeHandler(this.value)" <?php if($type == "EQUIPO" || $type == "") echo checked ?>><label
+                                       onclick="typeHandler(this.value)" <?php if($type == "EQUIPO" || $type == "") echo "checked" ?>><label
                                     for="equipment">Equipo</label>
                                 <input type="radio" name="resource" id="space" value="AULA"
                                        onclick="typeHandler(this.value)" <?php if($type == "AULA") echo checked ?>><label for="space">Espacio</label>
@@ -138,9 +141,20 @@ include_once("../../inc/nav.php");
                                         onchange="locationHandler(this.options[this.selectedIndex].text)" required>
                                     <option value="new">Nuevo</option>
                                     <?php
-                                    $sql = mysqli_query($connection, "SELECT * FROM ubicaciones ORDER BY UB_CAMPUS");
-                                    while ($row = mysqli_fetch_assoc($sql)) {
-                                        echo "<option value='$row[UB_ID]'>$row[UB_CAMPUS]: $row[UB_PILE], $row[UB_FLOOR], $row[UB_ROOM]</option>";
+                                    $auxSQL = mysqli_query($connection, "SELECT * FROM ubicaciones");
+                                    $strOptions = "";
+                                    while ($row = mysqli_fetch_assoc($auxSQL)) {
+                                        $strOptions = $strOptions."<option value='$row[UB_ID]'";
+                                        if(isset($location) && $location == $row["UB_ID"]) {
+                                            $strOptions = $strOptions." selected";
+                                            $campus = $row['UB_CAMPUS'];
+                                            $pile = $row['UB_PILE'];
+                                            $floor = $row['UB_FLOOR'];
+                                            $room = $row['UB_ROOM'];
+                                        }
+                                        $strOptions = $strOptions.">$row[UB_CAMPUS]: $row[UB_PILE], $row[UB_FLOOR], $row[UB_ROOM]</option>";
+                                        echo $strOptions;
+                                        $strOptions = "";
                                     }
                                     ?>
                                 </select>
@@ -151,12 +165,12 @@ include_once("../../inc/nav.php");
                                 <label for="campus">Campus:</label>
                             </div>
                             <div>
-                                <select class="form-control" id="campus" name="campus" required>
+                                <select class="form-control" id="campus" name="campus" <?php if(isset($location)) echo "disabled"; ?> required>
                                     <option value="">Seleccione...</option>
-                                    <option value="TORRENTE">TORRENTE</option>
-                                    <option value="CALASANZ">CALASANZ</option>
+                                    <option value="TORRENTE" <?php if($campus == "TORRENTE") echo "selected"; ?>>TORRENTE</option>
+                                    <option value="CALASANZ" <?php if($campus == "CALASANZ") echo "selected"; ?>>CALASANZ</option>
                                 </select>
-                                <input type="hidden" name="campus" id="hidden-campus" disabled>
+                                <input type="hidden" name="campus" id="hidden-campus" value="<?php echo $campus; ?>" <?php if(!isset($location)) echo "disabled"; ?>>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -164,7 +178,7 @@ include_once("../../inc/nav.php");
                                 <label for="pile">Edificio:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="pile" name="pile" required>
+                                <input type="text" class="form-control" id="pile" name="pile" value="<?php echo $pile; ?>" <?php if(isset($location)) echo "readonly"; ?> required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -172,7 +186,7 @@ include_once("../../inc/nav.php");
                                 <label for="floor">Piso:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="floor" name="floor" required>
+                                <input type="text" class="form-control" id="floor" name="floor" value="<?php echo $floor; ?>" <?php if(isset($location)) echo "readonly"; ?> required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -180,7 +194,7 @@ include_once("../../inc/nav.php");
                                 <label for="room">Habitación:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="room" name="room" required>
+                                <input type="text" class="form-control" id="room" name="room" value="<?php echo $room; ?>" <?php if(isset($location)) echo "readonly"; ?> required>
                             </div>
                         </div>
                     </div>

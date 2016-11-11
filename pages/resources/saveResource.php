@@ -32,12 +32,36 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                             VALUES('$model', '$alias', '$type', 1, '$serial', '$inventory', NOW(), $idLocation)");
 
     if($insertResource) {
-        header("Location: equipments.php");
+        if($type == "EQUIPO")
+            header("Location: equipments.php");
+        else
+            header("Location: classRooms.php");
         exit;
     }else {
         header("Location: addResource.php?error=No se pudo ingresar el recurso a la base de datos");
         exit;
     }
 } else {    //Lógica de actualización
-
+    $idResource = filter_input(INPUT_POST, 'idResource', FILTER_SANITIZE_NUMBER_INT);
+    if ($location == "new") {
+        $insertLocation = mysqli_query($connection, "INSERT INTO ubicaciones(UB_PILE, UB_CAMPUS, UB_FLOOR, UB_ROOM)
+                                            VALUES('$pile', '$campus','$floor','$room')");
+        $idLocation = mysqli_insert_id($connection);
+    } else {
+        $idLocation = $location;
+    }
+    $updateResource = mysqli_query($connection, "UPDATE recursos SET RE_MODEL = '$model', RE_ALIAS = '$alias', RE_TYPE = '$type',
+                                             RE_SERIAL = '$serial', RE_INVENTORY = '$inventory', RE_MODIFIED = NOW(), 
+                                             RE_LOCATION = $idLocation
+                                              WHERE RE_ID = $idResource");
+    if($updateResource) {
+        if($type == "EQUIPO")
+            header("Location: equipments.php");
+        else
+            header("Location: classRooms.php");
+        exit;
+    }else {
+        header("Location: addResource.php?error=No se pudo actualizar el recurso en la base de datos");
+        exit;
+    }
 }
