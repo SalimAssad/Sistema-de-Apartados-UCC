@@ -65,7 +65,7 @@
 			while($row = mysqli_fetch_assoc($query)) {
 				$day = $row['HO_DAY'];
 				list($y, $m, $d) = explode("-", $row['AP_START']);
-				$first = strtotime("first $namedDays[$day] of $namedMonths[$m] $y");
+				$first = strtotime("next $namedDays[$day] of $namedMonths[$m] $y");
 				$lastday = date($row['AP_END']); //strtotime()
 
 				$date = $first;
