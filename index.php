@@ -5,7 +5,7 @@
 <html lang='es'>
     <head>
         <meta charset="utf-8">
-        <title><!-- Tu título --></title>
+        <title>Inicia Sesión</title>
         
         <link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="css/global.css" rel="stylesheet">
@@ -36,6 +36,15 @@
                 
                 <a href="inc/Send_reset_email.php" >Olvidaste tu contraseña? Haz click aquí </a>
             </form>
+
+            <br> <br>
+            <div id="error">
+                <?php
+                if(isset($_GET["error"])){
+                    echo "Los datos son incorrectos";
+                }
+                ?>
+            </div>
             <div>
                
             </div>     
