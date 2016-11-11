@@ -7,14 +7,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Project name</a>
+            <a class="navbar-brand" href="#">Bienvenido al sistema de apartado de audiovisuales</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">OPTION 1</a></li>
                 <li><a href="#">OPTION 2</a></li>
                 <li><a href="#">OPTION 3</a></li>
-                <li><a href="#">Salir</a></li>
+                <li><a href="inc/byebye.php">Salir</a></li>
             </ul>
         </div>
     </div>
