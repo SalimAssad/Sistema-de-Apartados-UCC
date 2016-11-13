@@ -1,13 +1,11 @@
 <?php
 	// TODO LIST -->
 	// - Validar los permisos de los usuarios
+	// - Validar entradas
+	// - Controlar las posibles fallas de los queries
 	session_start();
 	$_SESSION['id'] = 1;
 	require_once("../../../inc/MySQLConnection.php");
-	$namedDays = array("sunday", "monday", "tuesday", "wednesday", "thursday", "saturday");
-	$namedMonths = array(1 => "january", 2 => "february", 3 => "march", 4 => "april", 
-						 5 => "may", 6 => "june", 7 => "july", 8 => "august", 
-						 9 => "september", 10 => "october", 11 => "november", 12 => "december");
 
 	$resource = trim(filter_input(INPUT_POST, "resource", FILTER_SANITIZE_NUMBER_INT));
 	$date = date("Y-m-d");
@@ -64,26 +62,26 @@
 		if(mysqli_num_rows($query) > 0){
 			while($row = mysqli_fetch_assoc($query)) {
 				$day = $row['HO_DAY'];
-				list($y, $m, $d) = explode("-", $row['AP_START']);
-				$first = strtotime("next $namedDays[$day] of $namedMonths[$m] $y");
-				$lastday = date($row['AP_END']); //strtotime()
-
-				$date = $first;
+				$lastday = strtotime($row['AP_END']);
+				$date = strtotime($row['AP_START']);
 				do {
-					$id = $row['AP_ID'];
-					$startDate = date('Y-m-d', $date)."T".$row['HO_FROM'];
-					$endDate = date('Y-m-d', $date)."T".$row['HO_TO'];
-					$title = $row['RE_ALIAS'];
+					if($day == date("w", $date)) {
+						$id = $row['AP_ID'];
+						$startDate = date('Y-m-d', $date)."T".$row['HO_FROM'];
+						$endDate = date('Y-m-d', $date)."T".$row['HO_TO'];
+						$title = $row['RE_ALIAS'];
 
-					$events[] = array(
-						"id" => $id, 
-						"start" => $startDate,
-						"end" => $endDate,
-						"title" => $title
-					);
-
-				   	$date += 7 * 86400;
-				} while ($date < $lastday);
+						$events[] = array(
+							"id" => $id, 
+							"start" => $startDate,
+							"end" => $endDate,
+							"title" => $title
+						);
+						$date += (3600 * 24 * 7); // If the day matches, let's add 7 to get the next same day
+					} else {
+				   		$date += (3600 * 24); // If not, we just keep searching for "The Day" ;)
+					}
+				} while ($date <= $lastday);
 			}
 		}
 	} else {
@@ -97,6 +95,7 @@
         list($year,$month,$day) = array_pad(preg_split("/[\/\\-]/",$date,3),3,0);
         if(!(ctype_digit("$year$month$day") && checkdate($month, $day, $year))) {
             $date = "";
+            return $date;
         }
         return "$year-$month-$day";
     }

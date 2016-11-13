@@ -28,6 +28,7 @@ $(function() {
             right: 'month,agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
+
         editable: true,
         selectable: true,
         unselectAuto: false,
@@ -48,6 +49,23 @@ $(function() {
         selectAllow: function(selectInfo) {
             var startDate = selectInfo.start;
             return canSeparateOn(startDate);
+        },
+        events: function(start, end, timezone, populateCalendar) {
+            console.log(start.format());
+            console.log(end.format());
+            $.ajax({
+                data: { "start": start.format(), "end": end.format() },
+                dataType: "json",
+                error: function() {
+                    alert("Error al obtener la información");
+                },
+                success: function(response) {
+                    console.log(response);
+                    populateCalendar(response);
+                },
+                type: "POST",
+                url: "../../scripts/Module 2/ajax/getAllEvents.php"
+            });
         }
     });
 
@@ -240,7 +258,10 @@ function insertEvent(input) {
             alert("Error al obtener la información");
         },
         success: function(response) {
-            console.log(response);
+            $.each(response, function(i, obj) {
+                // Don't forget to change the "Stick" flag when the calendar loads the events from the php file
+                $("#calendar").fullCalendar('renderEvent', obj, true); 
+            });
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/insertEvent.php"
@@ -271,5 +292,11 @@ function getDataFromTable(table, fields, divId, filter) {
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/getDataFromTable.php"
+    });
+}
+
+function populateCalendar(events) {
+    $.each(events, function(i, obj) {
+        $("#calendar").fullCalendar('renderEvent', obj);
     });
 }
