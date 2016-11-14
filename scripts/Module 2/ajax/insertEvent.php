@@ -38,7 +38,6 @@
 	$sql = "SELECT AP_ID FROM apartados ORDER BY AP_ID DESC LIMIT 1";
 	$selQuery = mysqli_query($connection, $sql) or die(mysqli_error($connection));
 
-	$events = array();
 	if(mysqli_num_rows($selQuery) > 0) {
 		$fetch = mysqli_fetch_assoc($selQuery);
 		$ap_id = $fetch["AP_ID"];
@@ -49,47 +48,12 @@
 					values ('$ap_id', $day, '$from', '$to')";
 			$query = mysqli_query($connection, $sql) or die(mysqli_error($connection));
 		}
-
-		$sql = "SELECT HO_FROM, HO_TO, HO_DAY, AP_START, AP_END, RE_ALIAS, AP_ID 
-				FROM horarios 
-				JOIN apartados ON
-				AP_ID = HO_SEPARATEID
-				JOIN recursos ON
-				RE_ID = AP_RESID
-				WHERE HO_SEPARATEID = '$ap_id'";
-		$query = mysqli_query($connection, $sql);
-
-		if(mysqli_num_rows($query) > 0){
-			while($row = mysqli_fetch_assoc($query)) {
-				$day = $row['HO_DAY'];
-				$lastday = strtotime($row['AP_END']);
-				$date = strtotime($row['AP_START']);
-				do {
-					if($day == date("w", $date)) {
-						$id = $row['AP_ID'];
-						$startDate = date('Y-m-d', $date)."T".$row['HO_FROM'];
-						$endDate = date('Y-m-d', $date)."T".$row['HO_TO'];
-						$title = $row['RE_ALIAS'];
-
-						$events[] = array(
-							"id" => $id, 
-							"start" => $startDate,
-							"end" => $endDate,
-							"title" => $title
-						);
-						$date += (3600 * 24 * 7); // If the day matches, let's add 7 to get the next same day
-					} else {
-				   		$date += (3600 * 24); // If not, we just keep searching for "The Day" ;)
-					}
-				} while ($date <= $lastday);
-			}
-		}
 	} else {
 		// The server couldn't retrieve data
 	}
 	mysqli_query($connection, "COMMIT");
 
-	echo json_encode($events);
+	echo "TRUE"; // Response to AJAX
 
 	function validateDate($date) {
         list($year,$month,$day) = array_pad(preg_split("/[\/\\-]/",$date,3),3,0);

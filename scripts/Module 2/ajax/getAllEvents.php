@@ -26,10 +26,14 @@
 					(AP_START <= '$start') 
 					AND
 					(AP_END >= '$end')
-				)";
+				)
+			ORDER BY AP_ID"; // Ordered to avoid errors at setting the color hehe
 	$query = mysqli_query($connection, $sql);
 	
 	$events = array();
+	$actualID = 0;
+	$colors = array();
+	$actualColor = "";
 	if(mysqli_num_rows($query) > 0){
 		while($row = mysqli_fetch_assoc($query)) {
 			$day = $row['HO_DAY'];
@@ -42,11 +46,18 @@
 					$endDate = date('Y-m-d', $date)."T".$row['HO_TO'];
 					$title = $row['RE_ALIAS'];
 
+					if($actualID != $id) {
+						$actualColor = generateRandomColor($colors);
+			            $colors[] = $actualColor;
+			            $actualID = $id;
+					}
+
 					$events[] = array(
 						"id" => $id,
 						"start" => $startDate,
 						"end" => $endDate,
-						"title" => $title
+						"title" => $title,
+						"color" => $actualColor
 					);
 					$date += (3600 * 24 * 7); // If the day matches, let's add 7 to get the next same day
 				} else {
@@ -76,3 +87,15 @@
     		return false;
     	return $time;
     }
+
+	function generateRandomColor($colorsToIgnore) {
+	    $r = 0; $g = 0; $b = 0;
+	    $color = "";
+	    do {
+	        $r = dechex(rand(0, 255));
+	        $g = dechex(rand(0, 255));
+	        $b = dechex(rand(0, 255));
+	        $color = "#$r$g$b";
+	    } while(in_array($color, $colorsToIgnore));
+	    return $color;
+	}

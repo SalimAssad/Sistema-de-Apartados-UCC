@@ -5,9 +5,9 @@ $(function() {
     minSelection;
     maxSelection;
     input = {
-            "resource": null,             //-integer: the resource's id
-            "start": null,          //-string: a "yyyy-mm-dd" formatted date, the period's beginning date
-            "end": null,            //-string: a "yyyy-mm-dd" formatted date, the period's ending date
+            "resource": null,       //integer: the resource's id
+            "start": null,          //string: a "yyyy-mm-dd" formatted date, the period's beginning date
+            "end": null,            //string: a "yyyy-mm-dd" formatted date, the period's ending date
             "grade": "",            //integer(opt): a number between 1 and 10 to declare the lesson's grade
             "lesson": "",           //string(opt): the lesson name
             "area": null,           //integer: the id of the area in which the resource will be used
@@ -28,8 +28,8 @@ $(function() {
             right: 'month,agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
-
-        editable: true,
+        lazyFetching: true,
+        editable: false,
         selectable: true,
         unselectAuto: false,
         eventOverlap: false,
@@ -51,8 +51,6 @@ $(function() {
             return canSeparateOn(startDate);
         },
         events: function(start, end, timezone, populateCalendar) {
-            console.log(start.format());
-            console.log(end.format());
             $.ajax({
                 data: { "start": start.format(), "end": end.format() },
                 dataType: "json",
@@ -60,7 +58,6 @@ $(function() {
                     alert("Error al obtener la información");
                 },
                 success: function(response) {
-                    console.log(response);
                     populateCalendar(response);
                 },
                 type: "POST",
@@ -253,15 +250,15 @@ function insertEvent(input) {
     // input must be an object!!!
     $.ajax({
         data: input,
-        dataType: "json",
+        dataType: "text",
         error: function() {
             alert("Error al obtener la información");
         },
         success: function(response) {
-            $.each(response, function(i, obj) {
-                // Don't forget to change the "Stick" flag when the calendar loads the events from the php file
-                $("#calendar").fullCalendar('renderEvent', obj, true); 
-            });
+            if(response == "TRUE")
+                $("#calendar").fullCalendar( 'refetchEvents' );
+            else
+                console.log("Error at separating the resource");
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/insertEvent.php"
@@ -292,11 +289,5 @@ function getDataFromTable(table, fields, divId, filter) {
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/getDataFromTable.php"
-    });
-}
-
-function populateCalendar(events) {
-    $.each(events, function(i, obj) {
-        $("#calendar").fullCalendar('renderEvent', obj);
     });
 }
