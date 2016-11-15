@@ -5,9 +5,9 @@ $(function() {
     minSelection;
     maxSelection;
     input = {
-            "resource": null,             //-integer: the resource's id
-            "start": null,          //-string: a "yyyy-mm-dd" formatted date, the period's beginning date
-            "end": null,            //-string: a "yyyy-mm-dd" formatted date, the period's ending date
+            "resource": null,       //integer: the resource's id
+            "start": null,          //string: a "yyyy-mm-dd" formatted date, the period's beginning date
+            "end": null,            //string: a "yyyy-mm-dd" formatted date, the period's ending date
             "grade": "",            //integer(opt): a number between 1 and 10 to declare the lesson's grade
             "lesson": "",           //string(opt): the lesson name
             "area": null,           //integer: the id of the area in which the resource will be used
@@ -28,7 +28,8 @@ $(function() {
             right: 'month,agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
-        editable: true,
+        lazyFetching: true,
+        editable: false,
         selectable: true,
         unselectAuto: false,
         eventOverlap: false,
@@ -48,6 +49,20 @@ $(function() {
         selectAllow: function(selectInfo) {
             var startDate = selectInfo.start;
             return canSeparateOn(startDate);
+        },
+        events: function(start, end, timezone, populateCalendar) {
+            $.ajax({
+                data: { "start": start.format(), "end": end.format() },
+                dataType: "json",
+                error: function() {
+                    alert("Error al obtener la información");
+                },
+                success: function(response) {
+                    populateCalendar(response);
+                },
+                type: "POST",
+                url: "../../scripts/Module 2/ajax/getAllEvents.php"
+            });
         }
     });
 
@@ -235,12 +250,15 @@ function insertEvent(input) {
     // input must be an object!!!
     $.ajax({
         data: input,
-        dataType: "json",
+        dataType: "text",
         error: function() {
             alert("Error al obtener la información");
         },
         success: function(response) {
-            console.log(response);
+            if(response == "TRUE")
+                $("#calendar").fullCalendar( 'refetchEvents' );
+            else
+                console.log("Error at separating the resource");
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/insertEvent.php"
