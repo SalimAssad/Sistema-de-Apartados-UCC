@@ -77,8 +77,8 @@ include_once("../../inc/nav.php");
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <form action="saveResource.php" method="post">
                 <?php
-                    if(isset($id))
-                        echo "<input type='hidden' name='idResource' value='$id'>";
+                if (isset($id))
+                    echo "<input type='hidden' name='idResource' value='$id'>";
                 ?>
                 <div class="row">
                     <div class="col-md-6">
@@ -89,10 +89,11 @@ include_once("../../inc/nav.php");
                             </div>
                             <div>
                                 <input type="radio" name="resource" id="equipment" value="EQUIPO"
-                                       onclick="typeHandler(this.value)" <?php if($type == "EQUIPO" || $type == "") echo "checked" ?>><label
+                                       onclick="typeHandler(this.value)" <?php if ($type == "EQUIPO" || $type == "") echo "checked" ?>><label
                                     for="equipment">Equipo</label>
                                 <input type="radio" name="resource" id="space" value="AULA"
-                                       onclick="typeHandler(this.value)" <?php if($type == "AULA") echo checked ?>><label for="space">Espacio</label>
+                                       onclick="typeHandler(this.value)" <?php if ($type == "AULA") echo checked ?>><label
+                                    for="space">Espacio</label>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -100,35 +101,53 @@ include_once("../../inc/nav.php");
                                 <label for="alias">Alias:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="alias" name="alias" value="<?php echo $alias; ?>" required>
+                                <input type="text" class="form-control" id="alias" name="alias"
+                                       value="<?php echo $alias; ?>" required>
                             </div>
                         </div>
-                        <div class="col-sm-6 equipment">
-                            <div>
-                                <label for="model">Modelo:</label>
+                        <?php
+                        if ($type == "EQUIPO" || $type == "") {
+                            ?>
+                            <div class="col-sm-6 equipment">
+                                <div>
+                                    <label for="model">Modelo:</label>
+                                </div>
+                                <div>
+                                    <input type="text" class="form-control equipment" id="model" name="model"
+                                           value="<?php echo $model; ?>" required>
+                                </div>
                             </div>
-                            <div>
-                                <input type="text" class="form-control equipment" id="model" name="model" value="<?php echo $model; ?>" required>
+                            <?php
+                        }
+                        if ($type == "EQUIPO" || $type == "") {
+                            ?>
+                            <div class="col-sm-6 equipment">
+                                <div>
+                                    <label for="serial">Número de serie:</label>
+                                </div>
+                                <div>
+                                    <input type="text" class="form-control equipment" id="serial" name="serial"
+                                           value="<?php echo $serial; ?>"
+                                           required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 equipment">
-                            <div>
-                                <label for="serial">Número de serie:</label>
+                            <?php
+                        }
+                        if ($type == "EQUIPO" || $type == "") {
+                            ?>
+                            <div class="col-sm-6 equipment">
+                                <div>
+                                    <label for="inventory">Número de inventorio:</label>
+                                </div>
+                                <div>
+                                    <input type="text" class="form-control equipment" id="inventory" name="inventory"
+                                           value="<?php echo $inventory; ?>"
+                                           required>
+                                </div>
                             </div>
-                            <div>
-                                <input type="text" class="form-control equipment" id="serial" name="serial"  value="<?php echo $serial; ?>"
-                                       required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6 equipment">
-                            <div>
-                                <label for="inventory">Número de inventorio:</label>
-                            </div>
-                            <div>
-                                <input type="text" class="form-control equipment" id="inventory" name="inventory"  value="<?php echo $inventory; ?>"
-                                       required>
-                            </div>
-                        </div>
+                            <?php
+                        }
+                        ?>
                     </div>
                     <div class="col-md-6">
                         <h2 class="sub-header">Ubicación</h2>
@@ -144,15 +163,15 @@ include_once("../../inc/nav.php");
                                     $auxSQL = mysqli_query($connection, "SELECT * FROM ubicaciones");
                                     $strOptions = "";
                                     while ($row = mysqli_fetch_assoc($auxSQL)) {
-                                        $strOptions = $strOptions."<option value='$row[UB_ID]'";
-                                        if(isset($location) && $location == $row["UB_ID"]) {
-                                            $strOptions = $strOptions." selected";
+                                        $strOptions = $strOptions . "<option value='$row[UB_ID]'";
+                                        if (isset($location) && $location == $row["UB_ID"]) {
+                                            $strOptions = $strOptions . " selected";
                                             $campus = $row['UB_CAMPUS'];
                                             $pile = $row['UB_PILE'];
                                             $floor = $row['UB_FLOOR'];
                                             $room = $row['UB_ROOM'];
                                         }
-                                        $strOptions = $strOptions.">$row[UB_CAMPUS]: $row[UB_PILE], $row[UB_FLOOR], $row[UB_ROOM]</option>";
+                                        $strOptions = $strOptions . ">$row[UB_CAMPUS]: $row[UB_PILE], $row[UB_FLOOR], $row[UB_ROOM]</option>";
                                         echo $strOptions;
                                         $strOptions = "";
                                     }
@@ -165,12 +184,18 @@ include_once("../../inc/nav.php");
                                 <label for="campus">Campus:</label>
                             </div>
                             <div>
-                                <select class="form-control" id="campus" name="campus" <?php if(isset($location)) echo "disabled"; ?> required>
+                                <select class="form-control" id="campus"
+                                        name="campus" <?php if (isset($location)) echo "disabled"; ?> required>
                                     <option value="">Seleccione...</option>
-                                    <option value="TORRENTE" <?php if($campus == "TORRENTE") echo "selected"; ?>>TORRENTE</option>
-                                    <option value="CALASANZ" <?php if($campus == "CALASANZ") echo "selected"; ?>>CALASANZ</option>
+                                    <option value="TORRENTE" <?php if ($campus == "TORRENTE") echo "selected"; ?>>
+                                        TORRENTE
+                                    </option>
+                                    <option value="CALASANZ" <?php if ($campus == "CALASANZ") echo "selected"; ?>>
+                                        CALASANZ
+                                    </option>
                                 </select>
-                                <input type="hidden" name="campus" id="hidden-campus" value="<?php echo $campus; ?>" <?php if(!isset($location)) echo "disabled"; ?>>
+                                <input type="hidden" name="campus" id="hidden-campus"
+                                       value="<?php echo $campus; ?>" <?php if (!isset($location)) echo "disabled"; ?>>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -178,7 +203,9 @@ include_once("../../inc/nav.php");
                                 <label for="pile">Edificio:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="pile" name="pile" value="<?php echo $pile; ?>" <?php if(isset($location)) echo "readonly"; ?> required>
+                                <input type="text" class="form-control" id="pile" name="pile"
+                                       value="<?php echo $pile; ?>" <?php if (isset($location)) echo "readonly"; ?>
+                                       required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -186,7 +213,9 @@ include_once("../../inc/nav.php");
                                 <label for="floor">Piso:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="floor" name="floor" value="<?php echo $floor; ?>" <?php if(isset($location)) echo "readonly"; ?> required>
+                                <input type="text" class="form-control" id="floor" name="floor"
+                                       value="<?php echo $floor; ?>" <?php if (isset($location)) echo "readonly"; ?>
+                                       required>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -194,7 +223,9 @@ include_once("../../inc/nav.php");
                                 <label for="room">Habitación:</label>
                             </div>
                             <div>
-                                <input type="text" class="form-control" id="room" name="room" value="<?php echo $room; ?>" <?php if(isset($location)) echo "readonly"; ?> required>
+                                <input type="text" class="form-control" id="room" name="room"
+                                       value="<?php echo $room; ?>" <?php if (isset($location)) echo "readonly"; ?>
+                                       required>
                             </div>
                         </div>
                     </div>
@@ -204,7 +235,8 @@ include_once("../../inc/nav.php");
                         <button type="button" class="form-control btn-warning">Cancelar</button>
                     </div>
                     <div class="col-sm-6">
-                        <button type="submit" class="form-control btn-success" name="action" value="<?php if(isset($id)) echo "update"; else echo "add"; ?>">Guardar
+                        <button type="submit" class="form-control btn-success" name="action"
+                                value="<?php if (isset($id)) echo "update"; else echo "add"; ?>">Guardar
                         </button>
                     </div>
                 </div>
