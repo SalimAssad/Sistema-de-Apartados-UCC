@@ -16,6 +16,7 @@ if(mysqli_num_rows($query) > 0){
             session_start();
             $_SESSION['user'] = $user;
             $_SESSION['id'] = $row['US_ID'];
+
             header('Location: inicio.php');
         } else {
             header('Location: index.php?error=Datos_erroneos');
