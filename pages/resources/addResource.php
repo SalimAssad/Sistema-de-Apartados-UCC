@@ -161,7 +161,7 @@ include_once("../../inc/nav.php");
                                     <label for="hw-type">Tipo de hardware:</label>
                                 </div>
                                 <div>
-                                    <select class="form-control equipment" name="reference" id="reference" required>
+                                    <select class="form-control equipment" name="hwType" id="hw-type" required>
                                         <option value="">Seleccione...</option>
                                         <?php
                                         $auxSQL = mysqli_query($connection, "SELECT * FROM tipos_equipos");
