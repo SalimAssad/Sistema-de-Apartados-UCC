@@ -30,7 +30,7 @@ $(function() {
         },
         selectAllow: function(selectInfo) {
             var startDate = selectInfo.start.format().split("T")[0];
-            return canSeparateOn(startDate);
+             canSeparateOn(startDate);
         },
         events: function(start, end, timezone, callback) {
 
@@ -42,8 +42,10 @@ $(function() {
                 data: {
 
                     start: start.format(),
-                    end: end.format()
+                    end: end.format(),
+                  
                 },
+                
 
                 success: function(json) {
  
@@ -54,12 +56,13 @@ $(function() {
                         events.push({
                             title: obj.title,
                             start: obj.start,
-                           // end: obj.AP_END,
+                            end: obj.end,
                             id: obj.id,
-                            //resid: obj.AP_RESID
+                            resid: obj.resid
                         });
                     });
                     console.log(events);
+                   
                     callback(events);
 
                 }
