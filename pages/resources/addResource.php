@@ -7,6 +7,8 @@ $model = "";
 $alias = "";
 $serial = "";
 $inventory = "";
+$reference = "";
+$hwType = "";
 
 $campus = "";
 $pile = "";
@@ -25,6 +27,11 @@ if (isset($_GET['idResource'])) {
     $serial = $resourceData['RE_SERIAL'];
     $inventory = $resourceData['RE_INVENTORY'];
     $location = $resourceData['RE_LOCATION'];
+    $hwType = $resourceData['RE_HWTYPE'];
+
+    $referenceSQL = mysqli_query($connection, "SELECT RR_REFERENCEID FROM recursos_referencias WHERE RR_RESOURCEID");
+} else {
+
 }
 
 //Si se reciben los siguientes datos hubo error en la validación del servidor y se sobreescriben
@@ -83,7 +90,7 @@ include_once("../../inc/nav.php");
                 <div class="row">
                     <div class="col-md-6">
                         <h2 class="sub-header">Datos</h2>
-                        <div>
+                        <div class="col-sm-6">
                             <div>
                                 <label>Tipo de recurso:</label>
                             </div>
@@ -147,7 +154,69 @@ include_once("../../inc/nav.php");
                             </div>
                             <?php
                         }
+                        if ($type == "EQUIPO" || $type == "") {
+                            ?>
+                            <div class="col-sm-6 equipment">
+                                <div>
+                                    <label for="hw-type">Tipo de hardware:</label>
+                                </div>
+                                <div>
+                                    <select class="form-control equipment" name="reference" id="reference" required>
+                                        <option value="">Seleccione...</option>
+                                        <?php
+                                        $auxSQL = mysqli_query($connection, "SELECT * FROM tipos_equipos");
+                                        $strOptions = "";
+                                        while ($row = mysqli_fetch_assoc($auxSQL)) {
+                                            $strOptions = $strOptions . "<option value='$row[TI_ID]'";
+                                            if (isset($hwType) && $hwType == $row["TI_ID"]) {
+                                                $strOptions = $strOptions . " selected";
+                                            }
+                                            $strOptions = $strOptions . ">$row[TI_DESCRIPTION]</option>";
+                                            echo $strOptions;
+                                            $strOptions = "";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <?php
+                        }
                         ?>
+                        <div class="col-sm-12">
+                            <h2 class="sub-header">Referencias</h2>
+                            <div class="col-sm-12">
+                                <div>
+                                    <label for="reference">Referencia a añadir</label>
+                                </div>
+                                <div>
+                                    <div class="col-sm-8">
+                                        <select class="form-control" id="reference">
+                                            <option value="">Seleccione...</option>
+                                            <?php
+                                            $auxSQL = mysqli_query($connection, "SELECT * FROM referencias");
+                                            $strOptions = "";
+                                            while ($row = mysqli_fetch_assoc($auxSQL)) {
+                                                $strOptions = $strOptions . "<option value='$row[RE_ID]-$row[RE_DESCRIPTION]'";
+                                                if (isset($reference) && $reference == $row["RE_ID"]) {
+                                                    $strOptions = $strOptions . " selected";
+                                                }
+                                                $strOptions = $strOptions . ">$row[RE_DESCRIPTION]</option>";
+                                                echo $strOptions;
+                                                $strOptions = "";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button" class="form-control btn-success" onclick="addReference()">
+                                            Añadir
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="reference-container" class="col-sm-12">
+                            </div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <h2 class="sub-header">Ubicación</h2>
