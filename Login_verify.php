@@ -6,7 +6,7 @@ $user = $_POST["user"];
 $password = $_POST["password"];
 
 
-$query = mysqli_query($connection, "select * from usuarios");
+$query = mysqli_query($connection, "select US_SID, US_PASS from usuarios where US_SID = $user");
 
 
 if(mysqli_num_rows($query) > 0){

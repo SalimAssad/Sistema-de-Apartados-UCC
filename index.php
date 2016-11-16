@@ -25,7 +25,7 @@
                 
                 <label style="font-size: 14pt"><b>Matrícula:    </b></label>
                 
-                <input class="form-group has-success" style="border-radius:15px;" type="text" name="user" required>
+                <input class="form-group has-success" style="border-radius:15px;" type="number" name="user" required>
                 
                 <label  style="font-size: 14pt"><b>Contraseña: </b></label>
                 
