@@ -147,10 +147,16 @@ $(function() {
     });
 
     $("#separate").on("click", function() {
-        insertEvent(input);
-        input = resetInputs();
+        if(validateInputs(input)) {
+            insertEvent(input);
+            input = resetInputs();
+        }        
     });
 });
+
+function validateInputs() {
+    return true;
+}
 
 function getEventsInView(events) {
     return events;
