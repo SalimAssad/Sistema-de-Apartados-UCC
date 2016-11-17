@@ -52,7 +52,7 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="form-group">
                                 <label for="resource">Recurso</label>
-                                <select name="" id="resource" class="form-control">
+                                <select name="" id="resource" class="form-control inputs">
                                     <option value="">Selecciona un recurso...</option>
                                 </select>
                             </div>
@@ -108,8 +108,15 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="grade">Semestre (opcional)</label>
-                                <select name="" id="grade" class="form-control">
+                                <label for="lendTo">Solicitante</label>
+                                <input type="hidden" name="" id="from" class="inputs">
+                                <input type="hidden" name="" id="to" class="inputs">
+                                <select name="" id="lendTo" class="form-control inputs">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Semestre</label>
+                                <select name="" id="grade" class="form-control inputs">
                                     <option value="">Selecciona un semestre...</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -125,23 +132,16 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="form-group">
                                 <label for="lesson">Materia / Actividad</label>
-                                <input type="text" name="" id="lesson" class="form-control">
+                                <input type="text" name="" id="lesson" class="form-control inputs">
                             </div>
                             <div class="form-group">
                                 <label for="area">Licenciatura / Área</label>
-                                <select name="" id="area" class="form-control">
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="lendTo">Solicitante</label>
-                                <input type="hidden" name="" id="from">
-                                <input type="hidden" name="" id="to">
-                                <select name="" id="lendTo" class="form-control">
+                                <select name="" id="area" class="form-control inputs">
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="comments">Comentarios</label>
-                                <textarea name="" id="comments" cols="30" rows="5" class="form-control">
+                                <textarea name="" id="comments" cols="30" rows="5" class="form-control inputs">
                                 </textarea>
                             </div>
                             <button class="btn btn-primary col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>

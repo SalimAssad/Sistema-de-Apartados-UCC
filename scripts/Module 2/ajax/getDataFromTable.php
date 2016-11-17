@@ -1,28 +1,62 @@
 <?php
 	// TODO LIST -->
-	// - Validar que el id que se esté usando sea el id y no el sid
 	session_start();
-	$_SESSION['id'] = 2;
+	//$_SESSION['id'] = 2;
 	$userID = $_SESSION["id"];
 	require_once("../../../inc/MySQLConnection.php");
 	$table = $_POST['table'];
-	$fields = $_POST['fields'];
-	$filter = $_POST['filter'];
 
-	$sql = "SELECT $fields FROM $table";
-	$query = mysqli_query($connection, $sql) or die(mysqli_error($connection));
-
-	if(mysqli_num_rows($query) > 0) {
-		$data = "";
-		while($row = mysqli_fetch_assoc($query)) {
-			list($id, $value) = explode(",", $fields);
-			if($row[$id] == $userID && $filter == "true") 
-				$data .= "<option value='$row[$id]' selected>$row[$value]</option>";
-			else
-				$data .= "<option value='$row[$id]'>$row[$value]</option>";
-		}
-	} else {
-		$data = "<option value='na'>Unavailable data...</option>";
+	switch($table) {
+		case "areas":
+			$sql = "SELECT AR_ID, AR_NAME, RE_DESCRIPTION, RE_ID
+					FROM areas
+					JOIN referencias ON
+					AR_TYPE = RE_ID
+					ORDER BY RE_DESCRIPTION";
+			$query = mysqli_query($connection, $sql);
+			if(!$query) error1();
+			if(mysqli_num_rows($query) > 0) {
+				$data = "";
+				$actualGroup = 0;
+				while($row = mysqli_fetch_assoc($query)) {
+					if($actualGroup != $row['RE_ID']) {
+						if($actualGroup != 0)
+							$data .= "</optgroup>";			
+						$actualGroup = $row['RE_ID'];
+						$data .= "<optgroup label='$row[RE_DESCRIPTION]'>";
+					}	
+					$data .= "<option value='$row[AR_ID]'>$row[AR_NAME]</option>";
+				}
+				$data .= "</optgroup>";
+			} else {
+				$data = "<option value='na'>Unavailable data...</option>";
+			}
+			break;
+		case "usuarios":
+			$sql = "SELECT US_ID, US_NAME, US_LASTNAME
+					FROM usuarios
+					JOIN perfiles ON
+					US_PROFILEID = PE_ID
+					WHERE PE_SEPARATE = 1"; // Here we restrict the users to show (only those who can separate)
+			$query = mysqli_query($connection, $sql);
+			if(!$query) error1();
+			if(mysqli_num_rows($query) > 0) {
+				$data = "";
+				while($row = mysqli_fetch_assoc($query)) {
+					if($row['US_ID'] == $userID) 
+						$data .= "<option value='$row[US_ID]' selected>$row[US_NAME] $row[US_LASTNAME]</option>";
+					else
+						$data .= "<option value='$row[US_ID]'>$row[US_NAME] $row[US_LASTNAME]</option>";
+				}
+			} else {
+				$data = "<option value='na'>Unavailable data...</option>";
+			}
+			break;
 	}
 
 	echo $data;
+
+	function error1() {
+		echo "An error ocurred while trying to get the data.";
+		exit();
+	}

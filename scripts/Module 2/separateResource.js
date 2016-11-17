@@ -1,9 +1,9 @@
-var input;
-var minSelection;
-var maxSelection;
+var actualEvents;
 $(function() {
-    minSelection;
-    maxSelection;
+    var input;
+    var minSelection;
+    var maxSelection;
+    actualEvents = [];
     input = {
             "resource": null,       //integer: the resource's id
             "start": null,          //string: a "yyyy-mm-dd" formatted date, the period's beginning date
@@ -18,8 +18,8 @@ $(function() {
             "to": null              //string: a "hh:mm:ss" formatted time, the resource won't be available until this hour
         };
 
-    getDataFromTable("areas", "AR_ID,AR_NAME", "area", false);
-    getDataFromTable("usuarios", "US_ID,US_NAME", "lendTo", true);
+    getDataFromTable("areas", "area");
+    getDataFromTable("usuarios", "lendTo");
 
     $('#calendar').fullCalendar({
         header: {
@@ -50,7 +50,7 @@ $(function() {
             var startDate = selectInfo.start;
             return canSeparateOn(startDate);
         },
-        events: function(start, end, timezone, populateCalendar) {
+        events: function(start, end, timezone, getEventsInView) {
             $.ajax({
                 data: { "start": start.format(), "end": end.format() },
                 dataType: "json",
@@ -58,7 +58,8 @@ $(function() {
                     alert("Error al obtener la información");
                 },
                 success: function(response) {
-                    populateCalendar(response);
+                    console.log(response);
+                    actualEvents = getEventsInView(response);
                 },
                 type: "POST",
                 url: "../../scripts/Module 2/ajax/getAllEvents.php"
@@ -126,54 +127,67 @@ $(function() {
         }
     }).change();
 
-    $("#resource").on("change", function() {
-        input.resource = $(this).val();
+    //inputs
+    $(".inputs").on("change", function() {
+        var id = $(this).attr("id");
+        input[id] = $(this).val();
     });
-
-    $("#area").on("change", function() {
-        input.area = $(this).val();
-    });
-
-    $("#lendTo").on("change", function() {
-        input.lendTo = $(this).val();
-    });
-
-    $("#grade").on("change", function() {
-        input.grade = $(this).val();
-    });
-
-    $("#lesson").on("change", function() {
-        input.lesson = $(this).val();
-    });
-
-    $("#comments").on("change", function() {
-        input.comments = $(this).val();
-    });
-
-    $("#from").on("change", function() {
-        input.from = $(this).val();
-    });
-
-    $("#to").on("change", function() {
-        input.to = $(this).val();
-    });
+    /*
+    $("#resource").on("change", function() { input.resource = $(this).val();});
+    $("#area").on("change", function() {input.area = $(this).val();});
+    $("#lendTo").on("change", function() {input.lendTo = $(this).val();});
+    $("#grade").on("change", function() {input.grade = $(this).val();});
+    $("#lesson").on("change", function() {input.lesson = $(this).val();});
+    $("#comments").on("change", function() {input.comments = $(this).val();});
+    $("#from").on("change", function() {input.from = $(this).val();});
+    $("#to").on("change", function() {input.to = $(this).val();}); */
 
     $("input:checkbox.daysOfTheWeek").on("change", function() {
-        handleDaysOfTheWeek();
+        input = handleDaysOfTheWeek(input);
     });
 
     $("#separate").on("click", function() {
         insertEvent(input);
+        input = resetInputs();
     });
 });
 
-function handleDaysOfTheWeek() {
+function getEventsInView(events) {
+    return events;
+}
+
+function resetInputs() {
+    var object = {};
+    $("#device.resourceType").prop("checked", true).change();
+    $("#occasional.type").prop("checked", true).change();
+    $("#grade").children().eq(0).prop("selected", true);
+    $("#lesson").val("");
+    $("#area").children().eq(0).prop("selected", true);
+    $("#comments").val("");
+    object = {
+        "resource": null,
+        "start": null,
+        "end": null,
+        "grade": "",
+        "lesson": "",
+        "area": null,
+        "lendTo": null,
+        "comments": "",
+        "daysOfTheWeek": null,
+        "from": null,
+        "to": null
+    };
+    return object;
+}
+
+function handleDaysOfTheWeek(input) {
     input.daysOfTheWeek = "";
     $("input:checkbox.daysOfTheWeek:checked").each(function() {
         if(input.daysOfTheWeek != "")
             input.daysOfTheWeek += ",";    
         input.daysOfTheWeek += $(this).val();
     });
+    return input;
 }
 
 /* 
@@ -265,21 +279,17 @@ function insertEvent(input) {
     });
 }
 
-
 /*  
     Function to get two fields from any table in the database
     Parameters:
         table       //string: the table's name
-        fields      //string: two fields of the table separated by a comma
         divId       //string: the id of the "select" element in which the
                                 response will render
-        filter      //boolean: indicates if the server should do a filtering process
-                                with the id
     Example:
-        getDataFromTable("area", "AR_ID,AR_NAME", "area", false)  */
-function getDataFromTable(table, fields, divId, filter) {
+        getDataFromTable("areas", "area")  */
+function getDataFromTable(table, divId) {
     $.ajax({
-        data: { "table": table, "fields": fields, "filter": filter},
+        data: { "table": table },
         dataType: "html",
         error: function() {
             alert("Error al conseguir los recursos");

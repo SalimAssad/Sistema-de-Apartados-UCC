@@ -11,12 +11,16 @@
 		exit("Error en los datos recibidos");
 	}
 	
-	$sql = "SELECT HO_FROM, HO_TO, HO_DAY, AP_START, AP_END, RE_ALIAS, AP_ID 
+	$sql = "SELECT HO_FROM, HO_TO, HO_DAY, AP_START, 
+				   AP_END, RE_ALIAS, AP_ID, TI_COLOR,
+				   RE_ID
 			FROM horarios 
 			JOIN apartados ON
 			AP_ID = HO_SEPARATEID
 			JOIN recursos ON
 			RE_ID = AP_RESID
+			JOIN tipos_equipos ON
+			TI_ID = RE_HWTYPE
 			WHERE 
 				(AP_START BETWEEN '$start' AND '$end') 
 				OR 
@@ -32,8 +36,6 @@
 	
 	$events = array();
 	$actualID = 0;
-	$colors = array();
-	$actualColor = "";
 	if(mysqli_num_rows($query) > 0){
 		while($row = mysqli_fetch_assoc($query)) {
 			$day = $row['HO_DAY'];
@@ -45,19 +47,16 @@
 					$startDate = date('Y-m-d', $date)."T".$row['HO_FROM'];
 					$endDate = date('Y-m-d', $date)."T".$row['HO_TO'];
 					$title = $row['RE_ALIAS'];
-
-					if($actualID != $id) {
-						$actualColor = generateRandomColor($colors);
-			            $colors[] = $actualColor;
-			            $actualID = $id;
-					}
+					$color = $row['TI_COLOR'];
+					$resourceID = $row['RE_ID'];
 
 					$events[] = array(
 						"id" => $id,
 						"start" => $startDate,
 						"end" => $endDate,
 						"title" => $title,
-						"color" => $actualColor
+						"color" => $color,
+						"resourceID" => $resourceID
 					);
 					$date += (3600 * 24 * 7); // If the day matches, let's add 7 to get the next same day
 				} else {
@@ -88,7 +87,7 @@
     	return $time;
     }
 
-	function generateRandomColor($colorsToIgnore) {
+	/*function generateRandomColor($colorsToIgnore) {
 	    $r = 0; $g = 0; $b = 0;
 	    $color = "";
 	    do {
@@ -98,4 +97,4 @@
 	        $color = "#$r$g$b";
 	    } while(in_array($color, $colorsToIgnore));
 	    return $color;
-	}
+	}*/

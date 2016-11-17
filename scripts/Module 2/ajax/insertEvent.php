@@ -4,7 +4,7 @@
 	// - Validar entradas
 	// - Controlar las posibles fallas de los queries
 	session_start();
-	$_SESSION['id'] = 1;
+	//$_SESSION['id'] = 1;
 	require_once("../../../inc/MySQLConnection.php");
 
 	$resource = trim(filter_input(INPUT_POST, "resource", FILTER_SANITIZE_NUMBER_INT));
