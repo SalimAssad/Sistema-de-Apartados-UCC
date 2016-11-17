@@ -14,7 +14,7 @@ if ($type == "EQUIPO") {
     $inventory = "";
 }
 
-$reference = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_NUMBER_INT);
+$references = filter_input(INPUT_POST, 'references', FILTER_SANITIZE_NUMBER_INT);
 
 $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
 $campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
@@ -35,7 +35,10 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
 
     if ($insertResource) {
         $idResource = mysqli_insert_id($connection);
-        $insertReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $insertReference)");
+
+        foreach ($references as $item){
+            $insertReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $item)");
+        }
 
         if ($insertReference) {
             if ($type == "EQUIPO")
@@ -75,7 +78,6 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     }
 } else {    //Lógica de actualización
     $idResource = filter_input(INPUT_POST, 'idResource', FILTER_SANITIZE_NUMBER_INT);
-    $oldReference = filter_input(INPUT_POST, 'oldReference', FILTER_SANITIZE_NUMBER_INT);
     if ($location == "new") {
         $insertLocation = mysqli_query($connection, "INSERT INTO ubicaciones(UB_PILE, UB_CAMPUS, UB_FLOOR, UB_ROOM)
                                             VALUES('$pile', '$campus','$floor','$room')");
@@ -89,8 +91,10 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                               WHERE RE_ID = $idResource");
     if ($updateResource) {
 
-        $updateReference = mysqli_query($connection, "UPDATE recursos_referencias SET RR_REOURCEID = $idResource AND RR_REFERENCEID = $reference
-                                                      WHERE RR_RESOURCEID = $idResource AND RR_REFERENCEID = $oldReference");
+        mysqli_query($connection, "DELETE FROM recursos_referencias WHERE RR_RESOURCEID = $idResource");
+        foreach ($references as $item){
+            $updateReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $item)");
+        }
 
         if ($updateReference) {
             if ($type == "EQUIPO")
@@ -100,6 +104,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
             exit;
         } else {
             header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
+                                        &idResource=$idResource
                                         &type=$type
                                         &alias=$alias
                                         &model=$model
@@ -115,6 +120,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         }
     } else {
         header("Location: addResource.php?error=No se pudo actualizar el recurso en la base de datos
+                                        &idResource=$idResource
                                         &type=$type
                                         &alias=$alias
                                         &model=$model
