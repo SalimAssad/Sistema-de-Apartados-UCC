@@ -28,15 +28,21 @@ $(function() {
             maxSelection = end;
             //$('#calendar').fullCalendar('unselect');
         },
-        selectAllow: function(selectInfo) {
-            var startDate = selectInfo.start.format().split("T")[0];
-             canSeparateOn(startDate);
-        },
+        eventClick: function (calEvent, jsEvent, view) {  
+            $("#startTime").html(calEvent.start.format());
+            $("#endTime").html(calEvent.end.format());
+            $("#eventContent").attr("title", calEvent.title);
+            $("#eventContent").dialog({ modal: true, title: event.title, width:350});
+        
+        
+    },
+       
         events: function(start, end, timezone, callback) {
+            
 
 
             $.ajax({
-                url: 'consultaQuery.php',
+                url: '../../scripts/Module 2/ajax/getAllEvents.php',
                 dataType: 'json',
                 method: 'POST',
                 data: {
@@ -58,7 +64,7 @@ $(function() {
                             start: obj.start,
                             end: obj.end,
                             id: obj.id,
-                            resid: obj.resid
+                       
                         });
                     });
                     console.log(events);
@@ -68,12 +74,9 @@ $(function() {
                 }
             });
         }
+        
 
     });
 
 
 });
-/*
- console.log(start.format());
-                    console.log(end.format());
-*/

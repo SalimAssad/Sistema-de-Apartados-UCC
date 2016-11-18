@@ -59,5 +59,11 @@ include_once("../../inc/MySQLConnection.php");
 
             </div>
         </div>
+            <div id="eventContent" title="Event Details" style="display:none;">
+                Start: <span id="startTime"></span><br>
+                End: <span id="endTime"></span><br><br>
+                <p id="eventInfo"></p>
+                <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
+            </div>
     </body>
 </html>
