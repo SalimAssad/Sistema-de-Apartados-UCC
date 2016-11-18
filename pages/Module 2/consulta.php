@@ -41,10 +41,10 @@ include_once("../../inc/MySQLConnection.php");
                 include_once("../../inc/sidebar.php");
                 ?>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">Centro de Cómputo Académico y Recursos Didácticos</h1>
+                   
 
 
-                    <h2 class="sub-header">Consulta de disponibilidad</h2>
+                    <h1 class="sub-header">Consulta de disponibilidad</h1>
 
                     <div>
                         <div id='calendar'></div>
@@ -61,7 +61,11 @@ include_once("../../inc/MySQLConnection.php");
         </div>
             <div id="eventContent" title="Event Details" style="display:none;">
                 Start: <span id="startTime"></span><br>
-                End: <span id="endTime"></span><br><br>
+                End: <span id="endTime"></span><br>
+                name: <span id="name"></span><br>
+                lesson: <span id="lesson"></span><br>
+                area: <span id="area"></span><br>
+                resourceName: <span id="resourceName"></span><br>
                 <p id="eventInfo"></p>
                 <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
             </div>

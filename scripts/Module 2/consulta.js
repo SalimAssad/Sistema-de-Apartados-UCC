@@ -9,12 +9,12 @@ $(function() {
             right: 'agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
-        editable: true,
+        editable: false,
         selectable: true,
         eventOverlap: false,
         minTime: "07:00:00",
         maxTime: "22:00:00",
-        
+
         select: function(start, end, jsEvent, view) {
             $('#calendar').fadeOut(400, function() {
                 $('#calendar').addClass("col-sm-8 col-md-9");
@@ -29,16 +29,54 @@ $(function() {
             //$('#calendar').fullCalendar('unselect');
         },
         eventClick: function (calEvent, jsEvent, view) {  
-            $("#startTime").html(calEvent.start.format());
-            $("#endTime").html(calEvent.end.format());
-            $("#eventContent").attr("title", calEvent.title);
-            $("#eventContent").dialog({ modal: true, title: event.title, width:350});
-        
-        
-    },
-       
+
+
+            /*usuario-, */
+            $.ajax({
+                url: '../../scripts/Module 2/ajax/detailOff.php',
+                dataType: 'json',
+                method: 'POST',
+                data: {
+                    id: calEvent.id
+                   
+                   
+
+                },
+
+                success: function(response) {
+
+                    $("#startTime").html(response.start.format());
+                    $("#endTime").html(response.end.format());
+                    $("#name").html(response.name);
+                    $("#lesson").html(response.lesson);
+                    $("#area").html(response.area);
+                    $("#resourceName").html(response.resourceName);
+                    $("#eventContent").attr("title", response.title);
+                    $("#eventContent").dialog({ modal: true, title: event.title, width:350});    
+
+                    var events = [];
+
+                    json.forEach(function(obj,i){
+
+                        events.push({
+                            title: obj.title,
+                            start: obj.start,
+                            end: obj.end,
+                            id: obj.id,
+
+                        });
+                    });
+
+                    console.log(events);
+                    callback(events);
+
+                }
+            });
+
+        },
+
         events: function(start, end, timezone, callback) {
-            
+
 
 
             $.ajax({
@@ -49,32 +87,32 @@ $(function() {
 
                     start: start.format(),
                     end: end.format(),
-                  
+
+
                 },
-                
 
                 success: function(json) {
- 
+
                     var events = [];
-                 
+
                     json.forEach(function(obj,i){
-                       
+
                         events.push({
                             title: obj.title,
                             start: obj.start,
                             end: obj.end,
                             id: obj.id,
-                       
+
                         });
                     });
+
                     console.log(events);
-                   
                     callback(events);
 
                 }
             });
         }
-        
+
 
     });
 
