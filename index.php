@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Inicia Sesión</title>
         
-<link href="../Sistema-de-Apartados-UCC-desarrollo/pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="../Sistema-de-Apartados-UCC-desarrollo/pages/Module 4/examples/signin/signin.css" rel="stylesheet">
+<link href="pages/Module%204/dist/css/signin.css" rel="stylesheet">
         <script src="utils/jquery-1.12.3.min.js">
         </script>
     </head>
@@ -28,7 +28,7 @@
         <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
         <div class="checkbox">
           <label>
-             <a href="../Sistema-de-Apartados-UCC-desarrollo/Send_reset_email.php" >Olvidaste tu contraseña? Haz click aquí </a>
+             <a href="Send_reset_email.php" >Olvidaste tu contraseña? Haz click aquí </a>
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión </button>

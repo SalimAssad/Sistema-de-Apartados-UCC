@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Restaurar contraseña</title>
         
-<link href="../Sistema-de-Apartados-UCC-desarrollo/pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="../Sistema-de-Apartados-UCC-desarrollo/pages/Module 4/examples/signin/signin.css" rel="stylesheet">
+<link href="pages/Module%204/dist/css/signin.css" rel="stylesheet">
         <script src="utils/jquery-1.12.3.min.js">
         </script>
     </head>
