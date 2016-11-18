@@ -44,7 +44,7 @@
 	$respuesta = new stdClass();
 
 	if( $email != "" ){   
-   		$conexion = new mysqli('localhost', 'root', '', 'ejemplobd');
+   		$conexion = new mysqli('localhost', 'root', 'root', 'ejemplobd');
 
    		$sql = " SELECT * FROM users WHERE email = '$email' ";
    		$resultado = $conexion->query($sql);
@@ -61,5 +61,5 @@
    			$respuesta->mensaje = '<div class="alert alert-warning"> No existe una cuenta asociada a ese correo. </div>';
 	}
 	else
-   		$respuesta->mensaje= "Debes introducir el email de la cuenta";
+   		$respuesta->mensaje= '<div class="alert alert-warning"> Debes introducir el email de la cuenta </div> ';
  	echo json_encode( $respuesta );

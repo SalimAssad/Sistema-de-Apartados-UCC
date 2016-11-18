@@ -32,15 +32,16 @@
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión </button>
-      </form>
+    
             <br> <br>
             <div id="error">
                 <?php
                 if(isset($_GET["error"])){
-                    echo "Los datos son incorrectos";
+                    echo '<div class="alert alert-warning">Los datos son incorrectos. </div>';
                 }
                 ?>
             </div>  
+      </form>
         </div>
     </body>
 </html>

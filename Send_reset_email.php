@@ -12,6 +12,8 @@
 <link href="pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <link href="pages/Module%204/dist/css/signin.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+
         <script src="utils/jquery-1.12.3.min.js">
         </script>
     </head>
@@ -21,19 +23,18 @@
             <h2 class="form-signin-heading">Restauración de contraseña</h2>
 <br>
 
-            <label for="inputEmail"> Escribe el email asociado a tu cuenta para recuperar tu contraseña </label>
+            <label for="email"> Escribe el email asociado a tu cuenta para recuperar tu contraseña </label>
             <input type="email" id="email" name="email" class="form-control" placeholder="email@ejemplo.com" required autofocus>
     <br>
-            <div class="checkbox">
+            <div >
             <input type="submit" class="btn btn-lg btn-primary btn-block" value="Recuperar contraseña" >
             </div>
+            <br>
+            <div id="mensaje">
             </div>
         </form>
-<!-- probando
-     <div id="mensaje">
-          
-    </div>
-           </div>
+      
+        
     <script src="inc/js/jquery-1.11.1.min.js"></script>
     <script src="inc/js/bootstrap.min.js"></script>
     <script>
@@ -41,7 +42,7 @@
         $("#frmRestablecer").submit(function(event){
           event.preventDefault();
           $.ajax({
-            url:'validaremail.php',
+            url:'inc/validaremail.php',
             type:'post',
             dataType:'json',
             data:$("#frmRestablecer").serializeArray()
@@ -51,7 +52,7 @@
           });
         });
       });
-    </script>-->
+    </script>
   </body>
 </html>
         
