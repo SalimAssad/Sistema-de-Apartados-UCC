@@ -15,6 +15,8 @@ $pile = "";
 $floor = "";
 $room = "";
 
+$returnTo = "";
+
 if (isset($_GET['idResource'])) {
     $id = filter_input(INPUT_GET, "idResource", FILTER_SANITIZE_NUMBER_INT);
 
@@ -29,7 +31,12 @@ if (isset($_GET['idResource'])) {
     $location = $resourceData['RE_LOCATION'];
     $hwType = $resourceData['RE_HWTYPE'];
 
-    $referenceSQL = mysqli_query($connection, "SELECT RR_REFERENCEID FROM recursos_referencias WHERE RR_RESOURCEID");
+    $referenceSQL = mysqli_query($connection, "SELECT recursos_referencias.RR_REFERENCEID, referencias.RE_DESCRIPTION 
+                                                FROM recursos_referencias, referencias 
+                                                WHERE recursos_referencias.RR_RESOURCEID = $id AND recursos_referencias.RR_RESOURCEID = referencias.RE_ID");
+    while($row = mysqli_fetch_assoc($referenceSQL)){
+        $references[] = $row;
+    }
 } else {
 
 }
@@ -53,6 +60,9 @@ if (isset($_GET['floor']))
     $floor = filter_input(INPUT_GET, "floor", FILTER_SANITIZE_STRING);
 if (isset($_GET['room']))
     $room = filter_input(INPUT_GET, "room", FILTER_SANITIZE_STRING);
+
+if (isset($_GET['returnTo']))
+    $returnTo = filter_input(INPUT_GET, "returnTo", FILTER_SANITIZE_STRING);
 
 ?>
 <!DOCTYPE html>
@@ -99,7 +109,7 @@ include_once("../../inc/nav.php");
                                        onclick="typeHandler(this.value)" <?php if ($type == "EQUIPO" || $type == "") echo "checked" ?>><label
                                     for="equipment">Equipo</label>
                                 <input type="radio" name="resource" id="space" value="AULA"
-                                       onclick="typeHandler(this.value)" <?php if ($type == "AULA") echo checked ?>><label
+                                       onclick="typeHandler(this.value)" <?php if ($type == "AULA") echo "checked" ?>><label
                                     for="space">Espacio</label>
                             </div>
                         </div>
@@ -215,6 +225,11 @@ include_once("../../inc/nav.php");
                                 </div>
                             </div>
                             <div id="reference-container" class="col-sm-12">
+                                <?php
+                                foreach($references as $row){
+                                    echo "<div id='$row[RR_REFERENCEID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RR_REFERENCEID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RR_REFERENCEID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
+                                }
+                                ?>
                             </div>
                         </div>
                     </div>
@@ -299,9 +314,9 @@ include_once("../../inc/nav.php");
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row top-margin">
                     <div class="col-sm-6">
-                        <button type="button" class="form-control btn-warning">Cancelar</button>
+                        <button type="button" class="form-control btn-warning" onclick="window.location.href='<?php if($returnTo == "equipment") echo "equipmentList.php"; else echo "roomList.php"; ?>'">Cancelar</button>
                     </div>
                     <div class="col-sm-6">
                         <button type="submit" class="form-control btn-success" name="action"

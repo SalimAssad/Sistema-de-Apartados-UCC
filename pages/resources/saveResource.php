@@ -14,13 +14,15 @@ if ($type == "EQUIPO") {
     $inventory = "";
 }
 
-$references = filter_input(INPUT_POST, 'references', FILTER_SANITIZE_NUMBER_INT);
+$references = $_POST['references'];
 
 $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
 $campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
 $pile = filter_input(INPUT_POST, 'pile', FILTER_SANITIZE_STRING);
 $floor = filter_input(INPUT_POST, 'floor', FILTER_SANITIZE_STRING);
 $room = filter_input(INPUT_POST, 'room', FILTER_SANITIZE_STRING);
+
+mysqli_autocommit($connection, false);
 
 if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     if ($location == "new") {
@@ -41,10 +43,11 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         }
 
         if ($insertReference) {
+            mysqli_commit($connection);
             if ($type == "EQUIPO")
                 header("Location: equipmentList.php");
             else
-                header("Location: classRoomList.php");
+                header("Location: roomList.php");
             exit;
         } else {
             header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
@@ -53,7 +56,6 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                         &model=$model
                                         &serial=$serial
                                         &inventory=$inventory
-                                        &reference=$reference
                                         &location=$location
                                         &campus=$campus
                                         &pile=$pile
@@ -68,7 +70,6 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                         &model=$model
                                         &serial=$serial
                                         &inventory=$inventory
-                                        &reference=$reference
                                         &location=$location
                                         &campus=$campus
                                         &pile=$pile
@@ -97,10 +98,11 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         }
 
         if ($updateReference) {
+            mysqli_commit($connection);
             if ($type == "EQUIPO")
                 header("Location: equipmentList.php");
             else
-                header("Location: classRoomList.php");
+                header("Location: roomList.php");
             exit;
         } else {
             header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
@@ -110,7 +112,6 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                         &model=$model
                                         &serial=$serial
                                         &inventory=$inventory
-                                        &reference=$reference
                                         &location=$location
                                         &campus=$campus
                                         &pile=$pile
@@ -126,7 +127,6 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                         &model=$model
                                         &serial=$serial
                                         &inventory=$inventory
-                                        &reference=$reference
                                         &location=$location
                                         &campus=$campus
                                         &pile=$pile

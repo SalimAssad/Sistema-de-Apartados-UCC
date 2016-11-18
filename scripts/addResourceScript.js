@@ -32,7 +32,7 @@ function addReference(){
         var id = auxArray[0];
         var description = auxArray[1];
         if($("#reference-container").find("#"+id).length == 0)
-            $("#reference-container").html($("#reference-container").html() + "<div id='" + id + "'><label>" + description + "</label><button type='button' class='btn-danger form-control' name='references[]' value='" + id + "' onclick='removeReference(this.value)'>Remover</button></div>");
+            $("#reference-container").html($("#reference-container").html() + "<div id='" + id + "' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='" + description + "' readonly><input type='hidden' name='references[]' value='" + id + "'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='" + id + "' onclick='removeReference(this.value)'>Remover</button></div></div>");
     }
 }
 
