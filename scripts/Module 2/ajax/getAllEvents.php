@@ -1,6 +1,6 @@
 <?php
 	// TODO LIST -->
-	// - Validar los permisos de los usuarios
+	// - 
 	session_start();
 	require_once("../../../inc/MySQLConnection.php");
 

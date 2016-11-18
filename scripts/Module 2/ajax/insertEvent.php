@@ -28,7 +28,7 @@
 				(AP_RESID, AP_DATE, AP_START, AP_END, 
 				AP_USERID, AP_USERADDR, AP_GRADE, AP_LESSON, 
 				AP_AREAID, AP_LENDTO, AP_COMMENTS) 
-			values ($resource, '$date', '$start', '$end',  
+			VALUES ($resource, '$date', '$start', '$end',  
 				$user, '$address', $grade, '$lesson',  
 				$area, $lendTo, '$comments')";
 	$query = mysqli_query($connection, $sql) or die(mysqli_error($connection));

@@ -12,7 +12,7 @@
 					FROM areas
 					JOIN referencias ON
 					AR_TYPE = RE_ID
-					ORDER BY RE_DESCRIPTION";
+					ORDER BY RE_DESCRIPTION, AR_NAME";
 			$query = mysqli_query($connection, $sql);
 			if(!$query) error1();
 			if(mysqli_num_rows($query) > 0) {
