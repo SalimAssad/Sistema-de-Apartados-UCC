@@ -62,10 +62,10 @@ include_once("../../inc/MySQLConnection.php");
             <div id="eventContent" title="Event Details" style="display:none;">
                 Start: <span id="startTime"></span><br>
                 End: <span id="endTime"></span><br>
-                name: <span id="name"></span><br>
-                lesson: <span id="lesson"></span><br>
-                area: <span id="area"></span><br>
-                resourceName: <span id="resourceName"></span><br>
+                Usuario: <span id="name"></span><br>
+                Materia / Actividad: <span id="lesson"></span><br>
+                Área / Licenciatura: <span id="area"></span><br>
+                Comentarios: <span id="comments"></span><br>
                 <p id="eventInfo"></p>
                 <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
             </div>
