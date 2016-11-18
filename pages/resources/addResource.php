@@ -33,8 +33,8 @@ if (isset($_GET['idResource'])) {
 
     $referenceSQL = mysqli_query($connection, "SELECT recursos_referencias.RR_REFERENCEID, referencias.RE_DESCRIPTION 
                                                 FROM recursos_referencias, referencias 
-                                                WHERE recursos_referencias.RR_RESOURCEID = $id AND recursos_referencias.RR_RESOURCEID = referencias.RE_ID");
-    while($row = mysqli_fetch_assoc($referenceSQL)){
+                                                WHERE recursos_referencias.RR_RESOURCEID = $id AND recursos_referencias.RR_REFERENCEID = referencias.RE_ID");
+    while ($row = mysqli_fetch_assoc($referenceSQL)) {
         $references[] = $row;
     }
 } else {
@@ -226,8 +226,10 @@ include_once("../../inc/nav.php");
                             </div>
                             <div id="reference-container" class="col-sm-12">
                                 <?php
-                                foreach($references as $row){
-                                    echo "<div id='$row[RR_REFERENCEID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RR_REFERENCEID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RR_REFERENCEID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
+                                if (isset($id)) {
+                                    foreach ($references as $row) {
+                                        echo "<div id='$row[RR_REFERENCEID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RR_REFERENCEID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RR_REFERENCEID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -316,7 +318,10 @@ include_once("../../inc/nav.php");
                 </div>
                 <div class="row top-margin">
                     <div class="col-sm-6">
-                        <button type="button" class="form-control btn-warning" onclick="window.location.href='<?php if($returnTo == "equipment") echo "equipmentList.php"; else echo "roomList.php"; ?>'">Cancelar</button>
+                        <button type="button" class="form-control btn-warning"
+                                onclick="window.location.href='<?php if ($returnTo == "equipment") echo "equipmentList.php"; else echo "roomList.php"; ?>'">
+                            Cancelar
+                        </button>
                     </div>
                     <div class="col-sm-6">
                         <button type="submit" class="form-control btn-success" name="action"
