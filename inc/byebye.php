@@ -6,15 +6,14 @@ $id = $_SESSION["id"];
 $user = $_SESSION["user"];
 $ipadd = $_SERVER['REMOTE_ADDR'];
 
-$query = "insert into logs(LO_USERID, LO_DATE, LO_IP) value ('$user','now()','$ipadd')";
+$query = "insert into logs(LO_USERID, LO_DATE, LO_IP, LO_INOUT) value ('$user',NOW(),'$ipadd', 0)";
 $sql = mysqli_query($connection, $query );
 
 if($sql){
-    header("location: index.php");
+    header("location: ../index.php");
 
 }
 else{
-    echo "no mames";
     echo mysqli_error($connection);
 }
 

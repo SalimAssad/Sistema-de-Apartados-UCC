@@ -29,6 +29,48 @@ include_once("../../inc/MySQLConnection.php");
                 ?>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <h1 class="page-header">Title</h1>
+                    <h2>Sesiones iniciadas</h2>
+
+                    <?php
+
+                    $sql = "select * from logs where LO_INOUT = 1";
+                    $result = mysqli_query($connection, $sql);
+                    if($result){
+                        $num_registros = mysqli_num_rows($result);
+                        if($num_registros > 0){
+                            ?>
+                            <table class="table table-striped">
+                                <thead>
+                                <th>Usuario</th>
+                                <th>Fecha y Hora</th>
+                                <th>Direccion IP</th>
+                                </thead>
+                                <tbody>
+                                <?php
+                                while ($fila = mysqli_fetch_assoc($result) ) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $fila["LO_USERID"] ?></td>
+                                    <td><?php echo $fila["LO_DATE"] ?></td>
+                                    <td><?php echo $fila["LO_IP"] ?></td>
+                                </tr>
+                                </tbody>
+
+
+
+
+                                <?php } ?>
+
+
+
+
+
+                            </table>
+
+                        <?php } else{  ?>
+
+                            <p>No hay registros</p>
+                        <?php }} ?>
 
 
                     <h2 class="sub-header">Subtitle</h2>
