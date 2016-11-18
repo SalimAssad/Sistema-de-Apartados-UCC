@@ -14,6 +14,8 @@ if ($type == "EQUIPO") {
     $inventory = "";
 }
 
+$references = filter_input(INPUT_POST, 'references', FILTER_SANITIZE_NUMBER_INT);
+
 $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
 $campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
 $pile = filter_input(INPUT_POST, 'pile', FILTER_SANITIZE_STRING);
@@ -31,14 +33,47 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     $insertResource = mysqli_query($connection, "INSERT INTO recursos(RE_MODEL, RE_ALIAS, RE_TYPE, RE_AVAILABLE, RE_SERIAL, RE_INVENTORY, RE_CREATED, RE_LOCATION) 
                                             VALUES('$model', '$alias', '$type', 1, '$serial', '$inventory', NOW(), $idLocation)");
 
-    if($insertResource) {
-        if($type == "EQUIPO")
-            header("Location: equipments.php");
-        else
-            header("Location: classRooms.php");
-        exit;
-    }else {
-        header("Location: addResource.php?error=No se pudo ingresar el recurso a la base de datos");
+    if ($insertResource) {
+        $idResource = mysqli_insert_id($connection);
+
+        foreach ($references as $item){
+            $insertReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $item)");
+        }
+
+        if ($insertReference) {
+            if ($type == "EQUIPO")
+                header("Location: equipmentList.php");
+            else
+                header("Location: classRoomList.php");
+            exit;
+        } else {
+            header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
+                                        &type=$type
+                                        &alias=$alias
+                                        &model=$model
+                                        &serial=$serial
+                                        &inventory=$inventory
+                                        &reference=$reference
+                                        &location=$location
+                                        &campus=$campus
+                                        &pile=$pile
+                                        &floor=$floor
+                                        &room=$room");
+            exit;
+        }
+    } else {
+        header("Location: addResource.php?error=No se pudo ingresar el recurso a la base de datos
+                                        &type=$type
+                                        &alias=$alias
+                                        &model=$model
+                                        &serial=$serial
+                                        &inventory=$inventory
+                                        &reference=$reference
+                                        &location=$location
+                                        &campus=$campus
+                                        &pile=$pile
+                                        &floor=$floor
+                                        &room=$room");
         exit;
     }
 } else {    //Lógica de actualización
@@ -54,14 +89,49 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                              RE_SERIAL = '$serial', RE_INVENTORY = '$inventory', RE_MODIFIED = NOW(), 
                                              RE_LOCATION = $idLocation
                                               WHERE RE_ID = $idResource");
-    if($updateResource) {
-        if($type == "EQUIPO")
-            header("Location: equipments.php");
-        else
-            header("Location: classRooms.php");
-        exit;
-    }else {
-        header("Location: addResource.php?error=No se pudo actualizar el recurso en la base de datos");
+    if ($updateResource) {
+
+        mysqli_query($connection, "DELETE FROM recursos_referencias WHERE RR_RESOURCEID = $idResource");
+        foreach ($references as $item){
+            $updateReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $item)");
+        }
+
+        if ($updateReference) {
+            if ($type == "EQUIPO")
+                header("Location: equipmentList.php");
+            else
+                header("Location: classRoomList.php");
+            exit;
+        } else {
+            header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
+                                        &idResource=$idResource
+                                        &type=$type
+                                        &alias=$alias
+                                        &model=$model
+                                        &serial=$serial
+                                        &inventory=$inventory
+                                        &reference=$reference
+                                        &location=$location
+                                        &campus=$campus
+                                        &pile=$pile
+                                        &floor=$floor
+                                        &room=$room");
+            exit;
+        }
+    } else {
+        header("Location: addResource.php?error=No se pudo actualizar el recurso en la base de datos
+                                        &idResource=$idResource
+                                        &type=$type
+                                        &alias=$alias
+                                        &model=$model
+                                        &serial=$serial
+                                        &inventory=$inventory
+                                        &reference=$reference
+                                        &location=$location
+                                        &campus=$campus
+                                        &pile=$pile
+                                        &floor=$floor
+                                        &room=$room");
         exit;
     }
 }
