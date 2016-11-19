@@ -1,5 +1,5 @@
 <?php
-//include_once("../../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
 $type = "";
@@ -52,6 +52,8 @@ if (isset($_GET['serial']))
     $serial = filter_input(INPUT_GET, "serial", FILTER_SANITIZE_STRING);
 if (isset($_GET['inventory']))
     $inventory = filter_input(INPUT_GET, "inventory", FILTER_SANITIZE_STRING);
+if (isset($_GET['location']))
+    $location = filter_input(INPUT_GET, "location", FILTER_SANITIZE_STRING);
 if (isset($_GET['campus']))
     $campus = filter_input(INPUT_GET, "campus", FILTER_SANITIZE_STRING);
 if (isset($_GET['pile']))
@@ -92,6 +94,12 @@ include_once("../../inc/nav.php");
         include_once("../../inc/sidebar.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="alert alert-danger">
+                <?php
+                    if(isset($_GET['error']))
+                        echo $_GET['error'];
+                ?>
+            </div>
             <form action="saveResource.php" method="post">
                 <?php
                 if (isset($id))
@@ -226,7 +234,11 @@ include_once("../../inc/nav.php");
                             </div>
                             <div id="reference-container" class="col-sm-12">
                                 <?php
-                                if (isset($id)) {
+                                if(isset($_SESSION['references'])){
+                                    foreach ($_SESSION['references'] as $row){
+                                        echo "<div id='$row[RR_REFERENCEID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RR_REFERENCEID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RR_REFERENCEID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
+                                    }
+                                }else if (isset($id)) {
                                     foreach ($references as $row) {
                                         echo "<div id='$row[RR_REFERENCEID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RR_REFERENCEID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RR_REFERENCEID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
                                     }
@@ -335,3 +347,6 @@ include_once("../../inc/nav.php");
 </div>
 </body>
 </html>
+<?php
+unset($_SESSION['references']);
+?>

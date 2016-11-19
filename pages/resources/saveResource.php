@@ -1,5 +1,5 @@
 <?php
-//include_once("../../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
 $type = filter_input(INPUT_POST, 'resource', FILTER_SANITIZE_STRING);
@@ -21,9 +21,10 @@ $pile = filter_input(INPUT_POST, 'pile', FILTER_SANITIZE_STRING);
 $floor = filter_input(INPUT_POST, 'floor', FILTER_SANITIZE_STRING);
 $room = filter_input(INPUT_POST, 'room', FILTER_SANITIZE_STRING);
 
-if(isset($_POST['references']))
+if(isset($_POST['references'])) {
     $references = $_POST['references'];
-else{
+    $_SESSION['references'] = $references;
+}else{
     header("Location: addResource.php?error=Debes agregar al menos una referencia&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
     exit;
 }
@@ -50,6 +51,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
 
         if ($insertReference) {
             mysqli_commit($connection);
+            unset($_SESSION['references']);
             if ($type == "EQUIPO")
                 header("Location: equipmentList.php");
             else
@@ -85,6 +87,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
 
         if ($updateReference) {
             mysqli_commit($connection);
+            unset($_SESSION['references']);
             if ($type == "EQUIPO")
                 header("Location: equipmentList.php");
             else
