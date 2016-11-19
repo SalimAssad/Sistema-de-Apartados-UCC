@@ -1,44 +1,89 @@
 <?php
-//include_once("../../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
-$name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
-$campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
+/* -----------------------------------------------------
 
-$reference = filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_STRING);
-$description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+    SE RECIBEN LOS VALORES
+
+----------------------------------------------------- */
+
+
+if (isset($_POST['name']))
+    $name = trim(filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING));
+else
+    $name = "";
+
+if (isset($_POST['campus']))
+    $campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
+else
+    $campus = "";
+
+if (isset($_POST['reference']))
+    $reference = filter_input(INPUT_POST, 'reference', FILTER_SANITIZE_NUMBER_INT);
+else
+    $reference = "";
+
+/* -----------------------------------------------------
+
+    SE VALIDAN LOS VALORES
+
+----------------------------------------------------- */
+
+$message = "";
+
+if (empty($name))
+    $message .= "Los campos: Nombre, ";
+
+if (empty($campus))
+    $message .= "campus y ";
+
+if (empty($reference))
+    $message .= "referencia no pueden estar vacíos";
+
+if ($message != "") {
+    $strHeader = "Location: addArea.php?error=$message";
+    if (isset($_POST['idArea']))
+        $strHeader .= "&idArea=$_POST[idArea]";
+    $strHeader .= "&name=$name&campus=$campus&reference=$reference&description=$description";
+    header($strHeader);
+    exit;
+}
+
 
 if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
-    if ($reference == "new") {
-        $insertReference = mysqli_query($connection, "INSERT INTO referencias(RE_DESCRIPTION) VALUES('$reference')");
-        $idReference = mysqli_insert_id($connection);
-    } else {
-        $idReference = $reference;
-    }
-    $insertArea = mysqli_query($connection, "INSERT INTO area(AR_NAME, AR_CAMPUS, AR_TYPE) VALUES('$name', '$campus', '$reference')");
 
-    if($insertArea) {
+    /* -----------------------------------------------------
+
+        LÓGICA DE ADICIÓN
+
+    ----------------------------------------------------- */
+
+    $insertArea = mysqli_query($connection, "INSERT INTO areas(AR_NAME, AR_CAMPUS, AR_TYPE) VALUES('$name', '$campus', '$reference')");
+
+    if ($insertArea) {
         header("Location: areas.php");
         exit;
-    }else {
-        header("Location: addArea.php?error=No se pudo ingresar el recurso a la base de datos");
-        exit;
-    }
-} else {    //Lógica de actualización
-    $idArea = filter_input(INPUT_POST, 'idArea', FILTER_SANITIZE_NUMBER_INT);
-    if ($reference == "new") {
-        $insertReference = mysqli_query($connection, "INSERT INTO referencias(RE_DESCRIPTION) VALUES('$reference')");
-        $idReference = mysqli_insert_id($connection);
     } else {
-        $idReference = $reference;
+        header("Location: addArea.php?error=No se pudo ingresar el recurso a la base de datos&name=$name&campus=$campus&reference=$reference");
+        exit;
     }
-    $updateReference = mysqli_query($connection, "UPDATE area SET AR_NAME = '$name', AR_CAMPUS = '$campus', AR_TYPE = '$reference'
-                                              WHERE RE_ID = $idArea");
-    if($updateReference) {
+} else {
+
+    /* -----------------------------------------------------
+
+        LÓGICA DE ACTUALIZACIÓN
+
+    ----------------------------------------------------- */
+
+    $idArea = filter_input(INPUT_POST, 'idArea', FILTER_SANITIZE_NUMBER_INT);
+    $updateArea = mysqli_query($connection, "UPDATE areas SET AR_NAME = '$name', AR_CAMPUS = '$campus', AR_TYPE = '$reference'
+                                              WHERE AR_ID = $idArea");
+    if ($updateArea) {
         header("Location: areas.php");
         exit;
-    }else {
-        header("Location: addArea.php?error=No se pudo actualizar el recurso en la base de datos");
+    } else {
+        header("Location: addArea.php?error=No se pudo actualizar el recurso en la base de datos&idArea=$idArea&name=$name&campus=$campus&reference=$reference");
         exit;
     }
 }
