@@ -1,5 +1,5 @@
 <?php
-//include_once("../../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
 $type = filter_input(INPUT_POST, 'resource', FILTER_SANITIZE_STRING);
@@ -14,13 +14,22 @@ if ($type == "EQUIPO") {
     $inventory = "";
 }
 
-$references = filter_input(INPUT_POST, 'references', FILTER_SANITIZE_NUMBER_INT);
 
 $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
 $campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
 $pile = filter_input(INPUT_POST, 'pile', FILTER_SANITIZE_STRING);
 $floor = filter_input(INPUT_POST, 'floor', FILTER_SANITIZE_STRING);
 $room = filter_input(INPUT_POST, 'room', FILTER_SANITIZE_STRING);
+
+if(isset($_POST['references'])) {
+    $references = $_POST['references'];
+    $_SESSION['references'] = $references;
+}else{
+    header("Location: addResource.php?error=Debes agregar al menos una referencia&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
+    exit;
+}
+
+mysqli_autocommit($connection, false);
 
 if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     if ($location == "new") {
@@ -41,39 +50,19 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         }
 
         if ($insertReference) {
+            mysqli_commit($connection);
+            unset($_SESSION['references']);
             if ($type == "EQUIPO")
                 header("Location: equipmentList.php");
             else
-                header("Location: classRoomList.php");
+                header("Location: roomList.php");
             exit;
         } else {
-            header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
-                                        &type=$type
-                                        &alias=$alias
-                                        &model=$model
-                                        &serial=$serial
-                                        &inventory=$inventory
-                                        &reference=$reference
-                                        &location=$location
-                                        &campus=$campus
-                                        &pile=$pile
-                                        &floor=$floor
-                                        &room=$room");
+            header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
             exit;
         }
     } else {
-        header("Location: addResource.php?error=No se pudo ingresar el recurso a la base de datos
-                                        &type=$type
-                                        &alias=$alias
-                                        &model=$model
-                                        &serial=$serial
-                                        &inventory=$inventory
-                                        &reference=$reference
-                                        &location=$location
-                                        &campus=$campus
-                                        &pile=$pile
-                                        &floor=$floor
-                                        &room=$room");
+        header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
         exit;
     }
 } else {    //Lógica de actualización
@@ -97,41 +86,19 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         }
 
         if ($updateReference) {
+            mysqli_commit($connection);
+            unset($_SESSION['references']);
             if ($type == "EQUIPO")
                 header("Location: equipmentList.php");
             else
-                header("Location: classRoomList.php");
+                header("Location: roomList.php");
             exit;
         } else {
-            header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos a la base de datos
-                                        &idResource=$idResource
-                                        &type=$type
-                                        &alias=$alias
-                                        &model=$model
-                                        &serial=$serial
-                                        &inventory=$inventory
-                                        &reference=$reference
-                                        &location=$location
-                                        &campus=$campus
-                                        &pile=$pile
-                                        &floor=$floor
-                                        &room=$room");
+            header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos&idResource=$idResource&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
             exit;
         }
     } else {
-        header("Location: addResource.php?error=No se pudo actualizar el recurso en la base de datos
-                                        &idResource=$idResource
-                                        &type=$type
-                                        &alias=$alias
-                                        &model=$model
-                                        &serial=$serial
-                                        &inventory=$inventory
-                                        &reference=$reference
-                                        &location=$location
-                                        &campus=$campus
-                                        &pile=$pile
-                                        &floor=$floor
-                                        &room=$room");
+        header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos&idResource=$idResource&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
         exit;
     }
 }
