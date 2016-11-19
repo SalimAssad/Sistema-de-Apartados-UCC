@@ -6,7 +6,7 @@ $user = $_POST["user"];
 $password = $_POST["password"];
 
 
-$query = mysqli_query($connection, "select * from usuarios");
+$query = mysqli_query($connection, "select US_SID, US_PASS, US_ID from usuarios where US_SID = $user");
 
 
 if(mysqli_num_rows($query) > 0){
@@ -15,7 +15,9 @@ if(mysqli_num_rows($query) > 0){
         if (md5($password) == $row['US_PASS']) {
             session_start();
             $_SESSION['user'] = $user;
-            header('Location: inicio.php');
+            $_SESSION['id'] = $row['US_ID'];
+
+            header('Location: reg_login.php');
         } else {
             header('Location: index.php?error=Datos_erroneos');
         }

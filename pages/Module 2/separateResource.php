@@ -1,5 +1,5 @@
 <?php
-//include_once("../../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 //Tu código que necesites
 ?>
@@ -23,6 +23,11 @@ include_once("../../inc/MySQLConnection.php");
         <script src='../../utils/fullcalendar.min.js'></script>
         <script src="../../css/bootstrap/js/bootstrap.min.js"></script>
         <script src="../../scripts/Module 2/separateResource.js"></script>
+        <script type="text/javascript">
+            $(function() {
+                setTimeout(function() { $("#info").fadeOut() }, 5000);
+            });
+        </script>
     </head>
     <body>
         <?php
@@ -34,7 +39,13 @@ include_once("../../inc/MySQLConnection.php");
                 include_once("../../inc/sidebar.php");
                 ?>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <h1 class="page-header">Apartado de recursos</h1>
+                    <div class="row page-header">
+                        <h1 class="col-md-6">Apartado de recursos</h1>
+                        <div id="info" class="col-md-6 alert alert-info text-center" role="alert">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            Para apartar un recurso, primero seleccione el horario durante el cual se utilizará
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-sm-4 col-md-3 separate">
                             <div class="form-group">
@@ -52,7 +63,7 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="form-group">
                                 <label for="resource">Recurso</label>
-                                <select name="" id="resource" class="form-control">
+                                <select name="" id="resource" class="form-control inputs">
                                     <option value="">Selecciona un recurso...</option>
                                 </select>
                             </div>
@@ -108,8 +119,15 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="grade">Semestre (opcional)</label>
-                                <select name="" id="grade" class="form-control">
+                                <label for="lendTo">Solicitante</label>
+                                <input type="hidden" name="" id="from" class="inputs">
+                                <input type="hidden" name="" id="to" class="inputs">
+                                <select name="" id="lendTo" class="form-control inputs">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Semestre</label>
+                                <select name="" id="grade" class="form-control inputs">
                                     <option value="">Selecciona un semestre...</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -125,24 +143,16 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="form-group">
                                 <label for="lesson">Materia / Actividad</label>
-                                <input type="text" name="" id="lesson" class="form-control">
+                                <input type="text" name="" id="lesson" class="form-control inputs">
                             </div>
                             <div class="form-group">
                                 <label for="area">Licenciatura / Área</label>
-                                <select name="" id="area" class="form-control">
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="lendTo">Solicitante</label>
-                                <input type="hidden" name="" id="from">
-                                <input type="hidden" name="" id="to">
-                                <select name="" id="lendTo" class="form-control">
+                                <select name="" id="area" class="form-control inputs">
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="comments">Comentarios</label>
-                                <textarea name="" id="comments" cols="30" rows="5" class="form-control">
-                                </textarea>
+                                <textarea name="" id="comments" cols="30" rows="5" class="form-control inputs"></textarea>
                             </div>
                             <button class="btn btn-primary col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
                         </div>

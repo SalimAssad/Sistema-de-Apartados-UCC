@@ -9,12 +9,11 @@ $(function() {
             right: 'agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
-        editable: true,
+        editable: false,
         selectable: true,
         eventOverlap: false,
         minTime: "07:00:00",
         maxTime: "22:00:00",
-        
         select: function(start, end, jsEvent, view) {
             $('#calendar').fadeOut(400, function() {
                 $('#calendar').addClass("col-sm-8 col-md-9");
@@ -28,49 +27,39 @@ $(function() {
             maxSelection = end;
             //$('#calendar').fullCalendar('unselect');
         },
-        selectAllow: function(selectInfo) {
-            var startDate = selectInfo.start.format().split("T")[0];
-            return canSeparateOn(startDate);
+        eventClick: function (calEvent, jsEvent, view) {  
+            $.ajax({
+                url: '../../scripts/Module 2/ajax/detailOf.php',
+                dataType: 'json',
+                method: 'POST',
+                data: { id: calEvent.id },
+                success: function(response) {
+                    var event = response[0];
+                    $("#startTime").html(event.start);
+                    $("#endTime").html(event.end);
+                    $("#name").html(event.name);
+                    $("#lesson").html(event.lesson);
+                    $("#area").html(event.area);
+                    $("#comments").html(event.comments);
+                    $("#eventContent").attr("title", event.title);
+                    $("#eventContent").dialog({ modal: true, title: event.title, width:350});    
+                }
+            });
+
         },
         events: function(start, end, timezone, callback) {
-
-
             $.ajax({
-                url: 'consultaQuery.php',
+                url: '../../scripts/Module 2/ajax/getAllEvents.php',
                 dataType: 'json',
                 method: 'POST',
                 data: {
-
                     start: start.format(),
-                    end: end.format()
+                    end: end.format(),
                 },
-
                 success: function(json) {
- 
-                    var events = [];
-                 
-                    json.forEach(function(obj,i){
-                       
-                        events.push({
-                            title: obj.title,
-                            start: obj.start,
-                           // end: obj.AP_END,
-                            id: obj.id,
-                            //resid: obj.AP_RESID
-                        });
-                    });
-                    console.log(events);
-                    callback(events);
-
+                    callback(json);
                 }
             });
         }
-
     });
-
-
 });
-/*
- console.log(start.format());
-                    console.log(end.format());
-*/

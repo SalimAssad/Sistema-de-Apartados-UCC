@@ -4,7 +4,7 @@
 	// - Validar entradas
 	// - Controlar las posibles fallas de los queries
 	session_start();
-	$_SESSION['id'] = 1;
+	//$_SESSION['id'] = 1;
 	require_once("../../../inc/MySQLConnection.php");
 
 	$resource = trim(filter_input(INPUT_POST, "resource", FILTER_SANITIZE_NUMBER_INT));
@@ -28,7 +28,7 @@
 				(AP_RESID, AP_DATE, AP_START, AP_END, 
 				AP_USERID, AP_USERADDR, AP_GRADE, AP_LESSON, 
 				AP_AREAID, AP_LENDTO, AP_COMMENTS) 
-			values ($resource, '$date', '$start', '$end',  
+			VALUES ($resource, '$date', '$start', '$end',  
 				$user, '$address', $grade, '$lesson',  
 				$area, $lendTo, '$comments')";
 	$query = mysqli_query($connection, $sql) or die(mysqli_error($connection));

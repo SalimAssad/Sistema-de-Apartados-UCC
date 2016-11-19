@@ -24,3 +24,18 @@ function locationHandler(data){
         $("#room").val(arr[3]).prop("readonly", true);
     }
 }
+
+function addReference(){
+    var val = $("#reference").val();
+    if(val != "") {
+        var auxArray = val.split("-");
+        var id = auxArray[0];
+        var description = auxArray[1];
+        if($("#reference-container").find("#"+id).length == 0)
+            $("#reference-container").html($("#reference-container").html() + "<div id='" + id + "' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='" + description + "' readonly><input type='hidden' name='references[]' value='" + id + "'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='" + id + "' onclick='removeReference(this.value)'>Remover</button></div></div>");
+    }
+}
+
+function removeReference(id){
+    $("#"+id).remove();
+}
