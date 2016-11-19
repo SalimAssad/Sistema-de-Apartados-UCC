@@ -2,36 +2,143 @@
 include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
-$type = filter_input(INPUT_POST, 'resource', FILTER_SANITIZE_STRING);
-$alias = filter_input(INPUT_POST, 'alias', FILTER_SANITIZE_STRING);
+/* --------------------------------------------
+
+    SE RECIBEN LOS VALORES
+
+-------------------------------------------- */
+
+if (isset($_POST['resource']))
+    $type = trim(filter_input(INPUT_POST, 'resource', FILTER_SANITIZE_STRING));
+else
+    $type = "";
+
+if (isset($_POST['alias']))
+    $alias = trim(filter_input(INPUT_POST, 'alias', FILTER_SANITIZE_STRING));
+else
+    $alias = "";
+
 if ($type == "EQUIPO") {
-    $model = filter_input(INPUT_POST, 'model', FILTER_SANITIZE_STRING);
-    $serial = filter_input(INPUT_POST, 'serial', FILTER_SANITIZE_STRING);
-    $inventory = filter_input(INPUT_POST, 'inventory', FILTER_SANITIZE_STRING);
+    if (isset($_POST['model']))
+        $model = trim(filter_input(INPUT_POST, 'model', FILTER_SANITIZE_STRING));
+    else
+        $model = "";
+
+    if (isset($_POST['serial']))
+        $serial = trim(filter_input(INPUT_POST, 'serial', FILTER_SANITIZE_STRING));
+    else
+        $serial = "";
+
+    if (isset($_POST['inventory']))
+        $inventory = trim(filter_input(INPUT_POST, 'inventory', FILTER_SANITIZE_STRING));
+    else
+        $inventory = "";
 } else {
     $model = "";
     $serial = "";
     $inventory = "";
 }
 
+if (isset($_POST['location']))
+    $location = trim(filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING));
+else
+    $location = "";
 
-$location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_STRING);
-$campus = filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING);
-$pile = filter_input(INPUT_POST, 'pile', FILTER_SANITIZE_STRING);
-$floor = filter_input(INPUT_POST, 'floor', FILTER_SANITIZE_STRING);
-$room = filter_input(INPUT_POST, 'room', FILTER_SANITIZE_STRING);
+if (isset($_POST['campus']))
+    $campus = trim(filter_input(INPUT_POST, 'campus', FILTER_SANITIZE_STRING));
+else
+    $campus = "";
 
-if(isset($_POST['references'])) {
+if (isset($_POST['pile']))
+    $pile = trim(filter_input(INPUT_POST, 'pile', FILTER_SANITIZE_STRING));
+else
+    $pile = "";
+
+if (isset($_POST['floor']))
+    $floor = trim(filter_input(INPUT_POST, 'floor', FILTER_SANITIZE_STRING));
+else
+    $floor = "";
+
+if (isset($_POST['room']))
+    $room = trim(filter_input(INPUT_POST, 'room', FILTER_SANITIZE_STRING));
+else
+    $room = "";
+
+/* --------------------------------------------
+
+    SE VALIDAN LOS VALORES RECIBIDOS
+
+-------------------------------------------- */
+
+$message = "";
+
+if (empty($type))
+    $message .= "Los campos: tipo, ";
+
+if (empty($alias))
+    $message .= "alias, ";
+
+if (empty($model))
+    $message .= "modelo, ";
+
+if (empty($serial))
+    $message .= "no. de serie, ";
+
+if (empty($inventory))
+    $message .= "no. de inventorio, ";
+
+if (empty($campus))
+    $message .= "campus, ";
+
+if (empty($pile))
+    $message .= "edificio, ";
+
+if (empty($floor))
+    $message .= "piso y ";
+
+if (empty($room))
+    $message .= "referencias no pueden ir vacíos.";
+
+/* ----------------------------------------------------------------------------------------------
+
+    SI "$message" NO ESTÁ VACÍO, HUBO ARGUMENTOS INVALIDOS, SE GENERA EL HEADER PARA REGRESAR
+
+---------------------------------------------------------------------------------------------- */
+
+if($message != ""){
+    $strHeader = "Location: addResource.php?error=$message";
+    if(isset($_POST['idResource']))
+        $strHeader .= "&idResource=$_POST[idResource]";
+    $strHeader .= "&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room";
+    header($strHeader);
+    exit;
+}
+
+/* --------------------------------------------
+
+    VALIDACIÓN DE REFERENCIAS
+
+-------------------------------------------- */
+
+if (isset($_POST['references'])) {
     $references = $_POST['references'];
     $_SESSION['references'] = $references;
-}else{
+} else {
     header("Location: addResource.php?error=Debes agregar al menos una referencia&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
     exit;
 }
 
+//SE DESHABILITA EL AUTOCOMMIT
 mysqli_autocommit($connection, false);
 
 if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
+
+    /* --------------------------------------------
+
+        LÓGICA DE INSERCIÓN
+
+    -------------------------------------------- */
+
     if ($location == "new") {
         $insertLocation = mysqli_query($connection, "INSERT INTO ubicaciones(UB_PILE, UB_CAMPUS, UB_FLOOR, UB_ROOM)
                                             VALUES('$pile', '$campus','$floor','$room')");
@@ -43,10 +150,10 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
                                             VALUES('$model', '$alias', '$type', 1, '$serial', '$inventory', NOW(), $idLocation)");
 
     if ($insertResource) {
-        $idResource = mysqli_insert_id($connection);
+        $newId = mysqli_insert_id($connection);
 
-        foreach ($references as $item){
-            $insertReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $item)");
+        foreach ($references as $item) {
+            $insertReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($newId, $item)");
         }
 
         if ($insertReference) {
@@ -65,7 +172,14 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
         exit;
     }
-} else {    //Lógica de actualización
+} else {
+
+    /* --------------------------------------------
+
+        LÓGICA DE ACTUALIZACIÓN
+
+    -------------------------------------------- */
+
     $idResource = filter_input(INPUT_POST, 'idResource', FILTER_SANITIZE_NUMBER_INT);
     if ($location == "new") {
         $insertLocation = mysqli_query($connection, "INSERT INTO ubicaciones(UB_PILE, UB_CAMPUS, UB_FLOOR, UB_ROOM)
@@ -81,7 +195,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     if ($updateResource) {
 
         mysqli_query($connection, "DELETE FROM recursos_referencias WHERE RR_RESOURCEID = $idResource");
-        foreach ($references as $item){
+        foreach ($references as $item) {
             $updateReference = mysqli_query($connection, "INSERT INTO recursos_referencias VALUES($idResource, $item)");
         }
 
@@ -101,4 +215,12 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
         header("Location: addResource.php?error=No se pudo hacer la relación del recurso con su referencia en la base de datos&idResource=$idResource&type=$type&alias=$alias&model=$model&serial=$serial&inventory=$inventory&location=$location&campus=$campus&pile=$pile&floor=$floor&room=$room");
         exit;
     }
+}
+
+function validate($var)
+{
+    if (empty($var))
+        return false;
+    else
+        return true;
 }
