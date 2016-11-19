@@ -2,6 +2,12 @@
 include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
+/* --------------------------------------------
+
+    SE INICIALIZAN LAS VARIABLES VACÍAS
+
+-------------------------------------------- */
+
 $type = "";
 $model = "";
 $alias = "";
@@ -16,6 +22,12 @@ $floor = "";
 $room = "";
 
 $returnTo = "";
+
+/* -----------------------------------------------------
+
+    SI SE CUMPLE LA VALIDACIÓN, SE ESTÁ ACTUALIZANDO
+
+----------------------------------------------------- */
 
 if (isset($_GET['idResource'])) {
     $id = filter_input(INPUT_GET, "idResource", FILTER_SANITIZE_NUMBER_INT);
@@ -37,9 +49,13 @@ if (isset($_GET['idResource'])) {
     while ($row = mysqli_fetch_assoc($referenceSQL)) {
         $references[] = $row;
     }
-} else {
-
 }
+
+/* ---------------------------------------------------------------------------------------------------
+
+    EN CASO DE QUE REGRESE UN ERROR, SE PISAN LOS VALORES CON LOS QUE EL USUARIO HABÍA INGRESADO
+
+--------------------------------------------------------------------------------------------------- */
 
 //Si se reciben los siguientes datos hubo error en la validación del servidor y se sobreescriben
 if (isset($_GET['type']))
