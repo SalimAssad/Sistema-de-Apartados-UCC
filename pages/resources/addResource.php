@@ -51,6 +51,16 @@ if (isset($_GET['idResource'])) {
     }
 }
 
+if(isset($_SESSION['references'])){
+    unset($references);
+    foreach ($_SESSION['references'] as $item){
+        $referenceSQL = mysqli_query($connection, "SELECT RE_ID, RE_DESCRIPTION 
+                                                FROM referencias 
+                                                WHERE RE_ID = $item");
+        $references[] = mysqli_fetch_assoc($referenceSQL);
+    }
+}
+
 /* ---------------------------------------------------------------------------------------------------
 
     EN CASO DE QUE REGRESE UN ERROR, SE PISAN LOS VALORES CON LOS QUE EL USUARIO HABÍA INGRESADO
@@ -68,6 +78,8 @@ if (isset($_GET['serial']))
     $serial = filter_input(INPUT_GET, "serial", FILTER_SANITIZE_STRING);
 if (isset($_GET['inventory']))
     $inventory = filter_input(INPUT_GET, "inventory", FILTER_SANITIZE_STRING);
+if (isset($_GET['hwType']))
+    $hwType = filter_input(INPUT_GET, "hwType", FILTER_SANITIZE_NUMBER_INT);
 if (isset($_GET['location']))
     $location = filter_input(INPUT_GET, "location", FILTER_SANITIZE_STRING);
 if (isset($_GET['campus']))
@@ -151,57 +163,42 @@ if (isset($_GET['returnTo']))
                                            value="<?php echo $alias; ?>" required>
                                 </div>
                             </div>
-                            <?php
-                            if ($type == "EQUIPO" || $type == "") {
-                                ?>
-                                <div class="col-sm-6 equipment">
+                                <div class="col-sm-6 equipment" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none'"; ?>>
                                     <div>
                                         <label for="model">Modelo:</label>
                                     </div>
                                     <div>
                                         <input type="text" class="form-control equipment" id="model" name="model"
-                                               value="<?php echo $model; ?>" required>
+                                               value="<?php echo $model; ?>" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none' disabled"; ?> required>
                                     </div>
                                 </div>
-                                <?php
-                            }
-                            if ($type == "EQUIPO" || $type == "") {
-                                ?>
-                                <div class="col-sm-6 equipment">
+                                <div class="col-sm-6 equipment" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none'"; ?>>
                                     <div>
                                         <label for="serial">Número de serie:</label>
                                     </div>
                                     <div>
                                         <input type="text" class="form-control equipment" id="serial" name="serial"
-                                               value="<?php echo $serial; ?>"
+                                               value="<?php echo $serial; ?>" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none' disabled"; ?>
                                                required>
                                     </div>
                                 </div>
-                                <?php
-                            }
-                            if ($type == "EQUIPO" || $type == "") {
-                                ?>
-                                <div class="col-sm-6 equipment">
+                                <div class="col-sm-6 equipment" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none'"; ?>>
                                     <div>
                                         <label for="inventory">Número de inventorio:</label>
                                     </div>
                                     <div>
                                         <input type="text" class="form-control equipment" id="inventory"
                                                name="inventory"
-                                               value="<?php echo $inventory; ?>"
+                                               value="<?php echo $inventory; ?>" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none' disabled"; ?>
                                                required>
                                     </div>
                                 </div>
-                                <?php
-                            }
-                            if ($type == "EQUIPO" || $type == "") {
-                                ?>
-                                <div class="col-sm-6 equipment">
+                                <div class="col-sm-6 equipment" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none'"; ?>>
                                     <div>
                                         <label for="hw-type">Tipo de hardware:</label>
                                     </div>
                                     <div>
-                                        <select class="form-control equipment" name="hwType" id="hw-type" required>
+                                        <select class="form-control equipment" name="hwType" id="hw-type" <?php if ($type != "EQUIPO" && $type != "") echo "style='display:none' disabled"; ?> required>
                                             <option value="">Seleccione...</option>
                                             <?php
                                             $auxSQL = mysqli_query($connection, "SELECT * FROM tipos_equipos");
@@ -219,9 +216,6 @@ if (isset($_GET['returnTo']))
                                         </select>
                                     </div>
                                 </div>
-                                <?php
-                            }
-                            ?>
                             <div class="col-sm-12">
                                 <h2 class="sub-header">Referencias</h2>
                                 <div class="col-sm-12">
@@ -257,9 +251,9 @@ if (isset($_GET['returnTo']))
                                 </div>
                                 <div id="reference-container" class="col-sm-12">
                                     <?php
-                                    if (isset($_SESSION['references'])) {
-                                        foreach ($_SESSION['references'] as $row) {
-                                            echo "<div id='$row[RR_REFERENCEID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RR_REFERENCEID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RR_REFERENCEID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
+                                    if(isset($_SESSION['references'])){
+                                        foreach ($references as $row) {
+                                            echo "<div id='$row[RE_ID]' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='$row[RE_DESCRIPTION]' readonly><input type='hidden' name='references[]' value='$row[RE_ID]'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='$row[RE_ID]' onclick='removeReference(this.value)'>Remover</button></div></div>";
                                         }
                                     } else if (isset($id)) {
                                         foreach ($references as $row) {
@@ -306,7 +300,7 @@ if (isset($_GET['returnTo']))
                                 </div>
                                 <div>
                                     <select class="form-control" id="campus"
-                                            name="campus" <?php if (isset($location)) echo "disabled"; ?> required>
+                                            name="campus" <?php if (isset($location) && $location != "new") echo "disabled"; ?> required>
                                         <option value="">Seleccione...</option>
                                         <option value="TORRENTE" <?php if ($campus == "TORRENTE") echo "selected"; ?>>
                                             TORRENTE
@@ -316,7 +310,7 @@ if (isset($_GET['returnTo']))
                                         </option>
                                     </select>
                                     <input type="hidden" name="campus" id="hidden-campus"
-                                           value="<?php echo $campus; ?>" <?php if (!isset($location)) echo "disabled"; ?>>
+                                           value="<?php echo $campus; ?>" <?php if (!isset($location) || $location == "new") echo "disabled"; ?>>
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -325,7 +319,7 @@ if (isset($_GET['returnTo']))
                                 </div>
                                 <div>
                                     <input type="text" class="form-control" id="pile" name="pile"
-                                           value="<?php echo $pile; ?>" <?php if (isset($location)) echo "readonly"; ?>
+                                           value="<?php echo $pile; ?>" <?php if (isset($location) && $location != "new") echo "readonly"; ?>
                                            required>
                                 </div>
                             </div>
@@ -335,7 +329,7 @@ if (isset($_GET['returnTo']))
                                 </div>
                                 <div>
                                     <input type="text" class="form-control" id="floor" name="floor"
-                                           value="<?php echo $floor; ?>" <?php if (isset($location)) echo "readonly"; ?>
+                                           value="<?php echo $floor; ?>" <?php if (isset($location) && $location != "new") echo "readonly"; ?>
                                            required>
                                 </div>
                             </div>
@@ -345,7 +339,7 @@ if (isset($_GET['returnTo']))
                                 </div>
                                 <div>
                                     <input type="text" class="form-control" id="room" name="room"
-                                           value="<?php echo $room; ?>" <?php if (isset($location)) echo "readonly"; ?>
+                                           value="<?php echo $room; ?>" <?php if (isset($location) && $location != "new") echo "readonly"; ?>
                                            required>
                                 </div>
                             </div>
