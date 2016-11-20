@@ -15,14 +15,14 @@ include_once("../../inc/MySQLConnection.php");
         <link href="../../utils/jqueryui/jquery-ui.css" rel="stylesheet">
         <link href="../../css/dashboard.css" rel="stylesheet">
         <link href="../../css/global.css" rel="stylesheet">
-        <link href="../../css/Module 2/separateResource.css" rel="stylesheet">
+        <link href="../../css/separate/separateResource.css" rel="stylesheet">
 
         <script src="../../utils/jquery-1.12.3.min.js"></script>
         <script src='../../utils/jqueryui/jquery-ui.min.js'></script>
         <script src='../../utils/moment.min.js'></script>
         <script src='../../utils/fullcalendar.min.js'></script>
         <script src="../../css/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../../scripts/Module 2/separateResource.js"></script>
+        <script src="../../scripts/separate/separateResource.js"></script>
         <script type="text/javascript">
             $(function() {
                 setTimeout(function() { $("#info").fadeOut() }, 5000);

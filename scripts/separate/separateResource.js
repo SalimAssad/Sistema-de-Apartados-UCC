@@ -1,7 +1,7 @@
 var actualEvents;
 var response = null;
+var input;
 $(function() {
-    var input;
     var minSelection;
     var maxSelection;
     actualEvents = [];
@@ -28,6 +28,7 @@ $(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
+        //timezone: 'local',
         defaultView: 'agendaDay',
         slotEventOverlap: false,
         eventOverlap: false,
@@ -51,7 +52,7 @@ $(function() {
         },
         selectAllow: function(selectInfo) {
             var startDate = selectInfo.start;
-            return canSeparateOn(startDate);
+            return canSeparateOn(startDate, input);
         },
         events: function(start, end, timezone, getEventsInView) {
             var param = { "start": start.format(), "end": end.format() };
@@ -66,11 +67,11 @@ $(function() {
                     alert("Error al obtener la información");
                 },
                 success: function(response) {
-                    console.log(response);
+                    //console.log(response);
                     actualEvents = getEventsInView(response);
                 },
                 type: "POST",
-                url: "../../scripts/Module 2/ajax/getAllEvents.php"
+                url: "../../scripts/separate/ajax/getAllEvents.php"
             });
         }
     });
@@ -342,13 +343,21 @@ function getDate(element) {
     This function is used by the selectAllow callback
     method of the fullcalendar object to allow or deny 
     the selection of previous days */
-function canSeparateOn(date) {
+function canSeparateOn(date, input) {
     var today = new Date();
+    // Full calendar returns the absolute time, so here in Mexico
+    // we just add 6 hours
+    
+    date._d.setHours(date._d.getHours() + 6);
+    da = date;
     if(date._d < today){
+        date._d.setHours(date._d.getHours() - 6);
         return false;
     }
+    date._d.setHours(date._d.getHours() - 6);
     return true;
 }
+var da;
 
 /*
     Does an ajax to get the available resources
@@ -369,7 +378,7 @@ function getAvailableResources(resourceType) {
             $("#resource").val("").change();
         },
         type: "POST",
-        url: "../../scripts/Module 2/ajax/getAvailableResources.php"
+        url: "../../scripts/separate/ajax/getAvailableResources.php"
     });
 }
 
@@ -389,13 +398,7 @@ function getAvailableResources(resourceType) {
             "from": fromHour,           //string: a "hh:mm:ss" formatted time, the resource won't be available from this hour
             "to": toHour                //string: a "hh:mm:ss" formatted time, the resource won't be available until this hour
         } 
-    Return: 
-        event = {
-            "id": separateId,
-            "title": resourceAlias,
-            "start": startDate,
-            "end": endDate
-        } */
+    Return: "TRUE" if the insert went as expected, "FALSE" if not */
 function insertEvent(input) {
     // input must be an object!!!
     $.ajax({
@@ -411,7 +414,7 @@ function insertEvent(input) {
                 console.log("Error at separating the resource");
         },
         type: "POST",
-        url: "../../scripts/Module 2/ajax/insertEvent.php"
+        url: "../../scripts/separate/ajax/insertEvent.php"
     });
 }
 
@@ -436,6 +439,6 @@ function getDataFromTable(table, divId) {
             $("#"+divId).val("").change();
         },
         type: "POST",
-        url: "../../scripts/Module 2/ajax/getDataFromTable.php"
+        url: "../../scripts/separate/ajax/getDataFromTable.php"
     });
 }
