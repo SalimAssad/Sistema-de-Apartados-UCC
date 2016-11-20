@@ -32,6 +32,29 @@
 		"comments" => $result['AP_COMMENTS']
 	);
 
+	$sql = "SELECT HO_DAY, HO_FROM, HO_TO
+			FROM horarios
+			WHERE HO_SEPARATEID = $id";
+	$query = mysqli_query($connection, $sql);
+	if(!$query) error1();
+
+	if(mysqli_num_rows($query) < 1) error2();
+
+	$daysOfWeek = "";
+	$week = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb"];
+	$from = "";
+	$to = "";
+	while($day = mysqli_fetch_assoc($query)) {
+		if($daysOfWeek != "")
+			$daysOfWeek .= " - ";
+		$daysOfWeek .= $week[$day['HO_DAY']];
+		$from = $day['HO_FROM'];
+		$to = $day['HO_TO'];
+	}
+	$response[0]["days"] = $daysOfWeek;
+	$response[0]["from"] = $from;
+	$response[0]["to"] = $to;
+
 	echo json_encode($response);
 
     function error1() {

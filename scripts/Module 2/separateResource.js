@@ -1,4 +1,5 @@
 var actualEvents;
+var response = null;
 $(function() {
     var input;
     var minSelection;
@@ -28,11 +29,13 @@ $(function() {
             right: 'month,agendaWeek,agendaDay'
         },
         defaultView: 'agendaDay',
+        slotEventOverlap: false,
+        eventOverlap: false,
+        selectOverlap: false,
         lazyFetching: true,
         editable: false,
         selectable: true,
         unselectAuto: false,
-        eventOverlap: false,
         minTime: "07:00:00",
         maxTime: "22:00:00",
         select: function(start, end, jsEvent, view) {
@@ -51,8 +54,13 @@ $(function() {
             return canSeparateOn(startDate);
         },
         events: function(start, end, timezone, getEventsInView) {
+            var param = { "start": start.format(), "end": end.format() };
+            if(input.resource != "")
+                param.resourceID = input.resource;
+            else
+                delete param.resourceID;
             $.ajax({
-                data: { "start": start.format(), "end": end.format() },
+                data: param,
                 dataType: "json",
                 error: function() {
                     alert("Error al obtener la información");
@@ -70,7 +78,8 @@ $(function() {
     var options = {
         dateFormat: "yy-mm-dd",
         changeMonth: true,
-        changeYear: true
+        changeYear: true,
+        minDate: 0
     };
     $(".datepick").datepicker(options).on("change", function() {
         if(getDate(this) == null)
@@ -129,6 +138,7 @@ $(function() {
 
     //inputs
     $(".inputs").on("change", function() {
+        $(this).css("border-color", "lightgray");
         var id = $(this).attr("id");
         input[id] = $(this).val();
     });
@@ -142,36 +152,151 @@ $(function() {
     $("#from").on("change", function() {input.from = $(this).val();});
     $("#to").on("change", function() {input.to = $(this).val();}); */
 
+    $("#resource").on("change", function() {
+        $("#calendar").fullCalendar('refetchEvents');
+        $("#calendar").fullCalendar('unselect');
+    });
+
     $("input:checkbox.daysOfTheWeek").on("change", function() {
         input = handleDaysOfTheWeek(input);
     });
 
     $("#separate").on("click", function() {
         if(validateInputs(input)) {
-            insertEvent(input);
-            input = resetInputs();
-        }        
+            showConfirmation(input);
+        }
     });
 });
 
-function validateInputs() {
-    return true;
+/*
+    Validates all the required inputs, returns boolean */
+function validateInputs(fields) {
+    var valid = true;
+    var notRequired = ["lesson","area","grade","comments"];
+    for(data in fields) {
+        if(notRequired.indexOf(data) == -1) { 
+            //It means that this field is required
+            if(fields[data] == "" || fields[data] == null) {
+                $("#"+data).css("border-color","red");
+                valid = false;
+            }
+        }
+    }
+    return valid;
 }
 
+/*
+    Creates a table to let the user see the preview 
+    of the data that will be send to the server.
+    Also sends the data to the server if the user
+    confirms */
+function showConfirmation(input) {
+    var userResponse;
+    var popup = "<div id='confirmation' class='popup'>"+
+                    "<h4>¿Desea continuar con el apartado?</h4>"+
+                    "<table class='table table-responsive'>"+
+                        "<thead>"+
+                        "</thead>"+
+                        "<tbody>"+
+                            "<tr>"+
+                                "<th colspan='2'>Recurso </th><td colspan='2' id='resource-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th>Desde </th><td id='start-confirm'></td>"+
+                                "<th>Hasta </th><td id='end-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th>De </th><td id='from-confirm'></td>"+
+                                "<th>A </th><td id='to-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th colspan='2'>Días solicitados </th><td colspan='2' id='daysOfTheWeek-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th colspan='2'>Solicitante </th><td colspan='2' id='lendTo-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th colspan='2'>Área </th><td colspan='2' id='area-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th colspan='2'>Actividad </th><td colspan='2' id='lesson-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th colspan='2'>Semestre </th><td colspan='2' id='grade-confirm'></td>"+
+                            "</tr>"+
+                            "<tr>"+
+                                "<th colspan='2'>Comentarios </th><td colspan='2' id='comments-confirm'></td>"+
+                            "</tr>"+
+                        "</tbody>"+
+                    "</table>"+
+                    "<div class='row'>"+
+                        "<button id='cTrue' class='btn btn-primary col-sm-4 col-md-offset-1'>Enviar</button>"+
+                        "<button id='cFalse' class='btn btn-danger col-sm-4 col-md-offset-2'>Cancelar</button>"+
+                    "</div>"+
+                "</div>";
+    var block = "<div id='block'></div>";
+    $("body").append(block).append(popup);
+    $("#cFalse").click(function(){ 
+        $("#confirmation, #block").fadeOut(400, function() {
+            $("#confirmation, #block").remove();
+        }); 
+    });
+    $("#cTrue").click(function() { 
+        insertEvent(input);
+        input = resetInputs();
+        $("#confirmation, #block").fadeOut(400, function() {
+            $("#confirmation, #block").remove();
+        }); 
+    });
+    for(data in input) { $("#"+data+"-confirm").text(input[data]); }
+    var dayConversion = ["Dom","Lun","Mar","Mie","Jue","Vie","Sáb"];
+    var monthConversion = ["Ene","Feb","Mar","Abr","Mayo","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    var selectedDays = input.daysOfTheWeek.split(",");
+    var textDays = "";
+    $.each(selectedDays, function(i, dayNumber) {
+        if(i != 0)
+            textDays += " - ";
+        textDays += dayConversion[dayNumber];
+    });
+    $("#start-confirm").text(dateToUser(input.start));
+    $("#end-confirm").text(dateToUser(input.end));
+    $("#resource-confirm").text($("#resource option:selected").text());
+    $("#lendTo-confirm").text($("#lendTo option:selected").text());
+    $("#area-confirm").text($("#area option:selected").text());
+    $("#grade-confirm").text(input.grade+"°");
+    $("#daysOfTheWeek-confirm").text(textDays);
+}
+
+/*
+    Function to format a more readable date */
+function dateToUser(isoDate) {
+    var date = new Date(isoDate);
+    date.setDate(date.getDate() + 1);
+    var dayOfWeek = date.getDay();
+    var monthConversion = ["Ene","Feb","Mar","Abr","Mayo","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    var dayConversion = ["Dom","Lun","Mar","Mie","Jue","Vie","Sáb"];
+    var year = isoDate.split("-")[0];
+    var month = parseInt(isoDate.split("-")[1]) - 1;
+    var day = isoDate.split("-")[2];
+    return dayConversion[dayOfWeek]+", "+day+" "+monthConversion[month]+" "+year;
+}
+
+/* Nothing special here "Experimental Function" */
 function getEventsInView(events) {
     return events;
 }
 
+/* Resets the form when it has been sent */
 function resetInputs() {
     var object = {};
     $("#device.resourceType").prop("checked", true).change();
     $("#occasional.type").prop("checked", true).change();
-    $("#grade").children().eq(0).prop("selected", true);
+    $("#grade").val("");
     $("#lesson").val("");
-    $("#area").children().eq(0).prop("selected", true);
+    $("#area").val("");
     $("#comments").val("");
     object = {
-        "resource": null,
+        "resource": "",
         "start": null,
         "end": null,
         "grade": "",
@@ -186,6 +311,9 @@ function resetInputs() {
     return object;
 }
 
+/*
+    Function to form a string with all the
+    checked checkboxes separated with comma. */
 function handleDaysOfTheWeek(input) {
     input.daysOfTheWeek = "";
     $("input:checkbox.daysOfTheWeek:checked").each(function() {
@@ -236,7 +364,9 @@ function getAvailableResources(resourceType) {
             alert("Error al conseguir los recursos");
         },
         success: function(response) {
-            $("#resource").html(response).change();
+            $("#resource").html(response);
+            $("#resource").prepend("<option value=''>Seleccione un recurso...</option>");
+            $("#resource").val("").change();
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/getAvailableResources.php"
@@ -298,10 +428,12 @@ function getDataFromTable(table, divId) {
         data: { "table": table },
         dataType: "html",
         error: function() {
-            alert("Error al conseguir los recursos");
+            alert("Error al conseguir la información");
         },
         success: function(response) {
             $("#"+divId).html(response).change();
+            $("#"+divId).prepend("<option value=''>Seleccione una opción...</option>");
+            $("#"+divId).val("").change();
         },
         type: "POST",
         url: "../../scripts/Module 2/ajax/getDataFromTable.php"

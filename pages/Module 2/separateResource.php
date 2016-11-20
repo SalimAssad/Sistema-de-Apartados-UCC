@@ -126,6 +126,15 @@ include_once("../../inc/MySQLConnection.php");
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="area">Licenciatura / Área</label>
+                                <select name="" id="area" class="form-control inputs">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="lesson">Materia / Actividad</label>
+                                <input type="text" name="" id="lesson" class="form-control inputs">
+                            </div>
+                            <div class="form-group">
                                 <label for="grade">Semestre</label>
                                 <select name="" id="grade" class="form-control inputs">
                                     <option value="">Selecciona un semestre...</option>
@@ -139,15 +148,6 @@ include_once("../../inc/MySQLConnection.php");
                                     <option value="8">8</option>
                                     <option value="9">9</option>
                                     <option value="10">10</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="lesson">Materia / Actividad</label>
-                                <input type="text" name="" id="lesson" class="form-control inputs">
-                            </div>
-                            <div class="form-group">
-                                <label for="area">Licenciatura / Área</label>
-                                <select name="" id="area" class="form-control inputs">
                                 </select>
                             </div>
                             <div class="form-group">
