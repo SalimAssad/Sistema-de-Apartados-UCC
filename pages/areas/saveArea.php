@@ -33,15 +33,16 @@ else
 $message = "";
 
 if (empty($name))
-    $message .= "Los campos: Nombre, ";
+    $message .= "Nombre, ";
 
 if (empty($campus))
-    $message .= "campus y ";
+    $message .= "campus, ";
 
 if (empty($reference))
-    $message .= "referencia no pueden estar vacíos";
+    $message .= "referencia";
 
 if ($message != "") {
+    $message = "Los campos: ".$message." no pueden estar vacíos";
     $strHeader = "Location: addArea.php?error=$message";
     if (isset($_POST['idArea']))
         $strHeader .= "&idArea=$_POST[idArea]";
