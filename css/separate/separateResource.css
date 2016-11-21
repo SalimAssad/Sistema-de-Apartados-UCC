@@ -4,7 +4,7 @@ html, body {
 
 .separate {
 	display: none;
-	margin-bottom: 1%;
+	margin-bottom: 20%;
 }
 
 .fc-center {
@@ -30,7 +30,7 @@ textarea#comments {
 .popup {
 	border: 2px solid gray;
 	border-radius: 10px;
-	min-width: 200px;
+	min-width: 286px;
 	width: 40%;
 	z-index: 9999999;
 	background-color: white;
@@ -52,11 +52,13 @@ textarea#comments {
 @media (max-width: 768px) {
   .popup {
     left: 10%;
+    width: 80%;
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 850px) {
   .popup {
     left: 20%;
+    width: 70%;
   }
 }

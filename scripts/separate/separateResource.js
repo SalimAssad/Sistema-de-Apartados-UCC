@@ -1,6 +1,10 @@
 var actualEvents;
 var response = null;
 var input;
+var dayNamesShort = ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'];
+var monthNamesShort = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+var monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 $(function() {
     var minSelection;
     var maxSelection;
@@ -37,6 +41,10 @@ $(function() {
         editable: false,
         selectable: true,
         unselectAuto: false,
+        dayNames: dayNames,
+        dayNamesShort: dayNamesShort,
+        monthNames: monthNames,
+        monthNamesShort: monthNamesShort,
         minTime: "07:00:00",
         maxTime: "22:00:00",
         select: function(start, end, jsEvent, view) {
@@ -231,8 +239,8 @@ function showConfirmation(input) {
                         "</tbody>"+
                     "</table>"+
                     "<div class='row'>"+
-                        "<button id='cTrue' class='btn btn-primary col-sm-4 col-md-offset-1'>Enviar</button>"+
-                        "<button id='cFalse' class='btn btn-danger col-sm-4 col-md-offset-2'>Cancelar</button>"+
+                        "<button id='cTrue' class='btn btn-primary col-md-4 col-sm-4 col-xs-4 col-xs-offset-1 col-sm-offset-1 col-md-offset-1'>Enviar</button>"+
+                        "<button id='cFalse' class='btn btn-danger col-md-4 col-sm-4 col-xs-4 col-xs-offset-1 col-sm-offset-2 col-md-offset-2'>Cancelar</button>"+
                     "</div>"+
                 "</div>";
     var block = "<div id='block'></div>";
@@ -249,15 +257,16 @@ function showConfirmation(input) {
             $("#confirmation, #block").remove();
         }); 
     });
-    for(data in input) { $("#"+data+"-confirm").text(input[data]); }
-    var dayConversion = ["Dom","Lun","Mar","Mie","Jue","Vie","Sáb"];
-    var monthConversion = ["Ene","Feb","Mar","Abr","Mayo","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+    for(data in input) { 
+        if(input[data] != "" || input[data] != null)
+            $("#"+data+"-confirm").text(input[data]); 
+    }
     var selectedDays = input.daysOfTheWeek.split(",");
     var textDays = "";
     $.each(selectedDays, function(i, dayNumber) {
         if(i != 0)
             textDays += " - ";
-        textDays += dayConversion[dayNumber];
+        textDays += dayNamesShort[dayNumber];
     });
     $("#start-confirm").text(dateToUser(input.start));
     $("#end-confirm").text(dateToUser(input.end));
@@ -274,12 +283,10 @@ function dateToUser(isoDate) {
     var date = new Date(isoDate);
     date.setDate(date.getDate() + 1);
     var dayOfWeek = date.getDay();
-    var monthConversion = ["Ene","Feb","Mar","Abr","Mayo","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-    var dayConversion = ["Dom","Lun","Mar","Mie","Jue","Vie","Sáb"];
     var year = isoDate.split("-")[0];
     var month = parseInt(isoDate.split("-")[1]) - 1;
     var day = isoDate.split("-")[2];
-    return dayConversion[dayOfWeek]+", "+day+" "+monthConversion[month]+" "+year;
+    return dayNamesShort[dayOfWeek]+", "+day+" "+monthNamesShort[month]+" "+year;
 }
 
 /* Nothing special here "Experimental Function" */

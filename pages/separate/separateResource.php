@@ -154,7 +154,7 @@ include_once("../../inc/MySQLConnection.php");
                                 <label for="comments">Comentarios</label>
                                 <textarea name="" id="comments" cols="30" rows="5" class="form-control inputs"></textarea>
                             </div>
-                            <button class="btn btn-primary col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
+                            <button class="btn btn-primary col-xs-12 col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
                         </div>
                         <div>
                             <div id='calendar'></div>
