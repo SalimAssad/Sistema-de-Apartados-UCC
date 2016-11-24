@@ -1,0 +1,64 @@
+html, body {
+	height: 100%;
+}
+
+.separate {
+	display: none;
+	margin-bottom: 20%;
+}
+
+.fc-center {
+	margin-top: 5px;
+}
+
+.fc-day-grid, .fc-time-grid {
+	cursor: pointer;
+}
+
+.datepick:hover {
+	cursor: pointer;
+}
+
+textarea#comments {
+	resize: none;
+}
+
+.error {
+	border-color: #d9534f;
+}
+
+.popup {
+	border: 2px solid gray;
+	border-radius: 10px;
+	min-width: 286px;
+	width: 40%;
+	z-index: 9999999;
+	background-color: white;
+	position: fixed;
+	top: 10%;
+	left: 30%;
+	padding: 2%;
+}
+
+#block {
+	width: 100%;
+	height: 100%;
+	z-index: 999999;
+	background-color: rgba(165,165,165,0.5);
+	position: fixed;
+	top: 0px;
+}
+
+@media (max-width: 768px) {
+  .popup {
+    left: 10%;
+    width: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .popup {
+    left: 20%;
+    width: 70%;
+  }
+}

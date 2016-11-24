@@ -1,12 +1,14 @@
 <?php
-
+include_once("/inc/validatePermissions.php");
 include_once("inc/MySQLConnection.php");
+
 
 $user = $_POST["user"];
 $password = $_POST["password"];
 
 
-$query = mysqli_query($connection, "select US_SID, US_PASS, US_ID from usuarios where US_SID = $user");
+$query = mysqli_query($connection, "select US_SID, US_PASS, US_ID, US_PROFILEID from usuarios where US_SID = $user");
+
 
 
 if(mysqli_num_rows($query) > 0){
@@ -16,6 +18,7 @@ if(mysqli_num_rows($query) > 0){
             session_start();
             $_SESSION['user'] = $user;
             $_SESSION['id'] = $row['US_ID'];
+            $_SESSION['profile'] = $row['US_PROFILEID'];
 
             header('Location: reg_login.php');
         } else {

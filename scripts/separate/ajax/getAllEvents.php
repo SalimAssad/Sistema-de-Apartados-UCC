@@ -6,8 +6,11 @@
 
 	$start = trim(validateDate($_POST['start']));
 	$end = trim(validateDate($_POST['end']));
+	$resID = null;
+	if(isset($_POST['resourceID']))
+		$resID = trim(filter_input(INPUT_POST, "resourceID", FILTER_SANITIZE_NUMBER_INT));
 
-	if($start == "" && $end == ""){
+	if($start == "" || $end == ""){
 		exit("Error en los datos recibidos");
 	}
 	
@@ -22,7 +25,7 @@
 			JOIN tipos_equipos ON
 			TI_ID = RE_HWTYPE
 			WHERE 
-				(AP_START BETWEEN '$start' AND '$end') 
+				((AP_START BETWEEN '$start' AND '$end') 
 				OR 
 				(AP_END BETWEEN '$start' AND '$end')
 				OR 
@@ -30,9 +33,14 @@
 					(AP_START <= '$start') 
 					AND
 					(AP_END >= '$end')
-				)
-			ORDER BY AP_ID"; // Ordered to avoid errors at setting the color hehe
+				))";
+				
+	if($resID != null)
+		$sql .= " AND RE_ID = $resID ";
+
+	$sql .= "ORDER BY AP_ID"; // Ordered to avoid errors at setting the color hehe
 	$query = mysqli_query($connection, $sql);
+	if(!$query) error1();
 	
 	$events = array();
 	$actualID = 0;
@@ -87,6 +95,11 @@
     	return $time;
     }
 
+    function error1() {
+		echo "An error ocurred while trying to get the data.";
+		exit();
+	}
+	
 	/*function generateRandomColor($colorsToIgnore) {
 	    $r = 0; $g = 0; $b = 0;
 	    $color = "";

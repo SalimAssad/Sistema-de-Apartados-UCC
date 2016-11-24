@@ -6,7 +6,6 @@ else {
     include_once("inc/MySQLConnection.php");
 }
 
-session_start();
 $id = $_SESSION["id"];
 $user = $_SESSION["user"];
 $ipadd = $_SERVER['REMOTE_ADDR'];

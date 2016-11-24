@@ -29,7 +29,7 @@ $(function() {
         },
         eventClick: function (calEvent, jsEvent, view) {  
             $.ajax({
-                url: '../../scripts/Module 2/ajax/detailOf.php',
+                url: '../../scripts/separate/ajax/detailOf.php',
                 dataType: 'json',
                 method: 'POST',
                 data: { id: calEvent.id },
@@ -49,7 +49,7 @@ $(function() {
         },
         events: function(start, end, timezone, callback) {
             $.ajax({
-                url: '../../scripts/Module 2/ajax/getAllEvents.php',
+                url: '../../scripts/separate/ajax/getAllEvents.php',
                 dataType: 'json',
                 method: 'POST',
                 data: {

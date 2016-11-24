@@ -15,14 +15,14 @@ include_once("../../inc/MySQLConnection.php");
         <link href="../../utils/jqueryui/jquery-ui.css" rel="stylesheet">
         <link href="../../css/dashboard.css" rel="stylesheet">
         <link href="../../css/global.css" rel="stylesheet">
-        <link href="../../css/Module 2/separateResource.css" rel="stylesheet">
+        <link href="../../css/separate/separateResource.css" rel="stylesheet">
 
         <script src="../../utils/jquery-1.12.3.min.js"></script>
         <script src='../../utils/jqueryui/jquery-ui.min.js'></script>
         <script src='../../utils/moment.min.js'></script>
         <script src='../../utils/fullcalendar.min.js'></script>
         <script src="../../css/bootstrap/js/bootstrap.min.js"></script>
-        <script src="../../scripts/Module 2/separateResource.js"></script>
+        <script src="../../scripts/separate/separateResource.js"></script>
         <script type="text/javascript">
             $(function() {
                 setTimeout(function() { $("#info").fadeOut() }, 5000);
@@ -126,6 +126,15 @@ include_once("../../inc/MySQLConnection.php");
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="area">Licenciatura / Área</label>
+                                <select name="" id="area" class="form-control inputs">
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="lesson">Materia / Actividad</label>
+                                <input type="text" name="" id="lesson" class="form-control inputs">
+                            </div>
+                            <div class="form-group">
                                 <label for="grade">Semestre</label>
                                 <select name="" id="grade" class="form-control inputs">
                                     <option value="">Selecciona un semestre...</option>
@@ -142,19 +151,10 @@ include_once("../../inc/MySQLConnection.php");
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="lesson">Materia / Actividad</label>
-                                <input type="text" name="" id="lesson" class="form-control inputs">
-                            </div>
-                            <div class="form-group">
-                                <label for="area">Licenciatura / Área</label>
-                                <select name="" id="area" class="form-control inputs">
-                                </select>
-                            </div>
-                            <div class="form-group">
                                 <label for="comments">Comentarios</label>
                                 <textarea name="" id="comments" cols="30" rows="5" class="form-control inputs"></textarea>
                             </div>
-                            <button class="btn btn-primary col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
+                            <button class="btn btn-primary col-xs-12 col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
                         </div>
                         <div>
                             <div id='calendar'></div>

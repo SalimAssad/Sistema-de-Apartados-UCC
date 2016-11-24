@@ -1,4 +1,10 @@
 
+/* ----------------------------------------------------------------------
+
+    SE ENCARGA DE OCULTAR LOS CAMPOOS DE EQUIPO CUANDO ES UN AULA
+
+---------------------------------------------------------------------- */
+
 function typeHandler(type){
     if(type == "EQUIPO"){
         $(".equipment").prop("disabled", false).css("display", "");
@@ -6,6 +12,13 @@ function typeHandler(type){
         $(".equipment").prop("disabled", true).css("display", "none");
     }
 }
+
+/* ----------------------------------------------------------------------
+
+     SE ENCARGA DE LLENAR Y DESHABILITAR LOS CAMPOS DE UBICACIÓN
+     EN CASO DE QUE SE SELECCIONE
+
+---------------------------------------------------------------------- */
 
 function locationHandler(data){
     if(data == "Nuevo"){
@@ -25,6 +38,12 @@ function locationHandler(data){
     }
 }
 
+/* ----------------------------------------------------------------------
+
+     SE ENCARGA DE AÑADIR LAS REFERENCIAS
+
+---------------------------------------------------------------------- */
+
 function addReference(){
     var val = $("#reference").val();
     if(val != "") {
@@ -35,6 +54,12 @@ function addReference(){
             $("#reference-container").html($("#reference-container").html() + "<div id='" + id + "' class='top-margin'><div class='col-sm-8'><input type='text' class='form-control' value='" + description + "' readonly><input type='hidden' name='references[]' value='" + id + "'></div><div class='col-sm-4 valign'><button type='button' class='btn-danger form-control' value='" + id + "' onclick='removeReference(this.value)'>Remover</button></div></div>");
     }
 }
+
+/* ----------------------------------------------------------------------
+
+     SE ENCARGA DE REMOVER LA REVERENCIA QUE RECIBE
+
+---------------------------------------------------------------------- */
 
 function removeReference(id){
     $("#"+id).remove();

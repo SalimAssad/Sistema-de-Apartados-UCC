@@ -11,7 +11,7 @@
         
 <link href="pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<link href="pages/Module%204/dist/css/signin.css" rel="stylesheet">
+<link href="pages/Module 4/examples/signin/signin.css" rel="stylesheet">
         <script src="utils/jquery-1.12.3.min.js">
         </script>
     </head>
@@ -32,16 +32,15 @@
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión </button>
-    
+      </form>
             <br> <br>
             <div id="error">
                 <?php
                 if(isset($_GET["error"])){
-                    echo '<div class="alert alert-warning">Los datos son incorrectos. </div>';
+                    echo "Los datos son incorrectos";
                 }
                 ?>
             </div>  
-      </form>
         </div>
     </body>
 </html>
