@@ -91,13 +91,11 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     -------------------------------------------- */
 
     $idLocation = filter_input(INPUT_POST, 'idLocation', FILTER_SANITIZE_NUMBER_INT);
-    $updateLocation = mysqli_query($connection, "UPDATE ubicaciones SET UB_PILE = '$pile', UB_CAMPUS = '$campus', UB_FLOOR = '$floor' UB_ROOM = '$room' WHERE UB_ID = $idLocation");
+    $updateLocation = mysqli_query($connection, "UPDATE ubicaciones SET UB_PILE = '$pile', UB_CAMPUS = '$campus', UB_FLOOR = '$floor', UB_ROOM = '$room' WHERE UB_ID = $idLocation");
     if($updateLocation){
         header("Location: locationList.php");
         exit;
     }else{
-        echo mysqli_error($connection);
-        exit;
         header("Location: addLocation.php?idLocation=$idLocation&error=No se pudo actualizar la ubicación&campus=$campus&pile=$pile&floor=$floor&room=$room");
         exit;
     }
