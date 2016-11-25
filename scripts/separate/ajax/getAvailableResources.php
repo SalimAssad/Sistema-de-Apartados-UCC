@@ -46,7 +46,7 @@
 							$resources .= "</optgroup>";			
 						$actualGroup = $row['TI_ID'];
 						$resources .= "<optgroup label='$row[TI_DESCRIPTION]'>";
-					}	
+					}
 					$resources .= "<option value='$row[RE_ID]'>$row[RE_ALIAS]</option>";
 				}
 				$resources .= "</optgroup>";

@@ -25,7 +25,7 @@ include_once("../../inc/MySQLConnection.php");
         <script src="../../scripts/separate/separateResource.js"></script>
         <script type="text/javascript">
             $(function() {
-                setTimeout(function() { $("#info").fadeOut() }, 5000);
+                setTimeout(function() { $("#message").fadeOut() }, 5000);
             });
         </script>
     </head>
@@ -41,9 +41,9 @@ include_once("../../inc/MySQLConnection.php");
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <div class="row page-header">
                         <h1 class="col-md-6">Apartado de recursos</h1>
-                        <div id="info" class="col-md-6 alert alert-info text-center" role="alert">
+                        <div id="message" class="col-md-6 alert alert-info text-center" role="alert">
                             <span class="glyphicon glyphicon-info-sign"></span>
-                            Para apartar un recurso, primero seleccione el horario durante el cual se utilizará
+                            Seleccione el recurso y después el horario durante el cual se utilizará
                         </div>
                     </div>
                     <div class="row">
@@ -69,14 +69,13 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="form-group">
                                 <fieldset>
-                                    <legend>Tipo de apartado</legend>
-                                    <div class="col-sm-6 col-md-6">
+                                    <div class="col-sm-6 col-md-12">
                                         <input type="radio" name="type" id="occasional" data-type="o" class="type" checked>
-                                        <label for="occasional">Ocasional</label>
+                                        <label for="occasional">Apartado de una sesión</label>
                                     </div>
-                                    <div class="col-sm-6 col-md-6">
+                                    <div class="col-sm-6 col-md-12">
                                         <input type="radio" name="type" id="temporary" data-type="t" class="type">
-                                        <label for="temporary">Temporal</label>
+                                        <label for="temporary">Apartado recurrente</label>
                                     </div>
                                 </fieldset>
                             </div>
@@ -156,8 +155,9 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <button class="btn btn-primary col-xs-12 col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
                         </div>
-                        <div>
-                            <div id='calendar'></div>
+                        <div class="calendar-container">
+                            <div class='col-sm-8 col-md-9' id='calendar'></div>
+                            <img src="../../imgs/icons/drag.gif" alt="" class="gif">
                         </div>
                     </div>
                 </div>

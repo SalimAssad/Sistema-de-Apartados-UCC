@@ -3,7 +3,6 @@ html, body {
 }
 
 .separate {
-	display: none;
 	margin-bottom: 20%;
 }
 
@@ -47,6 +46,31 @@ textarea#comments {
 	background-color: rgba(165,165,165,0.5);
 	position: fixed;
 	top: 0px;
+}
+
+.calendar-container {
+	position: relative;
+}
+
+.gif {
+	width: 100px;
+	display: none;
+	position: absolute;
+	top: 0%;
+	margin-top: 20%;
+	left: 60%;
+	z-index: 9999;
+	animation-name: howtoselect;
+    animation-duration: 2.8s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes howtoselect {
+	0% { margin-top: 20%; }
+	25% { margin-top: 20%; }
+	50% { margin-top: 20%; }
+	75% { margin-top: 30%; }
+	100% { margin-top: 30%; }
 }
 
 @media (max-width: 768px) {

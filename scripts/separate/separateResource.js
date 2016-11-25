@@ -1,10 +1,9 @@
 var actualEvents;
-var response = null;
-var input;
 var dayNamesShort = ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'];
 var monthNamesShort = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 var monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var input;
 $(function() {
     var minSelection;
     var maxSelection;
@@ -32,7 +31,7 @@ $(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
-        //timezone: 'local',
+        allDaySlot: false,
         defaultView: 'agendaDay',
         slotEventOverlap: false,
         eventOverlap: false,
@@ -48,12 +47,6 @@ $(function() {
         minTime: "07:00:00",
         maxTime: "22:00:00",
         select: function(start, end, jsEvent, view) {
-            $('#calendar').fadeOut(400, function() {
-                $('#calendar').addClass("col-sm-8 col-md-9");
-                $(".separate").fadeIn(400, function() {
-                    $('#calendar').fadeIn();
-                });
-            });
             minSelection = start;
             maxSelection = end;
             $(".type").change();
@@ -118,7 +111,6 @@ $(function() {
     $(".type").on("change", function() {
         var sepType = $(".type:checked").data("type");
         if(sepType == "t") {
-            //$(".datepick").val("");
             $(".temporary").fadeIn();
         } else {
             $(".temporary").fadeOut(400, function() {
@@ -130,36 +122,30 @@ $(function() {
                     $("#to").val(maxSelection.format().split("T")[1]).change();
                     $("input:checkbox.daysOfTheWeek").each(function() {
                         var day = minSelection._d.getDay();
+                        $(this).prop("checked", false);
                         if($(this).val() == day)
                             $(this).prop("checked", true);
-                        else
-                            $(this).prop("checked", false);
                     }).change();
                 } else {
                     $("#startDate").datepicker("setDate", "+0").change();
                     $("#endDate").datepicker("setDate", "+0").change();
-                    $("#from").val("00:00:00").change();
-                    $("#to").val("23:59:00").change();
+                    $("input:checkbox.daysOfTheWeek").each(function() {
+                        var day = new Date();
+                        $(this).prop("checked", false);
+                        if($(this).val() == day.getDay())
+                            $(this).prop("checked", true);
+                    }).change();
                 }
             });
         }
     }).change();
 
-    //inputs
+    // Form inputs' events
     $(".inputs").on("change", function() {
         $(this).css("border-color", "lightgray");
         var id = $(this).attr("id");
         input[id] = $(this).val();
     });
-    /*
-    $("#resource").on("change", function() { input.resource = $(this).val();});
-    $("#area").on("change", function() {input.area = $(this).val();});
-    $("#lendTo").on("change", function() {input.lendTo = $(this).val();});
-    $("#grade").on("change", function() {input.grade = $(this).val();});
-    $("#lesson").on("change", function() {input.lesson = $(this).val();});
-    $("#comments").on("change", function() {input.comments = $(this).val();});
-    $("#from").on("change", function() {input.from = $(this).val();});
-    $("#to").on("change", function() {input.to = $(this).val();}); */
 
     $("#resource").on("change", function() {
         $("#calendar").fullCalendar('refetchEvents');
@@ -171,6 +157,7 @@ $(function() {
     });
 
     $("#separate").on("click", function() {
+        $("body").scrollTop(0);
         if(validateInputs(input)) {
             showConfirmation(input);
         }
@@ -181,17 +168,43 @@ $(function() {
     Validates all the required inputs, returns boolean */
 function validateInputs(fields) {
     var valid = true;
-    var notRequired = ["lesson","area","grade","comments"];
+    var msg = "";
+    //From and To are handled apart
+    var notRequired = ["lesson","area","grade","comments","from","to"];
     for(data in fields) {
         if(notRequired.indexOf(data) == -1) { 
             //It means that this field is required
             if(fields[data] == "" || fields[data] == null) {
                 $("#"+data).css("border-color","red");
+                msg = "Por favor, introduzca los campos requeridos marcados con rojo";
                 valid = false;
             }
         }
     }
+    if(fields.from == null || fields.to == null) {
+        valid = false;
+        if(msg != "") msg += " y ";
+        msg += "Seleccione un horario arrastrando el mouse sobre el calendario";
+        $(".gif").fadeIn();
+        setTimeout(function() { $(".gif").fadeOut(); },6400);
+    }
+    showMessage("glyphicon-remove-sign", msg, "alert-danger");
     return valid;
+}
+
+
+/*
+    Function that shows a custom message by passing three parameters 
+    icon: String: the name of the bootstrap glyphicon
+    msg: String: the text that will be desplayed in the box
+    style: String: the bootstrap style of the box alert-success|alert-danger|...| */
+function showMessage(icon, msg, style) {
+    $("#message").html("<span class='glyphicon "+icon+"'></span> "+msg);
+    $("#message").attr("class", "col-md-6 alert text-center "+style);
+    $("#message").fadeIn();
+    setTimeout(function() {
+        $("#message").fadeOut();
+    }, 3000);
 }
 
 /*
@@ -354,9 +367,7 @@ function canSeparateOn(date, input) {
     var today = new Date();
     // Full calendar returns the absolute time, so here in Mexico
     // we just add 6 hours
-    
     date._d.setHours(date._d.getHours() + 6);
-    da = date;
     if(date._d < today){
         date._d.setHours(date._d.getHours() - 6);
         return false;
@@ -364,7 +375,6 @@ function canSeparateOn(date, input) {
     date._d.setHours(date._d.getHours() - 6);
     return true;
 }
-var da;
 
 /*
     Does an ajax to get the available resources
@@ -415,10 +425,19 @@ function insertEvent(input) {
             alert("Error al obtener la información");
         },
         success: function(response) {
-            if(response == "TRUE")
-                $("#calendar").fullCalendar( 'refetchEvents' );
-            else
-                console.log("Error at separating the resource");
+            $("body").scrollTop(0);
+            var icon = "", msg = "", styleAlert = "";
+            if(response == "TRUE") {
+                icon = "glyphicon-ok-sign";
+                msg = "¡El apartado se realizó con éxito!";
+                styleAlert = "alert-success";
+            } else {
+                icon = "glyphicon-remove-sign";
+                msg = "Hubo un error, intente de nuevo, por favor";
+                styleAlert = "alert-danger";
+            }
+            $("#calendar").fullCalendar('refetchEvents');
+            showMessage(icon, msg, styleAlert);
         },
         type: "POST",
         url: "../../scripts/separate/ajax/insertEvent.php"
