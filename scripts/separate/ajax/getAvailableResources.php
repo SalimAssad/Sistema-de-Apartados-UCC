@@ -9,6 +9,7 @@
 					JOIN ubicaciones ON
 					RE_LOCATION = UB_ID
 					WHERE RE_TYPE = '$type'
+					AND RE_AVAILABLE = 1
 					ORDER BY UB_CAMPUS";
 			$query = mysqli_query($connection, $sql);
 			if(!$query) error1();
@@ -34,6 +35,7 @@
 					JOIN tipos_equipos ON
 					RE_HWTYPE = TI_ID
 					WHERE RE_TYPE = '$type'
+					AND RE_AVAILABLE = 1
 					ORDER BY TI_DESCRIPTION, RE_ALIAS";
 			$query = mysqli_query($connection, $sql);
 			if(!$query) error1();
