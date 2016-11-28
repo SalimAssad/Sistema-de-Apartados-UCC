@@ -25,6 +25,8 @@ include_once("../../inc/MySQLConnection.php");
         <script src='../../utils/fullcalendar.min.js'></script>
         <script src="../../css/bootstrap/js/bootstrap.min.js"></script>
         <script src="../../scripts/separate/consulta.js"></script>
+        <script src="../../css/separate/consulta.css"></script>
+        
 
 
 
@@ -68,7 +70,7 @@ include_once("../../inc/MySQLConnection.php");
             Días: <span id="days"></span><br>
             Comentarios: <span id="comments"></span><br>
             Fecha del apartado: <span id="startTime"></span><br>
-            <input type="text" name="matricula" id="matricula" width="40%"  >
+            <input type="text" name="matricula" id="matricula"   >
             <input type="button" name="submit" id="button" value="Marcar como entregado" ><br> 
             <p id="eventInfo"></p>
             <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
