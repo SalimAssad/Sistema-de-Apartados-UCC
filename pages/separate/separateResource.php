@@ -125,12 +125,12 @@ include_once("../../inc/MySQLConnection.php");
                                 <select name="" id="lendTo" class="form-control inputs">
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="area" class="required">Licenciatura / Área</label>
+                                <select name="" id="area" class="form-control inputs">
+                                </select>
+                            </div>
                             <div class="optional">
-                                <div class="form-group">
-                                    <label for="area">Licenciatura / Área</label>
-                                    <select name="" id="area" class="form-control inputs">
-                                    </select>
-                                </div>
                                 <div class="form-group">
                                     <label for="lesson">Materia / Actividad</label>
                                     <input type="text" name="" id="lesson" class="form-control inputs">
