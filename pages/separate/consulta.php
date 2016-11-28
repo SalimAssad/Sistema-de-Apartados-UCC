@@ -68,8 +68,7 @@ include_once("../../inc/MySQLConnection.php");
             Días: <span id="days"></span><br>
             Comentarios: <span id="comments"></span><br>
             Fecha del apartado: <span id="startTime"></span><br>
-            <p>Ingrese la clave</p>
-            <input type="text" name="clave" id="clave" ><br>
+            <input type="text" name="clave" id="clave" >
             <input type="submit" name="submit" id="submit" value="Marcar como entregado"><br> 
             <p id="eventInfo"></p>
             <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
