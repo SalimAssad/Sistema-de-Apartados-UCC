@@ -33,16 +33,22 @@ $(function() {
                 dataType: 'json',
                 method: 'POST',
                 data: { id: calEvent.id },
+
                 success: function(response) {
+
                     var event = response[0];
                     $("#startTime").html(event.start);
                     $("#endTime").html(event.end);
+                    $("#from").html(even.from);////
+                    $("#to").html(even.to);////
                     $("#name").html(event.name);
                     $("#lesson").html(event.lesson);
+                    $("#diasApartado").html(event.days);/////
                     $("#area").html(event.area);
                     $("#comments").html(event.comments);
                     $("#eventContent").attr("title", event.title);
-                    $("#eventContent").dialog({ modal: true, title: event.title, width:350});    
+                    $("#eventContent").dialog({ modal: true, title: event.title, width:350});  
+
                 }
             });
 

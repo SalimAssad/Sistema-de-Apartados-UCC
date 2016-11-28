@@ -41,7 +41,7 @@ include_once("../../inc/MySQLConnection.php");
                 include_once("../../inc/sidebar.php");
                 ?>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                   
+
 
 
                     <h1 class="sub-header">Consulta de disponibilidad</h1>
@@ -59,15 +59,20 @@ include_once("../../inc/MySQLConnection.php");
 
             </div>
         </div>
-            <div id="eventContent" title="Event Details" style="display:none;">
-                Start: <span id="startTime"></span><br>
-                End: <span id="endTime"></span><br>
-                Usuario: <span id="name"></span><br>
-                Materia / Actividad: <span id="lesson"></span><br>
-                Área / Licenciatura: <span id="area"></span><br>
-                Comentarios: <span id="comments"></span><br>
-                <p id="eventInfo"></p>
-                <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
-            </div>
+        <div id="eventContent" title="Event Details" style="display:none;">
+            Desde: <span id="from"></span><br>
+            Hasta: <span id="to"></span><br>
+            Usuario: <span id="name"></span><br>
+            Materia / Actividad: <span id="lesson"></span><br>
+            Área / Licenciatura: <span id="area"></span><br>
+            Días: <span id="days"></span><br>
+            Comentarios: <span id="comments"></span><br>
+            Fecha del apartado: <span id="startTime"></span><br>
+            <p>Ingrese la clave</p>
+            <input type="text" name="clave" id="clave" ><br>
+            <input type="submit" name="submit" id="submit" value="Marcar como entregado"><br> 
+            <p id="eventInfo"></p>
+            <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
+        </div>
     </body>
 </html>

@@ -25,7 +25,7 @@ include_once("../../inc/MySQLConnection.php");
         <script src="../../scripts/separate/separateResource.js"></script>
         <script type="text/javascript">
             $(function() {
-                setTimeout(function() { $("#info").fadeOut() }, 5000);
+                setTimeout(function() { $("#message").fadeOut() }, 5000);
             });
         </script>
     </head>
@@ -33,6 +33,7 @@ include_once("../../inc/MySQLConnection.php");
         <?php
         include_once("../../inc/nav.php");
         ?>
+        <div class="moving-box"></div>
         <div class="container-fluid">
             <div class="row">
                 <?php
@@ -41,9 +42,9 @@ include_once("../../inc/MySQLConnection.php");
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <div class="row page-header">
                         <h1 class="col-md-6">Apartado de recursos</h1>
-                        <div id="info" class="col-md-6 alert alert-info text-center" role="alert">
+                        <div id="message" class="col-md-6 alert alert-info text-center" role="alert">
                             <span class="glyphicon glyphicon-info-sign"></span>
-                            Para apartar un recurso, primero seleccione el horario durante el cual se utilizará
+                            Seleccione el recurso y después el horario durante el cual se utilizará
                         </div>
                     </div>
                     <div class="row">
@@ -62,35 +63,34 @@ include_once("../../inc/MySQLConnection.php");
                                 </fieldset>
                             </div>
                             <div class="form-group">
-                                <label for="resource">Recurso</label>
+                                <label for="resource" class="required">Recurso</label>
                                 <select name="" id="resource" class="form-control inputs">
                                     <option value="">Selecciona un recurso...</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <fieldset>
-                                    <legend>Tipo de apartado</legend>
-                                    <div class="col-sm-6 col-md-6">
+                                    <div class="col-sm-6 col-md-12">
                                         <input type="radio" name="type" id="occasional" data-type="o" class="type" checked>
-                                        <label for="occasional">Ocasional</label>
+                                        <label for="occasional">Apartado de una sesión</label>
                                     </div>
-                                    <div class="col-sm-6 col-md-6">
+                                    <div class="col-sm-6 col-md-12">
                                         <input type="radio" name="type" id="temporary" data-type="t" class="type">
-                                        <label for="temporary">Temporal</label>
+                                        <label for="temporary">Apartado recurrente</label>
                                     </div>
                                 </fieldset>
                             </div>
                             <div class="temporary">
                                 <div class="form-group">
-                                    <label for="startDate">Fecha de inicio</label>
+                                    <label for="startDate" class="required">Fecha de inicio</label>
                                     <input type="text" class="form-control datepick" name="" id="startDate">
                                 </div>
                                 <div class="form-group">
-                                    <label for="endDate">Fecha de fin</label>
+                                    <label for="endDate" class="required">Fecha de fin</label>
                                     <input type="text" class="form-control datepick" name="" id="endDate">
                                 </div>
                                 <div class="form-group">
-                                    <label>Días a apartar</label>
+                                    <label class="required">Días a apartar</label>
                                     <div class="form-group">
                                         <label class="col-sm-4" for="sun">
                                             <input type="checkbox" name="days" id="sun" class="daysOfTheWeek" value="0">
@@ -119,45 +119,48 @@ include_once("../../inc/MySQLConnection.php");
                             </div>
                             <div class="clearfix"></div>
                             <div class="form-group">
-                                <label for="lendTo">Solicitante</label>
+                                <label for="lendTo" class="required">Solicitante</label>
                                 <input type="hidden" name="" id="from" class="inputs">
                                 <input type="hidden" name="" id="to" class="inputs">
                                 <select name="" id="lendTo" class="form-control inputs">
                                 </select>
                             </div>
-                            <div class="form-group">
-                                <label for="area">Licenciatura / Área</label>
-                                <select name="" id="area" class="form-control inputs">
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="lesson">Materia / Actividad</label>
-                                <input type="text" name="" id="lesson" class="form-control inputs">
-                            </div>
-                            <div class="form-group">
-                                <label for="grade">Semestre</label>
-                                <select name="" id="grade" class="form-control inputs">
-                                    <option value="">Selecciona un semestre...</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="comments">Comentarios</label>
-                                <textarea name="" id="comments" cols="30" rows="5" class="form-control inputs"></textarea>
+                            <div class="optional">
+                                <div class="form-group">
+                                    <label for="area">Licenciatura / Área</label>
+                                    <select name="" id="area" class="form-control inputs">
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lesson">Materia / Actividad</label>
+                                    <input type="text" name="" id="lesson" class="form-control inputs">
+                                </div>
+                                <div class="form-group">
+                                    <label for="grade">Semestre</label>
+                                    <select name="" id="grade" class="form-control inputs">
+                                        <option value="">Selecciona un semestre...</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="comments">Comentarios</label>
+                                    <textarea name="" id="comments" cols="30" rows="5" class="form-control inputs"></textarea>
+                                </div>
                             </div>
                             <button class="btn btn-primary col-xs-12 col-sm-12 col-md-12" type="button" id="separate">Apartar recurso</button>
                         </div>
-                        <div>
-                            <div id='calendar'></div>
+                        <div class="calendar-container">
+                            <div class='col-sm-8 col-md-9' id='calendar'></div>
+                            <img src="../../imgs/icons/drag.gif" alt="" class="gif">
                         </div>
                     </div>
                 </div>
