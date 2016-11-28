@@ -68,8 +68,8 @@ include_once("../../inc/MySQLConnection.php");
             Días: <span id="days"></span><br>
             Comentarios: <span id="comments"></span><br>
             Fecha del apartado: <span id="startTime"></span><br>
-            <input type="text" name="clave" id="clave" >
-            <input type="submit" name="submit" id="submit" value="Marcar como entregado"><br> 
+            <input type="text" name="matricula" id="matricula"  >
+            <input type="submit" name="submit" id="submit" value="Marcar como entregado" width="40%" ><br> 
             <p id="eventInfo"></p>
             <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
         </div>

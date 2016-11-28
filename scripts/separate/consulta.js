@@ -10,7 +10,7 @@ $(function() {
         },
         defaultView: 'agendaDay',
         editable: false,
-        selectable: true,
+        selectable: false,
         eventOverlap: false,
         minTime: "07:00:00",
         maxTime: "22:00:00",
