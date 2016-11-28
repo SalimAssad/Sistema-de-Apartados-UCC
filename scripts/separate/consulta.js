@@ -39,8 +39,8 @@ $(function() {
                     var event = response[0];
                     $("#startTime").html(event.start);
                     $("#endTime").html(event.end);
-                    $("#from").html(even.from);////
-                    $("#to").html(even.to);////
+                    $("#from").html(event.from);////
+                    $("#to").html(event.to);////
                     $("#name").html(event.name);
                     $("#lesson").html(event.lesson);
                     $("#diasApartado").html(event.days);/////
