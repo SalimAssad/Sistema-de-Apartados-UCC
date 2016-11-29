@@ -1,5 +1,5 @@
 <?php
-//include_once("../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 //Tu código que necesites
 ?>
@@ -68,7 +68,7 @@ include_once("../../inc/MySQLConnection.php");
             Usuario: <span id="name"></span><br>
             Materia / Actividad: <span id="lesson"></span><br>
             Área / Licenciatura: <span id="area"></span><br>
-            Días: <span id="days"></span><br>
+            Días: <span id="diasApartado"></span><br>
             Comentarios: <span id="comments"></span><br>
             Fecha del apartado: <span id="startTime"></span><br>
             <input type="text" name="matricula" id="matricula"   >
