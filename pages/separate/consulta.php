@@ -72,7 +72,7 @@ include_once("../../inc/MySQLConnection.php");
             Comentarios: <span id="comments"></span><br>
             Fecha del apartado: <span id="startTime"></span><br>
             <input type="text" name="matricula" id="matricula"   >
-            <input type="button" name="submit" id="button" value="Marcar como entregado" ><br> 
+            <button type="button" name="submit" id="button" class="btn btn-sm">Marcar como entregado</button><br> 
             <p id="eventInfo"></p>
             <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
         </div>
