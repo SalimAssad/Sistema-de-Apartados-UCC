@@ -9,9 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Inicia Sesión</title>
         
-<link href="pages/Module 4/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap/css/signin.css" rel="stylesheet">
 
-<link href="pages/Module 4/examples/signin/signin.css" rel="stylesheet">
         <script src="utils/jquery-1.12.3.min.js">
         </script>
     </head>
@@ -32,15 +32,16 @@
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión </button>
-      </form>
-            <br> <br>
+    <br>
             <div id="error">
                 <?php
                 if(isset($_GET["error"])){
-                    echo "Los datos son incorrectos";
+                    echo '<div class="alert alert-warning">Los datos son incorrectos</div>';
                 }
                 ?>
             </div>  
+      </form>
+            
         </div>
     </body>
 </html>
