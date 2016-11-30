@@ -10,7 +10,7 @@ $pass2=trim(filter_input(INPUT_POST,"password2",FILTER_SANITIZE_STRING));
     $row = mysqli_fetch_assoc($query);
     $US_ID= $row['TO_USERID'];
     $NAME =$row['TO_NAME'];
-    $respuesta= $US_ID;
+    //$respuesta= $US_ID;
     if($pass==""||$pass1==""||$pass2=="") {
 		$error_message="Por favor, llene los campos requeridos";
 	}

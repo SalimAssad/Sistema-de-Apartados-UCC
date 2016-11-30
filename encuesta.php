@@ -1,82 +1,167 @@
 <?php
 if($_SERVER["REQUEST_METHOD"]=="POST") {
-titulo=trim(filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING));
-$pass1=trim(filter_input(INPUT_POST,"password1",FILTER_SANITIZE_STRING));
-$pass2=trim(filter_input(INPUT_POST,"password2",FILTER_SANITIZE_STRING));
+    $question=trim(filter_input(INPUT_POST,"question",FILTER_SANITIZE_STRING));
     include_once("inc/validateLogin.php");
     include_once("inc/MySQLConnection.php");
-    $sql="select * from tokens where TO_TOKEN = md5($pass)";
-   	$query = mysqli_query($connection,$sql);
-    $row = mysqli_fetch_assoc($query);
-    $US_ID= $row['TO_USERID'];
-    $NAME =$row['TO_NAME'];
-    $respuesta= $US_ID;
-    if($pass==""||$pass1==""||$pass2=="") {
-		$error_message="Por favor, llene los campos requeridos";
-	}
-        if($pass1!=$pass2) {
-            $error_message="No coinciden las contraseñas";
-           }else{
-                $password=$pass1;
-                    if($US_ID!=""){
-                    include_once("inc/MySQLConnection.php");
-                    $query3="UPDATE `usuarios` SET `US_PASS` = md5('$password') WHERE `usuarios`.`US_ID` = $US_ID";
-                    $sql3=mysqli_query($connection,$query3);
-                    //$respuesta.=$query3;
-                    $error_message="Se a realizado el cambio.";
-                    }if($sql3){
-                    include_once("inc/MySQLConnection.php");
-            $query2="UPDATE `tokens` SET `TO_STATUS` = b'0',`TO_NAME` = '-$NAME' WHERE `tokens`.`TO_USERID` = $US_ID";
-                    $sql2=mysqli_query($connection,$query2);
-                    //$respuesta.=$query2;
-                    $error_message="Se a realizado el cambio.";   
-                    header('Location: index.php');
-                    }else echo mysqli_error($connection);   
-        } 
 }
 ?>
-<!DOCTYPE html>
-<html lang='es'>
+    <!DOCTYPE html>
+    <html lang='es'>
     <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Cambiar contraseña</title>
-    <link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/bootstrap/css/signin.css" rel="stylesheet">
+        <meta charset="utf-8">
+        <title>Añadir Encuesta</title>
+        <link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/dashboard.css" rel="stylesheet">
+        <link href="css/global.css" rel="stylesheet">
+        <script src="utils/jquery-1.12.3.min.js">
+        </script>
+        <script src="css/bootstrap/js/bootstrap.min.js">
+        </script>
+        <script src="scripts/addResourceScript.js">
+        </script>
     </head>
-<body>
-    <div class="container">
-        <form  id="frmRestablecer" class="form-signin" method="post" name="correo" action="Reset_pass.php">
-            <h2 class="form-signin-heading">Cambiar contraseña</h2>
-                <?php if(isset($_GET["status"]) && $_GET["status"]=="thanks") {
-				echo "<p>Su contraseña se ha modifcado.</p>";
-			     } else {
-                    if(isset($error_message)) {
-                        echo "<div class='alert alert-warning'>$error_message</div>";
-                    } else {
-                        echo "<div class='alert alert-warning'>Llene el siguiente formulario</div>";
-                    }
+    <body>
+    <?php
+    include_once("inc/nav.php");
+    ?>
+    <div class="container-fluid">
+        <div class="row">
+            <?php
+            include_once("inc/sidebar.php");
+            ?>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <?php
+                if (isset($_GET['error'])) {
+                    ?>
+                    <div class="alert alert-danger">
+                        <?php
+                        echo $_GET['error'];
+                        ?>
+                    </div>
+                    <?php
+                }
                 ?>
-        <label for="email"> Escriba aqui el token:  </label>
-        <input type="password" name="password" class="form-control" placeholder="Ingrese su token" required autofocus     value="<?php if(isset($password)) { echo $password; } ?>">
-            
-            <label for="email"> Escriba su nueva contraseña: </label>
-        <input type="password" name="password1" class="form-control" placeholder="Contraseña nueva" required autofocus     value="<?php if(isset($password1)) { echo $password1; } ?>">
-            
-            <label for="email"> Confirme su nueva contraseña: </label>
-            <input type="password" name="password2" class="form-control" placeholder="Repita contraseña nueva" required autofocus     value="<?php if(isset($password2)) { echo $password2; } ?>">
-        <div >
-        <input type="submit" class="btn btn-lg btn-primary btn-block" value="Cambiar contraseña" >
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////   -->     
+                <form action="encuesta.php" method="post">
+                     <div class="col-sm-12">
+                                <h2 class="sub-header">Encuestas</h2>
+                                <div class="col-sm-12">
+                                    <div>
+                                        <label for="reference">Crear Encuesta:</label>
+                                    </div>
+                                    <div>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="encuesta" class="form-control" id="reference" placeholder="Ingrese su encuesta1 aqui">   
+                                            </input>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="button" class="form-control btn-success"
+                                            onclick="addPreguntas()">
+                                            Añadir
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="reference-container" class="col-sm-12">
+                                    
+                                </div>
+                            </div>
+                       <div class="col-sm-12">
+                                <h2 class="sub-header">Preguntas</h2>
+                                <div class="col-sm-12">
+                                    <div>
+                                        <label for="reference">Añadir Pregunta:</label>
+                                    </div>
+                                    <div>
+                                        <div class="col-sm-8">
+                                            <input type="text" name="question" class="form-control" id="reference" placeholder="Ingrese su pregunta aqui">   
+                                            </input>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="button" class="form-control btn-success"
+                                            onclick="addPreguntas()">
+                                            Añadir
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="reference-container" class="col-sm-12">
+                                    
+                                </div>
+                            </div>
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////   -->     
+                            <div class="col-sm-12">
+                                <h2 class="sub-header">Respuestas</h2>
+                                <div class="col-sm-12">
+                                    <div>
+                                        <label for="reference">Añadir Respuesta</label>
+                                    </div>
+                                    <div>
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="reference">
+                                                <option value="">Seleccione la pregunta asociada...</option>
+                                                <?php
+                                                $auxSQL = mysqli_query($connection, "SELECT * FROM preguntas");
+                                                $strOptions = "";
+                                                while ($row = mysqli_fetch_assoc($auxSQL)) {
+                                                    $strOptions = $strOptions . "<option value='$row[PR_ID]-$row[PR_QUESTION]'";
+                                                    if (isset($reference) && $reference == $row["PR_ID"]) {
+                                                        $strOptions = $strOptions . " selected";
+                                                    }
+                                                    $strOptions = $strOptions . ">$row[PR_QUESTION]</option>";
+                                                    echo $strOptions;
+                                                    $strOptions = "";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col-sm-2">
+                                            <select class="form-control" id="reference">
+                                                <option value="">Seleccione..</option>
+                                                <option value="1">Abierta</option>
+                                                <option value="0">Opción multiple</option>
+                                            </select>
+                                        </div>
+                                        
+                                         <div class="col-sm-4">
+                                            <input class="form-control" id="reference" placeholder="Ingrese las opciones si es de opción multiple">
+                                               
+                                            </input>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="button" class="form-control btn-success"
+                                                    onclick="addQuestion()">
+                                                Añadir
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+<!--////////////////////////////////////////////////////////  ////////////////////////////////////////////////-->
+    <div id="reference-container" class="col-sm-12">
+        <h2 class="sub-header"> </h2>
+        <div class="row top-margin">
+            <div class="col-sm-6">
+                <button type="button" class="form-control btn-warning"
+                onclick="window.location.href='<?php if ($returnTo == "equipment") echo "equipmentList.php"; else echo "roomList.php"; ?>'">
+                Cancelar
+                </button>
+            </div>
+                <div class="col-sm-6">
+                <button type="submit" class="form-control btn-success" name="action"
+                        value="<?php if (isset($id)) echo "update"; else echo "add"; ?>">Guardar
+                </button>
+            </div>
         </div>
-            <br>
-        <div <?php if($respuesta==""){  
-                    }else   echo "<div class='alert alert-warning'>$respuesta</div>";?>
-        </div>
-        </form> 
-        <script src="inc/js/jquery-1.11.1.min.js"></script>
-        <script src="inc/js/bootstrap.min.js"></script>
-        <?php } ?>
     </div>
-  </body>
-</html>
+                            </div>
+                        </div>                
+                </form>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+<?php
+unset($_SESSION['references']);
+?>

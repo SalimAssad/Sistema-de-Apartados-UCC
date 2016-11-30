@@ -23,7 +23,6 @@ $email=trim(filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL));
             if($email!=""){
             $query2="INSERT INTO tokens(TO_ID, TO_USERID, TO_NAME, TO_TOKEN, TO_CREATED, TO_STATUS) VALUE ('NULL', $US_ID, $US_SID, md5($token),NOW(), b'1')";
             $sql2=mysqli_query($connection,$query2);
-            //$respuesta=$query2;
             }
                 if($sql2){
                 $respuesta= "Usuario info: $US_ID , $US_SID , $token , $EMAIL .\n";
@@ -46,8 +45,6 @@ $email=trim(filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL));
             include("inc/class.smtp.php");
             $mail = new PHPMailer;
     //////////////////////////////////////////////////////////////////////////////////////////////
-    ?>
-    <!--
     /////////////////////////// Configuracion de envio de correo ////////////////////////////////
     require("inc/validaremail.php");
 	if(!isset($error_message)) {
@@ -71,8 +68,7 @@ $email=trim(filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL));
 		}
 		$error_message ='Ya hubo P2. ';
 		$error_message.='Error: ' . $mail->ErrorInfo;	
-	} 
---><?php
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -84,7 +80,6 @@ $email=trim(filter_input(INPUT_POST,"email",FILTER_SANITIZE_EMAIL));
     <title>Restaurar contraseña</title>
     <link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap/css/signin.css" rel="stylesheet">
-    
     </head>
 <body>
     <div class="container">
