@@ -237,7 +237,7 @@ function showMessage(icon, msg, style) {
     $("#message").fadeIn();
     setTimeout(function() {
         $("#message").fadeOut();
-    }, 3000);
+    }, 5000);
 }
 
 /* 
@@ -273,7 +273,7 @@ function showConfirmation(input) {
     var userResponse;
     var popup = "<div id='confirmation' class='popup'>"+
                     "<h4>¿Desea continuar con el apartado?</h4>"+
-                    "<div id='confirm-table' class='row col-md-12 col-sm-12'>"+
+                    "<div id='confirm-table' class='col-md-12 col-sm-12'>"+
                         "<table class='table table-responsive'>"+
                             "<thead>"+
                             "</thead>"+
@@ -286,8 +286,7 @@ function showConfirmation(input) {
                                     "<th>Hasta </th><td id='end-confirm'></td>"+
                                 "</tr>"+
                                 "<tr>"+
-                                    "<th>De </th><td id='from-confirm'></td>"+
-                                    "<th>A </th><td id='to-confirm'></td>"+
+                                    "<th colspan='2'>Horario </th><td id='from-confirm'></td><td id='to-confirm'></td>"+
                                 "</tr>"+
                                 "<tr>"+
                                     "<th colspan='2'>Días solicitados </th><td colspan='2' id='daysOfTheWeek-confirm'></td>"+
@@ -310,14 +309,14 @@ function showConfirmation(input) {
                             "</tbody>"+
                         "</table>"+
                     "</div>"+
-                    "<div class='row col-md-12 col-sm-12 margin-top'>"+
+                    "<div class='col-md-12 col-sm-12 margin-top'>"+
                         "<label for='verifCode'>Introduce el código de verificación</label>"+
                         "<input type='text' id='verifCode' class='form-control'/>"+
                         "<div class='verification-error'></div>"+
                     "</div>"+
-                    "<div class='row col-md-12 col-sm-12 margin-top'>"+
-                        "<button id='cTrue' class='btn btn-primary col-md-5 col-sm-5 col-xs-5'>Enviar</button>"+
-                        "<button id='cFalse' class='btn btn-danger col-md-5 col-sm-5 col-xs-5 col-xs-offset-1 col-sm-offset-2 col-md-offset-2'>Cancelar</button>"+
+                    "<div class='col-md-12 col-sm-12 margin-top'>"+
+                        "<button id='cTrue' class='btn btn-primary col-md-5 col-sm-5 col-xs-5'>Apartar</button>"+
+                        "<button id='cFalse' class='btn btn-danger col-md-5 col-sm-5 col-xs-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-2'>Cancelar</button>"+
                     "</div>"+
                 "</div>";
     var block = "<div id='block'></div>";
@@ -372,6 +371,12 @@ function showConfirmation(input) {
     $("#lendTo-confirm").text($("#lendTo option:selected").text());
     $("#area-confirm").text($("#area option:selected").text());
 
+    if(input.start == input.end) {
+        $("#daysOfTheWeek-confirm").parent().remove();
+        $("#start-confirm").attr("colspan","2").next().remove();
+        $("#start-confirm").next().remove();
+        $("#start-confirm").prev().attr("colspan","2").text("Durante el día");
+    }
     // Optional fields - Only tested on Chrome
     if(!input.grade)
         $("#grade-confirm").parent().remove();
@@ -551,6 +556,8 @@ function insertEvent(input) {
             } else {
                 icon = "glyphicon-remove-sign";
                 msg = "Hubo un error, intente de nuevo, por favor";
+                if(response == "ALREADY SEPARATED")
+                    msg = "Este recurso ya se encuentra apartado en al menos un día de los definidos, intente con otro horario, por favor.";
                 styleAlert = "alert-danger";
             }
             $("#calendar").fullCalendar('refetchEvents');

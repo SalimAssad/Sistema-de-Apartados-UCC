@@ -1,12 +1,10 @@
 <?php
 	// TODO LIST -->
-	// - Validar los permisos de los usuarios
-	// - Validar entradas
+	// - Validar los permisos de los usuarios, todos serán administradores por el alcance
 	session_start();
 	if(!isset($_SESSION['id']))
 		returnFalse("SESSION ERROR");
 
-	//$_SESSION['id'] = 1;
 	require_once("../../../inc/MySQLConnection.php");
 
 	$resource = trim(filter_input(INPUT_POST, "resource", FILTER_SANITIZE_NUMBER_INT));
@@ -50,6 +48,9 @@
 
 	$grade = ($grade >= 1 && $grade <= 10) ? $grade : "";
 
+	if(!canBeSeparated($resource, $start, $end, $from, $to, $connection))
+		returnFalse("ALREADY SEPARATED");
+
 	mysqli_query($connection, "START TRANSACTION");
 	$sql = "INSERT INTO apartados 
 				(AP_RESID, AP_DATE, AP_START, AP_END, 
@@ -59,7 +60,7 @@
 				$user, '$address', '$grade', '$lesson',  
 				$area, $lendTo, '$comments')";
 	$query = mysqli_query($connection, $sql);
-	if(!$query) error($connection, "$sql - QUERY ERROR"); //die(mysqli_error($connection));
+	if(!$query) error($connection, "QUERY ERROR - IIA"); //die(mysqli_error($connection));
 
 	// Now we ask the server for the previously inserted data
 	// to attach the days where the resource has to be separated
@@ -76,7 +77,7 @@
 						(HO_SEPARATEID, HO_DAY, HO_FROM, HO_TO) 
 					values ('$ap_id', $day, '$from', '$to')";
 			$query = mysqli_query($connection, $sql);
-			if(!$query) error($connection, "$sql - QUERY ERROR");
+			if(!$query) error($connection, "QUERY ERROR - IIH");
 		}
 	} else {
 		// The server couldn't retrieve data
@@ -85,6 +86,48 @@
 	mysqli_query($connection, "COMMIT");
 
 	echo "TRUE"; // Response to AJAX
+
+	function canBeSeparated($resID, $start, $end, $from, $to, $connection) {
+		$from = date("H:i:s", strtotime("$from + 1 minute"));
+		$to = date("H:i:s", strtotime("$to - 1 minute"));
+		$sql = "SELECT HO_FROM, HO_TO, HO_DAY, AP_START, 
+					   AP_END, RE_ALIAS, AP_ID, RE_ID
+				FROM horarios 
+				JOIN apartados ON
+				AP_ID = HO_SEPARATEID
+				JOIN recursos ON
+				RE_ID = AP_RESID
+				JOIN tipos_equipos ON
+				TI_ID = RE_HWTYPE
+				WHERE 
+					((AP_START BETWEEN '$start' AND '$end') 
+					OR 
+					(AP_END BETWEEN '$start' AND '$end')
+					OR 
+					(
+						(AP_START <= '$start') 
+						AND
+						(AP_END >= '$end')
+					))
+					AND
+					((HO_FROM BETWEEN '$from' AND '$to') 
+					OR 
+					(HO_TO BETWEEN '$from' AND '$to')
+					OR 
+					(
+						(HO_FROM <= '$from') 
+						AND
+						(HO_TO >= '$to')
+					))
+					AND RE_ID = $resID";
+		$query = mysqli_query($connection, $sql);
+		if(!$query) returnFalse("QUERY ERROR - CBS");
+
+		if(mysqli_num_rows($query) > 0)
+			return false; // ALREADY SEPARATED
+
+		return true; // YES, CAN BE SEPARATED
+	}
 
 	function validateDate($date) {
         list($year,$month,$day) = array_pad(preg_split("/[\/\\-]/",$date,3),3,0);

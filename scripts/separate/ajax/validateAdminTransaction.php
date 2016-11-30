@@ -1,6 +1,5 @@
 <?php
 	session_start();
-	$_SESSION['code'] = 1995;
 	// The code must be inserted when the user enters the software
 	$verificationCode = $_SESSION['code'];
 

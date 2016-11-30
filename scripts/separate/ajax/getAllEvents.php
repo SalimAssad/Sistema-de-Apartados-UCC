@@ -38,12 +38,11 @@
 	if($resID != null)
 		$sql .= " AND RE_ID = $resID ";
 
-	$sql .= "ORDER BY AP_ID"; // Ordered to avoid errors at setting the color hehe
+	$sql .= "ORDER BY AP_ID";
 	$query = mysqli_query($connection, $sql);
 	if(!$query) error1();
 	
 	$events = array();
-	$actualID = 0;
 	if(mysqli_num_rows($query) > 0){
 		while($row = mysqli_fetch_assoc($query)) {
 			$day = $row['HO_DAY'];
@@ -99,15 +98,3 @@
 		echo "An error ocurred while trying to get the data.";
 		exit();
 	}
-	
-	/*function generateRandomColor($colorsToIgnore) {
-	    $r = 0; $g = 0; $b = 0;
-	    $color = "";
-	    do {
-	        $r = dechex(rand(0, 255));
-	        $g = dechex(rand(0, 255));
-	        $b = dechex(rand(0, 255));
-	        $color = "#$r$g$b";
-	    } while(in_array($color, $colorsToIgnore));
-	    return $color;
-	}*/
