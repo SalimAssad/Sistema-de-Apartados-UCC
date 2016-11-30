@@ -10,7 +10,7 @@ $(function() {
         },
         defaultView: 'agendaDay',
         editable: false,
-        selectable: true,
+        selectable: false,
         eventOverlap: false,
         minTime: "07:00:00",
         maxTime: "22:00:00",
@@ -33,16 +33,22 @@ $(function() {
                 dataType: 'json',
                 method: 'POST',
                 data: { id: calEvent.id },
+
                 success: function(response) {
+
                     var event = response[0];
                     $("#startTime").html(event.start);
                     $("#endTime").html(event.end);
+                    $("#from").html(event.from);////
+                    $("#to").html(event.to);////
                     $("#name").html(event.name);
                     $("#lesson").html(event.lesson);
+                    $("#diasApartado").html(event.days);/////
                     $("#area").html(event.area);
                     $("#comments").html(event.comments);
                     $("#eventContent").attr("title", event.title);
-                    $("#eventContent").dialog({ modal: true, title: event.title, width:350});    
+                    $("#eventContent").dialog({ modal: true, title: event.title, width:350});  
+
                 }
             });
 

@@ -2,6 +2,10 @@ html, body {
 	height: 100%;
 }
 
+.margin-top {
+	margin-top: 5%;
+}
+
 .separate {
 	margin-bottom: 20%;
 }
@@ -10,7 +14,8 @@ html, body {
 	margin-top: 5px;
 }
 
-.fc-day-grid, .fc-time-grid, .datepick:hover {
+.fc-day-grid, .fc-time-grid, 
+.datepick:hover, #selectDate:hover {
 	cursor: pointer;
 }
 
@@ -38,6 +43,11 @@ textarea#comments {
 	border-color: #a8011d;
 }
 
+#confirmation > h4 {
+	text-align: center;
+	font-weight: bold;
+}
+
 #confirm-table {
 	max-height: 250px;
 	overflow-y: auto;
@@ -45,6 +55,7 @@ textarea#comments {
 }
 
 .verification-error {
+	display: none;
 	color: #a8011d;
 }
 

@@ -7,6 +7,12 @@ var input;
 $(function() {
     var minSelection;
     var maxSelection;
+    var options = {
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        minDate: 0
+    };
     actualEvents = [];
     input = {
         "resource": null,       //integer: the resource's id
@@ -22,14 +28,28 @@ $(function() {
         "to": null              //string: a "hh:mm:ss" formatted time, the resource won't be available until this hour
     };
 
+
     getDataFromTable("areas", "area");
     getDataFromTable("usuarios", "lendTo");
 
     $('#calendar').fullCalendar({
+        customButtons: {
+            selectDate: {
+                text: 'Seleccionar día...',
+                click: function() {
+                    $("#selectDate").remove();
+                    $(this).parent().append("<input type='text' readonly class='form-control' style='width: 100px' id='selectDate' placeholder='Clic aquí'/>");
+                    $("#selectDate").datepicker(options);
+                    $("#selectDate").change(function() {
+                        $("#calendar").fullCalendar( 'gotoDate', $(this).val() );
+                    });
+                }
+            }
+        },
         header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,agendaWeek,agendaDay'
+            left: 'title next',
+            center: '',
+            right: 'selectDate'
         },
         allDaySlot: false,
         defaultView: 'agendaDay',
@@ -82,12 +102,6 @@ $(function() {
         }
     });
 
-    var options = {
-        dateFormat: "yy-mm-dd",
-        changeMonth: true,
-        changeYear: true,
-        minDate: 0
-    };
     $(".datepick").datepicker(options).on("change", function() {
         if(getDate(this) == null)
             $(this).addClass("error");
@@ -116,7 +130,13 @@ $(function() {
     $(".type").on("change", function() {
         var sepType = $(".type:checked").data("type");
         if(sepType == "t") {
-            $(".temporary").fadeIn();
+            $(".temporary").fadeIn(400, function() {
+                if(maxSelection != undefined &&
+                    minSelection != undefined) {
+                    $("#from").val(minSelection.format().split("T")[1]).change();
+                    $("#to").val(maxSelection.format().split("T")[1]).change();
+                }
+            });
         } else {
             $(".temporary").fadeOut(400, function() {
                 if(maxSelection != undefined &&
@@ -163,7 +183,7 @@ $(function() {
         input = handleDaysOfTheWeek(input);
     });
 
-    $("#lendTo").on("change", function() {
+    $("#area").on("change", function() {
         if($(".optional").css("display") == "none"
             && $(this).val() != "")
             $(".optional").fadeIn();
@@ -183,7 +203,7 @@ function validateInputs(fields) {
     var valid = true;
     var msg = "";
     //From and To are handled apart
-    var notRequired = ["lesson","area","grade","comments","from","to"];
+    var notRequired = ["lesson","grade","comments","from","to"];
     for(data in fields) {
         if(notRequired.indexOf(data) == -1) { 
             //It means that this field is required
@@ -201,7 +221,8 @@ function validateInputs(fields) {
         $(".gif").fadeIn();
         setTimeout(function() { $(".gif").fadeOut(); },6400);
     }
-    showMessage("glyphicon-remove-sign", msg, "alert-danger");
+    if(!valid)
+        showMessage("glyphicon-remove-sign", msg, "alert-danger");
     return valid;
 }
 
@@ -219,7 +240,12 @@ function showMessage(icon, msg, style) {
     }, 3000);
 }
 
+/* 
+    Does an Ajax request to get the code introduced by the user
+    when logged in */
 function validateAdminTransaction(code) {
+    if(code == "")
+        return false;
     var validate = false;
     $.ajax({
         data: { "verificationCode": code },
@@ -247,7 +273,7 @@ function showConfirmation(input) {
     var userResponse;
     var popup = "<div id='confirmation' class='popup'>"+
                     "<h4>¿Desea continuar con el apartado?</h4>"+
-                    "<div id='confirm-table'>"+
+                    "<div id='confirm-table' class='row col-md-12 col-sm-12'>"+
                         "<table class='table table-responsive'>"+
                             "<thead>"+
                             "</thead>"+
@@ -284,14 +310,14 @@ function showConfirmation(input) {
                             "</tbody>"+
                         "</table>"+
                     "</div>"+
-                    "<div class='row'>"+
+                    "<div class='row col-md-12 col-sm-12 margin-top'>"+
                         "<label for='verifCode'>Introduce el código de verificación</label>"+
                         "<input type='text' id='verifCode' class='form-control'/>"+
-                        "<div class='verification-error'>El valor ingresado no coincide con el que se ha definido.</div>"+
+                        "<div class='verification-error'></div>"+
                     "</div>"+
-                    "<div class='row'>"+
-                        "<button id='cTrue' class='btn btn-primary col-md-4 col-sm-4 col-xs-4 col-xs-offset-1 col-sm-offset-1 col-md-offset-1'>Enviar</button>"+
-                        "<button id='cFalse' class='btn btn-danger col-md-4 col-sm-4 col-xs-4 col-xs-offset-1 col-sm-offset-2 col-md-offset-2'>Cancelar</button>"+
+                    "<div class='row col-md-12 col-sm-12 margin-top'>"+
+                        "<button id='cTrue' class='btn btn-primary col-md-5 col-sm-5 col-xs-5'>Enviar</button>"+
+                        "<button id='cFalse' class='btn btn-danger col-md-5 col-sm-5 col-xs-5 col-xs-offset-1 col-sm-offset-2 col-md-offset-2'>Cancelar</button>"+
                     "</div>"+
                 "</div>";
     var block = "<div id='block'></div>";
@@ -302,14 +328,20 @@ function showConfirmation(input) {
         }); 
     });
     $("#cTrue").click(function() { 
-        if(validateAdminTransaction($("#verifCode").val())) {
-            insertEvent(input);
-            input = resetInputs();
-            $("#confirmation, #block").fadeOut(400, function() {
-                $("#confirmation, #block").remove();
-            });
-        } else {
+        if($("#verifCode").val() == "") {
+            $(".verification-error").text("Por favor, introduzca su código de autenticación");
             $(".verification-error").fadeIn();
+        } else {
+            if(validateAdminTransaction($("#verifCode").val())) {
+                insertEvent(input);
+                input = resetInputs();
+                $("#confirmation, #block").fadeOut(400, function() {
+                    $("#confirmation, #block").remove();
+                });
+            } else {
+                $(".verification-error").text("El valor ingresado no coincide con el que se ha definido al iniciar sesión.");
+                $(".verification-error").fadeIn();
+            }
         }
     });
     $("#verifCode").keyup(function(event){
@@ -341,8 +373,6 @@ function showConfirmation(input) {
     $("#area-confirm").text($("#area option:selected").text());
 
     // Optional fields - Only tested on Chrome
-    if(!input.area)
-        $("#area-confirm").parent().remove();
     if(!input.grade)
         $("#grade-confirm").parent().remove();
     if(!input.lesson)
