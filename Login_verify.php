@@ -25,5 +25,6 @@ if(mysqli_num_rows($query) > 0){
         $_SESSION['user'] = $user;
         $_SESSION['id'] = $row['US_ID'];
         $_SESSION['profile'] = $row['US_PROFILEID'];
-            $_SESSION['code'] = $row['code'];
-}}
+        $_SESSION['code'] =$code;
+    }
+}
