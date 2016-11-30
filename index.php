@@ -26,6 +26,10 @@
     <br>
         <label for="inputPassword" class="sr-only">Contraseña</label>
         <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+    <br>
+    <label for="inputEmail" class="sr-only">Código de operaciones</label>
+    <input type="text" name="code" class="form-control" placeholder="Codigo" required>
+    <br>
         <div class="checkbox">
           <label>
              <a href="Send_reset_email.php" >Olvidaste tu contraseña? Haz click aquí </a>
