@@ -21,22 +21,34 @@ else {
     </script>
     <script src="css/bootstrap/js/bootstrap.min.js">
     </script>
+    <style type="text/css">
+        .center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <?php
 include_once("inc/nav.php");
 ?>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row center">
         <?php
-        include_once("inc/sidebar.php");
+        if($_SESSION['profile']==1 || $_SESSION['profile']==2){
+            include_once("inc/sidebar.php")?>
+
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">Seleccione una opción</h1>
+            <img src="imgs/escudo_ucc.jpg" width="600px" height="378px" align="middle">
+                    <?php
+        }else{
         ?>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">Title</h1>
-
-
-            <h2 class="sub-header">Subtitle</h2>
+            <h1 class="page-header">Seleccione una opción</h1>
+            <img src="imgs/escudo_ucc.jpg" width="600px" height="378px">
         </div>
+        <?php
+        }
+?>
     </div>
 </div>
 </body>

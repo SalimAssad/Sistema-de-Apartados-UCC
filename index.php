@@ -4,51 +4,48 @@
 <!DOCTYPE html>
 <html lang='es'>
     <head>
-        <meta charset="utf-8">
-        <title>Inicia Sesión</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Inicia Sesión</title>
         
-        <link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/global.css" rel="stylesheet">
+<link href="css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap/css/signin.css" rel="stylesheet">
+
         <script src="utils/jquery-1.12.3.min.js">
         </script>
     </head>
- 
-    <body bgcolor="#EEEEEE">
-
-    <br><br>
-    <div align="center">
-
-        <div style="width: 340px; height: 190px; padding: 20px; border: double">
-
-
-            <form action="Login_verify.php" method="Post">
-                
-                <label style="font-size: 14pt"><b>Matrícula:    </b></label>
-                
-                <input class="form-group has-success" style="border-radius:15px;" type="text" name="user" required>
-                
-                <label  style="font-size: 14pt"><b>Contraseña: </b></label>
-                
-                <input class="form-group has-success" style="border-radius:15px;" type="password" name="password" required>
-               <br>
-                <input class="btn btn-primary" type="submit" value="Iniciar sesión">
-                <br> <br>
-                
-                <a href="inc/Send_reset_email.php" >Olvidaste tu contraseña? Haz click aquí </a>
-            </form>
-
-            <br> <br>
+<body>
+    <div class="container">
+<form class="form-signin" action="Login_verify.php" method="Post">
+    
+   <h2 class="form-signin-heading">Bienvenidos</h2>
+    
+        <label for="inputEmail" class="sr-only">Usuario</label>
+        <input type="number" name="user" class="form-control" placeholder="Usuario" required autofocus>
+    <br>
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+    <br>
+    <label for="inputEmail" class="sr-only">Código de operaciones</label>
+    <input type="text" name="code" class="form-control" placeholder="Codigo" required>
+    <br>
+        <div class="checkbox">
+          <label>
+             <a href="Send_reset_email.php" >Olvidaste tu contraseña? Haz click aquí </a>
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesión </button>
+    <br>
             <div id="error">
                 <?php
                 if(isset($_GET["error"])){
-                    echo "Los datos son incorrectos";
+                    echo '<div class="alert alert-warning">Los datos son incorrectos</div>';
                 }
                 ?>
-            </div>
-            <div>
-               
-            </div>     
+            </div>  
+      </form>
+            
         </div>
-    </div>
     </body>
 </html>
