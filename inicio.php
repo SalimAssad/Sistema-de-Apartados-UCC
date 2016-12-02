@@ -21,13 +21,18 @@ else {
     </script>
     <script src="css/bootstrap/js/bootstrap.min.js">
     </script>
+    <style type="text/css">
+        .center {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 <?php
 include_once("inc/nav.php");
 ?>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row center">
         <?php
         if($_SESSION['profile']==1 || $_SESSION['profile']==2){
             include_once("inc/sidebar.php")?>
@@ -38,7 +43,7 @@ include_once("inc/nav.php");
                     <?php
         }else{
         ?>
-            <h1 class="page-header" align="center">Seleccione una opción</h1>
+            <h1 class="page-header">Seleccione una opción</h1>
             <img src="imgs/escudo_ucc.jpg" width="600px" height="378px">
         </div>
         <?php
