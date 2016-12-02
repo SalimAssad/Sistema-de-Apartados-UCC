@@ -37,7 +37,8 @@ include_once("../../inc/MySQLConnection.php");
         <div class="container-fluid">
             <div class="row">
                 <?php
-                include_once("../../inc/sidebar.php");
+                if($_SESSION['profile']==1 || $_SESSION['profile']==2)
+                    include_once("../../inc/sidebar.php");
                 ?>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                     <div class="row page-header">
