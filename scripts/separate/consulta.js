@@ -1,6 +1,18 @@
+var eventId;
 $(function() {
     var minSelection;
     var maxSelection;
+
+    $("#setDelivery").on("click",function(){
+        var matricula = $("#matricula").val();
+        var delivery = $("#setDelivery").val();
+        setDelivery(matricula,delivery);
+    });
+    
+    $("#cancel").on("click",function(){
+        
+    });
+
 
     $('#calendar').fullCalendar({
         header: {
@@ -28,6 +40,7 @@ $(function() {
             //$('#calendar').fullCalendar('unselect');
         },
         eventClick: function (calEvent, jsEvent, view) {  
+            eventId = calEvent;
             $.ajax({
                 url: '../../scripts/separate/ajax/detailOf.php',
                 dataType: 'json',
@@ -46,6 +59,12 @@ $(function() {
                     $("#diasApartado").html(event.days);/////
                     $("#area").html(event.area);
                     $("#comments").html(event.comments);
+                    if(event.inuse == "1"){
+                        $("#setDelivery").text("Marcar como devuelto");
+                    } else{
+                        $("#setDelivery").text("Marcar como entregado");
+                    }
+                    $("#setDelivery").val(event.inuse);
                     $("#eventContent").attr("title", event.title);
                     $("#eventContent").dialog({ modal: true, title: event.title, width:350});  
 
@@ -69,3 +88,17 @@ $(function() {
         }
     });
 });
+
+function setDelivery(matricula,inuse){
+    $.ajax({
+        url:'../../scripts/separate/ajax/setDelivery.php',
+        dataType: 'text',
+        method: 'POST',
+        data:{ id: eventId, matricula: matricula, inuse: delivery },
+        success: function(response){
+            if(response == "TRUE")
+                alert("Se ha registrado la entrega");
+        }
+    });
+
+}
