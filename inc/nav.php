@@ -13,7 +13,6 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/pages/separate/consulta.php">Consultar recursos</a></li>
                 <li><a href="/pages/separate/separateResource.php">Apartar recurso</a></li>
-                <li><a href="#">OPTION 3</a></li>
                 <li><a href="/inc/byebye.php">Salir</a></li>
             </ul>
         </div>

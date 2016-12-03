@@ -37,9 +37,13 @@ include_once("../../inc/MySQLConnection.php");
         <div class="container-fluid">
             <div class="row">
                 <?php
-                include_once("../../inc/sidebar.php");
-                ?>
-                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                if($_SESSION['profile']==1 || $_SESSION['profile']==2) {
+                    include_once("../../inc/sidebar.php"); ?>
+                    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <?php } else {
+                    echo "<div class='col-sm-12 col-md-12 main'>";
+                } ?>
+                
                     <div class="row page-header">
                         <h1 class="col-md-6">Apartado de recursos</h1>
                         <div id="message" class="col-md-6 alert alert-info text-center" role="alert">

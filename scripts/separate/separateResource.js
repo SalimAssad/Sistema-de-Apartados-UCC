@@ -47,7 +47,7 @@ $(function() {
             }
         },
         header: {
-            left: 'title next',
+            left: 'title prev next',
             center: '',
             right: 'selectDate'
         },
