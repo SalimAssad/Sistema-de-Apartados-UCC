@@ -8,8 +8,8 @@
     <ul class="nav nav-sidebar">
         <li><a href="/pages/resources/location.php">Ubicaciones</a></li>
         <li><a href="/pages/areas/addArea.php">Añadir un área</a></li>
-        <li><a href="/login_logs.php">Sesiones iniciadas</a></li>
-        <li><a href="/logout_logs.php">Sesiones cerradas</a></li>
+        <li><a href="/login_logs_dates.php">Sesiones iniciadas</a></li>
+        <li><a href="/logout_logs_dates.php">Sesiones cerradas</a></li>
 
 
     </ul>
