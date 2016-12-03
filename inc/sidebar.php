@@ -11,6 +11,5 @@
         <li><a href="/login_logs_dates.php">Sesiones iniciadas</a></li>
         <li><a href="/logout_logs_dates.php">Sesiones cerradas</a></li>
 
-
     </ul>
 </div>
