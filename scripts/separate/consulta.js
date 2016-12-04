@@ -1,8 +1,5 @@
 var eventId;
 $(function() {
-    var minSelection;
-    var maxSelection;
-
     $("#setDelivery").on("click",function(){
         var matricula = $("#matricula").val();
         var delivery = $("#setDelivery").val();
@@ -26,21 +23,8 @@ $(function() {
         eventOverlap: false,
         minTime: "07:00:00",
         maxTime: "22:00:00",
-        select: function(start, end, jsEvent, view) {
-            $('#calendar').fadeOut(400, function() {
-                $('#calendar').addClass("col-sm-8 col-md-9");
-                $(".separate").fadeIn(400, function() {
-                    $('#calendar').fadeIn();
-                });
-            });
-            //minSelection = start.format();
-            //maxSelection = end.format();
-            minSelection = start;
-            maxSelection = end;
-            //$('#calendar').fullCalendar('unselect');
-        },
         eventClick: function (calEvent, jsEvent, view) {  
-            eventId = calEvent;
+            eventId = calEvent.id;
             $.ajax({
                 url: '../../scripts/separate/ajax/detailOf.php',
                 dataType: 'json',
@@ -91,10 +75,10 @@ $(function() {
 
 function setDelivery(matricula,inuse){
     $.ajax({
-        url:'../../scripts/separate/ajax/setDelivery.php',
+        url:'../../scripts/separate/ajax/setDeliveryStatus.php',
         dataType: 'text',
         method: 'POST',
-        data:{ id: eventId, matricula: matricula, inuse: delivery },
+        data:{ id: eventId, matricula: matricula, inuse: inuse },
         success: function(response){
             if(response == "TRUE")
                 alert("Se ha registrado la entrega");

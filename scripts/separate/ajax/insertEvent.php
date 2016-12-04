@@ -149,6 +149,16 @@
     	return $time;
     }
 
+    /*
+    	This function searches for ids in the database
+    	Parameters:
+    		$connection: the connection to the DataBase 	//Mysqli connection
+    		$id: the id to search for 	//integer
+    		$table: the name of the table in which the id should be 	//String
+    		$field: the name of the field that should contains the id 	//String
+    	Returns:
+    		boolean true if the id does exist in the defined table 
+    		boolean false if not */
     function idExists($connection, $id, $table, $field) {
     	$sql = "SELECT $field FROM $table WHERE $field = '$id'";
     	$query = mysqli_query($connection, $sql);
@@ -165,6 +175,8 @@
 		exit($msg);
 	}
 
+    /* 
+		A function to call when some data is wrong. */
 	function returnFalse($msg) {
 		exit($msg);
 	}
