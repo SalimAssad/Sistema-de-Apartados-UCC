@@ -40,7 +40,47 @@ include_once("../../inc/MySQLConnection.php");
                     <button type="button" class="btn btn-primary">Dar de alta</button>
                     <table class="table">
                         
-                         <?php 
+                        /////////////////////////////////////////////////////////////
+                        
+                        <form action="areaList.php" method="post"> 
+    
+   
+    
+    
+                 Name <br>   
+                  <input type="text"  name="name" value= "">
+                
+                 <br> campus<br>
+          
+                 <select name="campus">
+                                            <option value="">Seleccione</option>
+                                            <option value="TORRENTE">Torrente</option>
+                                            <option value="CALASANZ">Calasanz</option>
+                    
+                    </select>
+    <br> Referencia<br>
+                    <input type="text" name="reference" value="">
+                
+                <input type="submit" value="buscar">
+                
+                </form>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        /////////////////////////////////////////////////////////////////////
+                        
+                        <?php 
                     $sql="select * from areas";
                     $resultado = mysqli_query($connection, $sql);
                     if($resultado){

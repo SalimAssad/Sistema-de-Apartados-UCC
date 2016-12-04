@@ -43,8 +43,44 @@ include_once("../../inc/MySQLConnection.php");
                         <button type="submit" class="btn btn-primary">Dar de alta</button>
                     </div>
                     </form>
+                    
+                    
+                    
+                    ///////////////////
+                        <form action="locationList.php" method="post"> 
+    
+   
+            
+                 <br> Edificio <br>   
+                 <br> <input type="text"  name="pile" value= "">
+                <br> Piso <br>
+                   <input type="text" name="floor" value= "">
+            <br> Departamento<br>
+    <input type="text" name="room" value="">
+                
+                            
+                            <br> Campus<br>
+          
+                        <select name="campus">
+                                                <option value="">Seleccione</option>
+                                                <option value="TORRENTE">Torrente</option>
+                            <option value="CALASANZ">Calasanz</option><br>
+    <br>
+                            
+               <br> <input type="submit" value="buscar">
+                
+                </form>
+                        
+                        
+                        ///////////////////
                         
                     <table class="table">
+                        
+                        
+                        
+                        
+                        
+                        
                         
                         <?php 
                     $sql="select * from ubicaciones";
@@ -60,7 +96,7 @@ include_once("../../inc/MySQLConnection.php");
        <th>Edificio</th>
         <th>Campus</th>
         <th>Piso</th>
-          <th> Aula</th>
+          <th> Departamento</th>
           <th> Opciones </th>
          
       </tr>
