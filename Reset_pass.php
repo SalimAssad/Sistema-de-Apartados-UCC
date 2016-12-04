@@ -1,4 +1,11 @@
 <?php
+session_start();
+if (!isset($_SESSION['user'])){
+    header("Location: index.php");
+}
+if (!isset($_SESSION['status'])){
+    header("Location: index.php");
+}else {
 if($_SERVER["REQUEST_METHOD"]=="POST") {
 $pass=trim(filter_input(INPUT_POST,"password",FILTER_SANITIZE_STRING));
 $pass1=trim(filter_input(INPUT_POST,"password1",FILTER_SANITIZE_STRING));
@@ -10,7 +17,15 @@ $pass2=trim(filter_input(INPUT_POST,"password2",FILTER_SANITIZE_STRING));
     $row = mysqli_fetch_assoc($query);
     $US_ID= $row['TO_USERID'];
     $NAME =$row['TO_NAME'];
+    $status=$row['TO_STATUS'];
     //$respuesta= $US_ID;
+    ////////////// Validar si el usuario tiene estado 1 para hacer el cambio de password ///////////////////////////// 
+    if($status!=1){
+            header('Location: index.php');
+            echo " $user, $status ";
+        }else{
+        header('Location: Reset_pass.php');
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if($pass==""||$pass1==""||$pass2=="") {
 		$error_message="Por favor, llene los campos requeridos";
 	}
@@ -32,7 +47,9 @@ $pass2=trim(filter_input(INPUT_POST,"password2",FILTER_SANITIZE_STRING));
                     $error_message="Se a realizado el cambio.";   
                     header('Location: index.php');
                     }else echo mysqli_error($connection);   
+        }
         } 
+    }
 }
 ?>
 <!DOCTYPE html>

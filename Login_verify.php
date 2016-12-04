@@ -5,7 +5,6 @@ include_once("inc/MySQLConnection.php");
 $user = trim(filter_input(INPUT_POST,"user", FILTER_SANITIZE_NUMBER_INT));
 $password = trim(filter_input(INPUT_POST,"password", FILTER_SANITIZE_STRING));
 $code = trim(filter_input(INPUT_POST,"code", FILTER_SANITIZE_STRING));
-
 $query = mysqli_query($connection, "select US_SID, US_PASS, US_ID, US_PROFILEID from usuarios where US_SID = $user");
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 $query2="select * from tokens where TO_NAME = $user";
@@ -22,6 +21,9 @@ if(mysqli_num_rows($query) > 0){
         $_SESSION['id'] = $row['US_ID'];
         $_SESSION['profile'] = $row['US_PROFILEID'];
         $_SESSION['code'] =$code;
+///////////////////////////////////////////// se agrega estado del token de usuario con el fin de impedir que un usuario que no ha solicitado un nuevo toquen entre a la pagina para cambiar su contraseña //////////////////////////////////////////////
+        $_SESSION['status']=$status;
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         if($status==1){
             header('Location: Reset_pass.php');
             echo " $user, $status ";
