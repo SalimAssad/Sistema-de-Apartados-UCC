@@ -7,7 +7,7 @@
 	$sql = "SELECT RE_ALIAS, AP_START, 
 				   AP_END, US_NAME, US_LASTNAME,
 				   AP_LESSON, AP_GRADE, AR_NAME,
-				   AP_COMMENTS
+				   AP_COMMENTS, AP_INUSE
 			FROM apartados
 			JOIN recursos ON AP_RESID = RE_ID
 			JOIN usuarios ON AP_LENDTO = US_ID
@@ -29,7 +29,8 @@
 		"name" => "$result[US_NAME] $result[US_LASTNAME]",
 		"lesson" => $result['AP_LESSON'],
 		"area" => $result['AR_NAME'],
-		"comments" => $result['AP_COMMENTS']
+		"comments" => $result['AP_COMMENTS'],
+		"inuse" => $result['AP_INUSE']
 	);
 
 	$sql = "SELECT HO_DAY, HO_FROM, HO_TO
