@@ -39,13 +39,13 @@ include_once("../../inc/MySQLConnection.php");
 
 
                     <?php 
-                    $sql="select * from recursos";
-                    $resultado = mysqli_query($connection, $sql);
-                    if($resultado){
-                        $cantidad_recursos=mysqli_num_rows($resultado); 
+    //                $sql="select * from recursos";
+      //              $resultado = mysqli_query($connection, $sql);
+        //            if($resultado){
+          //              $cantidad_recursos=mysqli_num_rows($resultado); 
 
-                        if($cantidad_recursos > 0){
-                    ?>
+            //            if($cantidad_recursos > 0){
+              //      ?>
 
 
 
@@ -61,28 +61,48 @@ include_once("../../inc/MySQLConnection.php");
                                 <th> Opciones</th>
                             </tr>
                         </thead>
-                    <tbody>
+                  <tbody>
                         <?php 
-                            while($fila = mysqli_fetch_assoc($resultado)){
+                    //        while($fila = mysqli_fetch_assoc($resultado)){
                             ?>
                         
-                            <td><?php echo $fila["RE_ALIAS"]?></td>
-                            <td><?php echo $fila["RE_MODEL"]?></td>
-                            <td><?php echo $fila["RE_SERIAL"]?></td>
-                            <td><?php echo $fila["RE_INVENTORY"]?></td>
-                            <td><?php echo $fila["RE_LOCATION"]?></td>
+                            <td><?php //echo $fila["RE_ALIAS"]?></td>
+                        <td><?php //echo $fila["RE_MODEL"]?></td>
+                            <td><?php //echo $fila["RE_SERIAL"]?></td>
+                            <td><?php //echo $fila["RE_INVENTORY"]?></td>
+                            <td><?php //echo $fila["RE_LOCATION"]?></td>
                             <td> <a href="specificEquipment.php=<?php echo $fila["RE_ID"] ?>"><button type="button" class="btn btn-success">Ver detalles</button>    </td>
                         </tr>
-                        <?php }; ?>
+                        <?php //}; ?>
                     
                     </tbody>
                 </table>
-                <?php
-                        }else{
-                            echo "No hay recursos registrados";
-                        }
-                    }
-                    ?>
+                <?php//
+                    //    }else{
+                      //      echo "No hay recursos registrados";
+                        //}
+                    //}
+                    //?>
+                
+                
+                <form action="roomList.php"> 
+                 Alias <br>   
+                  <input type="text"  name="alias" value= "">
+                <br> Campus <br>
+                    <select >
+                            <option value="">Seleccione</option>
+                            <option value="TORRENTE">Torrente</option>
+                            <option value="CALASANZ">Calasanz</option>
+            
+                    </select>
+                        <br> Referencia<br>
+                    <input type="text" name="referencia" value=""> <br> 
+               <br>  <input type="submit" value="Buscar">
+                
+                
+                </form>
+                
+                
         </div>
         </div>
     </div>
