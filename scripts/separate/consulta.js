@@ -44,9 +44,9 @@ $(function() {
                     $("#area").html(event.area);
                     $("#comments").html(event.comments);
                     if(event.inuse == "1"){
-                        $("#setDelivery").text("Marcar como devuelto");
+                        $("#setDelivery").text("Recibir");
                     } else{
-                        $("#setDelivery").text("Marcar como entregado");
+                        $("#setDelivery").text("Entregar");
                     }
                     $("#setDelivery").val(event.inuse);
                     $("#eventContent").attr("title", event.title);
