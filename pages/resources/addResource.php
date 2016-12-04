@@ -1,5 +1,5 @@
 <?php
-include_once("../../inc/validateLogin.php");
+//include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
 
 /* --------------------------------------------
