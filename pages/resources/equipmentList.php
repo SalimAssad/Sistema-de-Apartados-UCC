@@ -48,7 +48,40 @@ include_once("../../inc/MySQLConnection.php");
                     ?>
 
 
-
+<form action="equipmentList.php"> 
+    
+   
+    
+    
+                 modelo <br>   
+                  <input type="text"  name="alias" value= "">
+                <br> alias <br>
+                   <input type="text" name="campus" value= "">
+            <br> serial<br>
+                    <input type="text" name="referencia" value="">
+    <br> No. Inventario <br>   
+                  <input type="text"  name="alias" value= "">
+                <br> Tipo Hardware <br>
+                   <input type="text" name="campus" value= "">
+            <br> campus<br>
+          
+                        <select >
+                                                <option value="">Seleccione</option>
+                                                <option value="TORRENTE">Torrente</option>
+                            <option value="CALASANZ">Calasanz</option>
+                    
+                    </select>
+    <br> Referencia<br>
+                    <input type="text" name="referencia" value="">
+                
+                <input type="submit" value="buscar">
+                
+                </form>
+                    
+                    
+                    
+                    
+                    
 
                     <table class="table">
                         <thead>
