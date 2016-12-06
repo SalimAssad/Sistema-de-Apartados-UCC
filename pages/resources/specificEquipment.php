@@ -1,7 +1,7 @@
 <?php
-//include_once("../../inc/validateLogin.php");
+include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
-//Tu código que necesites
+include_once("resourceFunctions.php");
 ?>
 <!DOCTYPE html>
 <html lang='es'>
@@ -82,7 +82,8 @@ include_once("../../inc/MySQLConnection.php");
         <td> <?php echo $fila["RE_MODIFIED"]?></td>
         <td> <?php echo $fila["RE_LOCATION"]?></td>
         <td> <?php echo $fila["RE_HWTYPE"]?></td>
-        <td><form action="hola.php" method="get" ><button type="submit" class="btn btn-success">Editar</button></form> <a href="deleteEquipment.php?id=<?php echo $fila["RE_ID"] ?>"  ><button type="submit" class="btn btn-danger">Eliminar </button></form>  </td>
+        <td><form action="addResource.php" method="post" ><button type="submit" class="btn btn-success">Editar</button></form>
+            <form action="deleteEquipment.php" method="post"> <button type="submit" class="btn btn-danger" name="RE_ID" value="<?php echo $fila["RE_ID"] ?>">Eliminar </button></form>  </td>
  </td>
       </tr>
                 <?php }; ?>
