@@ -127,7 +127,10 @@ function showCancel(){
     $("#cancelDelivery").on("click",function(event){
         var valCodigo = $("#valCodigo").val();
         var motivo = $("#motivo").val();
-         alert("Se ha cancelado la entrega"); 
+         alert("Se ha cancelado la entrega");
+          $("#confirmation, #block").fadeOut(400,function(){
+            $("#confirmation, #block").remove();
+        });
         
         $.ajax({
             url:'../../scripts/separate/ajax/cancelSeparate.php',
