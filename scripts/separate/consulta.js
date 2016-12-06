@@ -5,9 +5,9 @@ $(function() {
         var delivery = $("#setDelivery").val();
         setDelivery(matricula,delivery);
     });
-    
+
     $("#cancel").on("click",function(){
-        
+
     });
 
 
@@ -80,9 +80,44 @@ function setDelivery(matricula,inuse){
         method: 'POST',
         data:{ id: eventId, matricula: matricula, inuse: inuse },
         success: function(response){
-            if(response == "TRUE")
+            if(response == "TRUE"){
                 alert("Se ha registrado la entrega");
+                $("#eventContent").dialog("close");  
+                $("#matricula").val("");   
+            }
+
         }
     });
 
-}
+},
+    function showCancel(){
+        var popup "<div id='confirmation' class='popup'>"+
+            "<h4>¿Desea cancelar apartado?</h4>"+
+            "<div id='confirm-table' class='col-md-12 col-sm-12'>"+
+            "<table class='table table-responsive'>"+
+            "<thead>"+
+            "</thead>"+
+            "<tbody>"+
+            "<tr>"+
+            "<th colspan='2'>Matricula </th><td colspan='2' id='resource-confirm'><input type='text' id='valMatricula' name='valMatricula'></td>"+
+            "</tr>"+
+            "<tr>"+
+            "<th colspan='2'>Motivo </th><td colspan='2' id='resource-confirm'><textarea rows='5' cols='40' placeholder='Describir motivo de la cancelacion.'></textarea></td>"+
+            "</tr>"+
+            "</tbody>"+
+            "</table>"+
+            "<button type='button' name='cancelar' id='cancelDelivery' class='btn btn-sm'>Cancelar</button>"
+            "</div>";
+        var block = "<div id='block'><div>";
+        $("body").append(block).append(popup);
+        $("#cancel").on("click",function(){
+           $("body").scrollTop(0);
+            showCancel();
+        });
+            
+        
+        
+        
+        
+        
+    };*
