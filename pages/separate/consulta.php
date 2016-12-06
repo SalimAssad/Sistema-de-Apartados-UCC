@@ -18,6 +18,7 @@ include_once("../../inc/MySQLConnection.php");
         <link href="../../css/dashboard.css" rel="stylesheet">
         <link href="../../css/global.css" rel="stylesheet">
         <link href="../../css/separate/separateResource.css" rel="stylesheet">
+        
         <link href="../../css/separate/consulta.css" rel="stylesheet">
         
         <script src="../../utils/jquery-1.12.3.min.js"></script>

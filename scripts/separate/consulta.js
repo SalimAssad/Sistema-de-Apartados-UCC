@@ -1,5 +1,6 @@
 var eventId;
 $(function() {
+       
     $("#setDelivery").on("click",function(){
         var matricula = $("#matricula").val();
         var delivery = $("#setDelivery").val();
@@ -7,6 +8,7 @@ $(function() {
     });
 
     $("#cancel").on("click",function(){
+        showCancel();
 
     });
 
@@ -107,16 +109,18 @@ function setDelivery(matricula,inuse){
             "</tr>"+
             "</tbody>"+
             "</table>"+
-            "<button type='button' name='cancelar' id='cancelDelivery' class='btn btn-sm'>Cancelar</button>"
+            "<button type='button' name='cancelar' id='cancelDelivery' class='btn btn-primary col-md-5 col-sm-5 col-xs-5'>Cancelar</button>"+
+            "<button type='button' name='cerrar' id='cerrar' class='btn btn-danger col-md-5 col-sm-5 col-xs-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-2'>Cerrar</button>"
             "</div>";
         var block = "<div id='block'><div>";
+           event.preventDefault();
         $("body").append(block).append(popup);
-        $("#cancel").on("click",function(event){
-            event.preventDefault();
-            alert("aqui estoy funciono!");
-            
-           $("body").scrollTop(0);
-            showCancel();
+        $("#cerrar").on("click",function(event){
+         
+            $("#confirmation, #block").fadeOut(400,function(){
+                $("#confirmation, #block").remove();
+            });
+         
         });
             
         
