@@ -94,6 +94,7 @@ function setDelivery(matricula,inuse){
 }
 
 function showCancel(){
+     $("#eventContent").dialog("close");
     var popup = "<div id='confirmation' class='popup'>"+
         "<h4>¿Desea cancelar apartado?</h4>"+
         "<div id='confirm-table' class='col-md-12 col-sm-12'>"+
@@ -116,7 +117,7 @@ function showCancel(){
     event.preventDefault();
     $("body").append(block).append(popup);
     $("#cerrar").on("click",function(event){
-
+        
         $("#confirmation, #block").fadeOut(400,function(){
             $("#confirmation, #block").remove();
         });
