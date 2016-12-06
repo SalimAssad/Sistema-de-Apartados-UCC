@@ -117,41 +117,27 @@ function showCancel(){
     event.preventDefault();
     $("body").append(block).append(popup);
     $("#cerrar").on("click",function(event){
-        
         $("#confirmation, #block").fadeOut(400,function(){
             $("#confirmation, #block").remove();
         });
-
     });
 
     $("#cancelDelivery").on("click",function(event){
         var valCodigo = $("#valCodigo").val();
         var motivo = $("#motivo").val();
-         alert("Se ha cancelado la entrega");
-          $("#confirmation, #block").fadeOut(400,function(){
-            $("#confirmation, #block").remove();
-        });
         
         $.ajax({
             url:'../../scripts/separate/ajax/cancelSeparate.php',
             dataType: 'text',
             method: 'POST',
             data:{ id: eventId, valCodigo, motivo },
-            succes:function(response){
-            if(response == "TRUE"){
-                alert("Se ha cancelado la entrega");  
+            success:function(response){
+                if(response == "TRUE"){
+                    alert("Se ha cancelado la entrega");  
+                    $("#cerrar").click();
+                    $("#calendar").fullCalendar('refetchEvents');
+                }
             }
-
-        }
         });
-
-
-
     });
-
-
-
-
-
-
-};
+}
