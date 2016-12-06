@@ -1,34 +1,8 @@
 <script src="../../utils/jquery-1.12.3.min.js">
 </script>
-<script src="utils/highcharts/highcharts.js"></script>
-<script src="utils/highcharts/modules/exporting.js"></script>
-<script type="text/javascript">
-    $(function () {
-        var areas = $(".area").toArray();
-        var results = $(".result").toArray();
-        Highcharts.chart('container', {
-
-            title: {
-                text: 'Chart.update'
-            },
-
-            subtitle: {
-                text: 'Plain'
-            },
-
-            xAxis: {
-                categories: areas
-            },
-
-            series: [{
-                type: 'column',
-                colorByPoint: true,
-                data: results,
-                showInLegend: false
-            }]
-
-        });
-    });
+<script src="../../utils/highcharts/highcharts.js"></script>
+<script src="../../utils/highcharts/modules/exporting.js"></script>
+<script src="../../scripts/report.js">
 </script>
 
 <table>
