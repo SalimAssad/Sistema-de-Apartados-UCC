@@ -144,8 +144,8 @@ include_once("../../inc/nav.php");
                             <td><?php echo $fila["RE_SERIAL"] ?></td>
                             <td><?php echo $fila["RE_INVENTORY"] ?></td>
                             <td><?php echo $fila["RE_LOCATION"] ?></td>
-                            <td><a href="specificEquipment.php=<?php echo $fila["RE_ID"] ?>">
-                                    <button type="button" class="btn btn-success">Ver detalles</button></td>
+                            <td><a href="specificEquipment.php?id=<?php echo $fila["RE_ID"] ?>">
+                                    <button type="button" formaction="specificEquipment.php" class="btn btn-success">Ver detalles</button></td>
                             </tr>
                         <?php }; ?>
 

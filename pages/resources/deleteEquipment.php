@@ -1,14 +1,15 @@
-
 <?php
 include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
+include_once("resourceFunctions.php");
 
 
 
-$UB_ID='';
-if(!empty($_POST["UB_ID"])){
-    $UB_ID=$_POST["UB_ID"];
-    $delete="delete from ubicaciones where UB_ID=$_ID";
+
+$RE_ID='';
+if(!empty($_POST["RE_ID"])){
+    $RE_ID=$_POST["RE_ID"];
+    $delete="delete from recursos where RE_ID=$RE_ID";
     $resultado=mysqli_query($connection,$delete);
     
     if($resultado){
