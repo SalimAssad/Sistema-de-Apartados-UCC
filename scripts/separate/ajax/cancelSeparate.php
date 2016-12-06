@@ -23,12 +23,11 @@ if($authCode == $codigo){
 
     $query2 = mysqli_query($connection,$insert);
 
-    if(!query2){
+    if(!$query2){
         exit("false: bad query");
     }
 
-    echo query;
-    echo query2;
+
     exit("TRUE");
 
 }else{
