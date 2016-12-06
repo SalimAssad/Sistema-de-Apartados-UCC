@@ -7,7 +7,7 @@ $id = $_POST["id"];
 $codigo = $_POST["valCodigo"];
 $motivo = $_POST["motivo"];
 
-include_once("../../inc/MySQLConnection.php");
+include_once("../../../inc/MySQLConnection.php");
 
 if($authCode == $codigo){
     $update = "UPDATE apartados  SET AP_CANCEL = 1 WHERE AP_ID = '$id'";

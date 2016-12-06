@@ -125,12 +125,15 @@ function showCancel(){
     });
 
     $("#cancelDelivery").on("click",function(event){
-
+        var valCodigo = $("#valCodigo").val();
+        var motivo = $("#motivo").val();
+         alert("Se ha cancelado la entrega"); 
+        
         $.ajax({
             url:'../../scripts/separate/ajax/cancelSeparate.php',
             dataType: 'text',
             method: 'POST',
-            data:{ id: eventID },
+            data:{ id: eventId, valCodigo, motivo },
             succes:function(response){
             if(response == "TRUE"){
                 alert("Se ha cancelado la entrega");  
