@@ -74,7 +74,7 @@ include_once("../../inc/MySQLConnection.php");
             <input type="password" name="matricula" id="matricula"   >
             <button type="button" name="give" id="setDelivery" class="btn btn-sm" >Marcar como entregado</button><br> 
             <p id="eventInfo"></p>
-            <p><strong><a id="cancel" href="" target="">Cancelar apartado</a></strong></p>
+            <p><button  id="cancel" >Cancelar apartado</button></p>
         </div>
     </body>
 </html>

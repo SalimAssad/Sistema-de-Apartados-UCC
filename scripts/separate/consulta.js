@@ -89,9 +89,10 @@ function setDelivery(matricula,inuse){
         }
     });
 
-},
+}
+
     function showCancel(){
-        var popup "<div id='confirmation' class='popup'>"+
+        var popup = "<div id='confirmation' class='popup'>"+
             "<h4>¿Desea cancelar apartado?</h4>"+
             "<div id='confirm-table' class='col-md-12 col-sm-12'>"+
             "<table class='table table-responsive'>"+
@@ -110,7 +111,10 @@ function setDelivery(matricula,inuse){
             "</div>";
         var block = "<div id='block'><div>";
         $("body").append(block).append(popup);
-        $("#cancel").on("click",function(){
+        $("#cancel").on("click",function(event){
+            event.preventDefault();
+            alert("aqui estoy funciono!");
+            
            $("body").scrollTop(0);
             showCancel();
         });
@@ -120,4 +124,4 @@ function setDelivery(matricula,inuse){
         
         
         
-    };*
+    };
