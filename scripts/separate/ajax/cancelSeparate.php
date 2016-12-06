@@ -29,6 +29,7 @@ if($authCode == $codigo){
 
     echo query;
     echo query2;
+    exit("TRUE");
 
 }else{
     exit("FALSE");
