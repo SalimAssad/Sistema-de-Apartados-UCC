@@ -33,14 +33,15 @@
 					(AP_START <= '$start') 
 					AND
 					(AP_END >= '$end')
-				))";
+				))
+				AND AP_CANCEL = 0";
 				
 	if($resID != null)
 		$sql .= " AND RE_ID = $resID ";
 
-	$sql .= "ORDER BY AP_ID";
+	$sql .= " ORDER BY AP_ID";
 	$query = mysqli_query($connection, $sql);
-	if(!$query) error1();
+	if(!$query) error1($sql);
 	
 	$events = array();
 	if(mysqli_num_rows($query) > 0){
@@ -94,7 +95,7 @@
     	return $time;
     }
 
-    function error1() {
-		echo "An error ocurred while trying to get the data.";
+    function error1($sql) {
+		echo "$sql - An error ocurred while trying to get the data.";
 		exit();
 	}
