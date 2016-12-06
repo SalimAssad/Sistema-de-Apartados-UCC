@@ -1,6 +1,7 @@
 <?php
 session_start();
 $user_id = $_SESSION["id"];
+$authCode = $_SESSION["code"];
 $id = $_POST["id"];
 $matricula = $_POST["matricula"];
 $inuse = $_POST["inuse"];
