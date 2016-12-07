@@ -13,7 +13,8 @@ if($authCode == $codigo){
     $update = "UPDATE apartados  SET AP_CANCEL = 1 WHERE AP_ID = '$id'";
     $query = mysqli_query($connection,$update);
 
-    if(!$query){
+    if(!$query ){
+        error1("ERR0 BAD QUERY - $update");
         exit("false: bad query");
     }
 
@@ -24,6 +25,7 @@ if($authCode == $codigo){
     $query2 = mysqli_query($connection,$insert);
 
     if(!$query2){
+        error1("ERR0 BAD QUERY - $insert");
         exit("false: bad query");
     }
 
@@ -33,6 +35,11 @@ if($authCode == $codigo){
 }else{
     exit("FALSE");
 }
+
+function error1($msg) {
+    exit($msg);
+}
+
 
 
 
