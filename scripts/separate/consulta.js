@@ -94,7 +94,7 @@ function setDelivery(matricula,inuse){
 }
 
 function showCancel(){
-     $("#eventContent").dialog("close");
+    $("#eventContent").dialog("close");
     var popup = "<div id='confirmation' class='popup'>"+
         "<h4>¿Desea cancelar apartado?</h4>"+
         "<div id='confirm-table' class='col-md-12 col-sm-12'>"+
@@ -111,8 +111,9 @@ function showCancel(){
         "</tbody>"+
         "</table>"+
         "<button type='button' name='cancelar' id='cancelDelivery' class='btn btn-primary col-md-5 col-sm-5 col-xs-5'>Cancelar apartado</button>"+
-        "<button type='button' name='cerrar' id='cerrar' class='btn btn-danger col-md-5 col-sm-5 col-xs-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-2'>Cerrar</button>"
-    "</div>";
+        "<button type='button' name='cerrar' id='cerrar' class='btn btn-danger col-md-5 col-sm-5 col-xs-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-2'>Cerrar</button>"+
+        "<div class='verification-error'></div>"+
+        "</div>";
     var block = "<div id='block'><div>";
     event.preventDefault();
     $("body").append(block).append(popup);
@@ -125,19 +126,38 @@ function showCancel(){
     $("#cancelDelivery").on("click",function(event){
         var valCodigo = $("#valCodigo").val();
         var motivo = $("#motivo").val();
-        
-        $.ajax({
-            url:'../../scripts/separate/ajax/cancelSeparate.php',
-            dataType: 'text',
-            method: 'POST',
-            data:{ id: eventId, valCodigo, motivo },
-            success:function(response){
-                if(response == "TRUE"){
-                    alert("Se ha cancelado la entrega");  
-                    $("#cerrar").click();
-                    $("#calendar").fullCalendar('refetchEvents');
+
+        if(valCodigo == ""){
+            $(".verification-error").text("Por favor, introduzca su código de autenticación");
+            $(".verification-error").fadeIn();
+
+        }else{
+
+
+
+
+            $.ajax({
+                url:'../../scripts/separate/ajax/cancelSeparate.php',
+                dataType: 'text',
+                error: function() {
+                    alert("Error al conseguir la información");
+                },
+                method: 'POST',
+                data:{ id: eventId, valCodigo, motivo },
+                success:function(response){
+                    if(response == "TRUE"){
+                        alert("Se ha cancelado la entrega");  
+                        $("#cerrar").click();
+                        $("#calendar").fullCalendar('refetchEvents');
+                    }
+                    if(response == "FALSE"){
+                         $(".verification-error").text("Hubo un error con su código");
+            $(".verification-error").fadeIn();
+                        
+                    }
                 }
-            }
-        });
+            });
+        }
+
     });
 }
