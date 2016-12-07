@@ -127,8 +127,8 @@ function showCancel(){
         var valCodigo = $("#valCodigo").val();
         var motivo = $("#motivo").val();
 
-        if(valCodigo == ""){
-            $(".verification-error").text("Por favor, introduzca su código de autenticación");
+        if(valCodigo == "" || motivo ==""){
+            $(".verification-error").text("Por favor, introduzca su código de autenticación y motivo de cancelación.");
             $(".verification-error").fadeIn();
 
         }else{
