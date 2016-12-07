@@ -67,33 +67,56 @@ include_once("../../inc/nav.php");
         include_once("../../inc/sidebar.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h2 class="page-header">Recursos</h2>
+            <h2 class="page-header">Equipos</h2>
 
-            <form action="equipmentList.php" method="post">
+            <form action="equipmentList.php" method="post" class="form form-inline form-multiline" role="form">
+                <div class="form-group">    
+       
+         <br><label for="model">Modelo:</label></br> 
+         <input type="text" class="form-control" name="model" placeholder="Escribe un modelo" value="<?php echo $model; ?>" required>
+          </div>
+        
+        <div class="form-group">
+        <br><label for="alias">Nombre mostrador:</label></br> 
+        <input type="text" name="alias" class="form-control" placeholder="Escribe un alias" value="<?php echo $alias; ?>" required> 
+        </div>    
+                
+        <div class="form-group">
+        <br><label for="serial">Serial:</label></br> 
+        <input type="text" name="serial" class="form-control" placeholder="No. de serie" value="<?php echo $serial; ?>" required>
+        </div>  
+                
+        <div class="form-group">
+        <br><label for="inventory">Inventario:</label></br> 
+        <input type="text" name="inventory" class="form-control" placeholder="No. de inventario" value="<?php echo $inventory; ?>"required >
+        </div>             
+                
+            <p></p>
+    
+        <div class="form-group">
+        <br><label for="hwType">Tipo de Hardware:</label></br> 
+        <input type="text" name="hwType" class="form-control" placeholder="Tipo" value="<?php echo $hwType; ?>" required>
+        </div>   
+    
+        
+                
+                <div class="form-group"> 
+                    <br><label for="campus"> Campus:</label></br>
 
-
-                modelo <br>
-                <input type="text" name="model" value="<?php echo $model; ?>">
-                <br> Alias <br>
-                <input type="text" name="alias" value="<?php echo $alias; ?>">
-                <br> serial<br>
-                <input type="text" name="serial" value="<?php echo $serial; ?>">
-                <br> No. Inventario <br>
-                <input type="text" name="inventory" value="<?php echo $inventory; ?>">
-                <br> Tipo Hardware <br>
-                <input type="text" name="hwType" value="<?php echo $hwType; ?>">
-                <br> campus<br>
-
-                <select name="campus">
+                <select  class="form-control" name="campus" required>
                     <option value="">Seleccione</option>
                     <option value="TORRENTE" <?php if ($campus == "TORRENTE") echo "selected"; ?>>Torrente
                     </option>
                     <option value="CALASANZ" <?php if ($campus == "CALASANZ") echo "selected"; ?>>Calasanz
                     </option>
-
+                      
                 </select>
-                <br> Referencia<br>
-                <select name="reference">
+               </div>
+
+<div class="form-group">
+    <br><label for="reference">Referencia:</label></br>
+
+                <select class="form-control" name="reference" required>
                     <option value="">Seleccione</option>
                     <?php
                     $referenceQuery = mysqli_query($connection, "SELECT * FROM referencias");
@@ -104,11 +127,15 @@ include_once("../../inc/nav.php");
                         echo ">$referenceRow[RE_DESCRIPTION]</option>";
                     }
                     ?>
-                </select>
+                                  
+</select>
+ </div> 
 
-                <input type="submit" name="query" value="buscar">
 
-            </form>
+    <p></p><br>  <input type="submit" class="btn btn-default"name="query" value="Buscar"></br>
+
+       
+    </form>
 
             <form action="addResource.php" method="get">
                 <button type="submit" formaction="addResource.php" class="btn btn-primary" method="get">Añadir</button>

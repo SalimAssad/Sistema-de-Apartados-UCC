@@ -30,7 +30,7 @@ if (isset($_POST['query'])) {
 <html lang='es'>
 <head>
     <meta charset="utf-8">
-    <title>Eliminar un salón></title>
+    <title></title>
 
     <link href="../../css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/dashboard.css" rel="stylesheet">
@@ -53,7 +53,7 @@ include_once("../../inc/nav.php");
         include_once("../../inc/sidebar.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h2 class="page-header">Lista de recursos</h2>
+            <h2 class="page-header">Aulas</h2>
 
 
             <form action="addResource.php" method="get">
@@ -91,7 +91,7 @@ include_once("../../inc/nav.php");
                             <td><?php echo $fila["RE_SERIAL"] ?></td>
                             <td><?php echo $fila["RE_INVENTORY"] ?></td>
                             <td><?php echo $fila["RE_LOCATION"] ?></td>
-                            <td><a href="specificEquipment.php=<?php echo $fila["RE_ID"] ?>">
+                            <td><a href="specificEquipment.php?id=<?php echo $fila["RE_ID"] ?>">
                                     <button type="button" class="btn btn-success">Ver detalles</button></td>
                             </tr>
                         <?php }; ?>
@@ -100,24 +100,37 @@ include_once("../../inc/nav.php");
                     </table>
                     <?php
                 } else {
-                    echo "No hay recursos registrados";
+                    echo "No hay Aulas registrados";
                 }
             }
             ?>
 
 
-            <form action="roomList.php" method="post">
-                Alias <br>
-                <input type="text" name="alias" value="<?php echo $alias; ?>">
-                <br> Campus <br>
-                <select name="campus">
+        
+        
+        
+        
+        
+            <form action="roomList.php" method="post" class="form form-inline form-multiline" role="form">
+                
+                <div class="form-group">
+                    <br><label for="alias">Nombre de Aula:</label></br>
+                <input type="text" name="alias"  class="form-control" placeholder="Alias" value="<?php echo $alias; ?>" required>
+                </div>
+        <div class="form-group">
+                
+                <br> <label for="campus">Campus: </label></br>
+                <select name="campus" class="form-control" required>
                     <option value="">Seleccione</option>
                     <option value="TORRENTE" <?php if ($campus == "TORRENTE") echo "selected"; ?>>Torrente</option>
                     <option value="CALASANZ" <?php if ($campus == "CALASANZ") echo "selected"; ?>>Calasanz</option>
 
                 </select>
-                <br> Referencia<br>
-                <select name="reference">
+    </div>
+    
+    <div class="form-group">
+                <br><label for="reference">Referencia:</label><br>
+                <select name="reference" class="form-control" required>
                     <option value="">Seleccione</option>
                     <?php
                     $referenceQuery = mysqli_query($connection, "SELECT * FROM referencias");
@@ -129,8 +142,9 @@ include_once("../../inc/nav.php");
                     }
                     ?>
                 </select>
+    </div>
                 <br>
-                <br> <input type="submit" name="query" value="Buscar">
+                <br> <input type="submit" class="btn btn-default" name="query" value="Buscar">
 
 
             </form>

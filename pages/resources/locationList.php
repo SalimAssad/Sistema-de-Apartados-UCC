@@ -67,34 +67,46 @@ include_once("../../inc/nav.php");
             </form>
 
 
-            ///////////////////
-            <form action="locationList.php" method="post">
+            
+            <form action="locationList.php" method="post" class="form form-inline form-multiline">
 
-                <br> Campus<br>
+               <div class="form-group">
+                <br><label for="campus"> Campus:</label></br>
 
-                <select name="campus">
+                <select name="campus" class="form-control" required>
                     <option value="">Seleccione</option>
                     <option value="TORRENTE" <?php if ($campus == "TORRENTE") echo "selected"; ?>>Torrente</option>
                     <option value="CALASANZ" <?php if ($campus == "CALASANZ") echo "selected"; ?>>Calasanz</option>
 
                 </select>
-                <br> Edificio <br>
-                <br> <input type="text" name="pile" value="<?php echo $pile; ?>">
-                <br> Piso <br>
-                <input type="text" name="floor" value="<?php echo $floor; ?>">
-                <br> Departamento<br>
-                <input type="text" name="room" value="<?php echo $room; ?>">
+                </div>
+            
+            <div class="form-group">
+            
+                <br><label for="pile">Edificio:</label> </br>
+                 <input type="text" name="pile" class="form-control" placeholder="Escribe el edificio" value="<?php echo $pile; ?>"required>
+        </div>
+                
+        <div class="form-group">
+            <br><label for="floor">Piso:</label>  </br>
+                <input type="text" name="floor" class="form-control" placeholder="Introduce la planta" value="<?php echo $floor; ?>" required>
+    </div>
+    
+    <div class="form-group">
+        
+        
+        <br><label for="room">Departamento:</label> </br>
+                <input type="text" name="room" class="form-control" placeholder="Escribe el departamento" value="<?php echo $room; ?>" required>
 
-
-                <br>
-                <br>
-
-                <br> <input type="submit" name="query" value="buscar">
+    </div>
+                                
+<p></p>
+                <br> <input type="submit" class="btn btn-default" name="query" value="Buscar">
 
             </form>
 
 
-            ///////////////////
+            
 
             <table class="table">
 

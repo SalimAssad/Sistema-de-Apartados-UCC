@@ -56,24 +56,29 @@ include_once("../../inc/nav.php");
 
 
             <h3 class="sub-header">Área</h3>
-            /////////////////////////////////////////////////////////////
+            
 
-            <form action="areaList.php" method="post">
+            <form action="areaList.php" method="post" class="form form-inline form-multiline">
 
+ <div class="form-group">
+     <br><label for="name">Nombre:</label> </br>
+                <input type="text" name="name"  class="form-control" placeholder="Escribe el Nombre"  value="<?php echo $name; ?>" required>
 
-                Name <br>
-                <input type="text" name="name" value="<?php echo $name; ?>">
+                </div>
+            
+            <div class="form-group">
+            <br><label for= "campus">Campus:</label><br>
 
-                <br> campus<br>
-
-                <select name="campus">
+                <select name="campus" class="form-control" required>
                     <option value="">Seleccione</option>
                     <option value="TORRENTE" <?php if ($campus == "TORRENTE") echo "selected"; ?>>Torrente</option>
                     <option value="CALASANZ" <?php if ($campus == "CALASANZ") echo "selected"; ?>>Calasanz</option>
 
                 </select>
-                <br> Referencia<br>
-                <select name="reference">
+            </div>
+            <div class="form-group">
+                <br><label for= "reference">Referencia:</label><br>
+                <select name="reference" class="form-control" required>
                     <option value="">Seleccione</option>
                     <?php
                     $referenceQuery = mysqli_query($connection, "SELECT * FROM referencias");
@@ -84,14 +89,14 @@ include_once("../../inc/nav.php");
                         echo ">$referenceRow[RE_DESCRIPTION]</option>";
                     }
                     ?>
-                </select>
+                </select></div>
 
-                <input type="submit" name="query" value="buscar">
+                <p></p><input type="submit" name="query" class="btn btn-default" value=" Buscar">
 
             </form>
 
 
-            /////////////////////////////////////////////////////////////////////
+           
 
             <button type="button" class="btn btn-primary">Dar de alta</button>
             <table class="table">
