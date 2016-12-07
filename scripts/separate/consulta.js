@@ -151,7 +151,7 @@ function showCancel(){
                         $("#calendar").fullCalendar('refetchEvents');
                     }
                     if(response == "FALSE"){
-                         $(".verification-error").text("Hubo un error con su código");
+                         $(".verification-error").text("El codigo ingresado es incorrecto.");
             $(".verification-error").fadeIn();
                         
                     }
