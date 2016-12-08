@@ -63,7 +63,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     $insertArea = mysqli_query($connection, "INSERT INTO areas(AR_NAME, AR_CAMPUS, AR_TYPE) VALUES('$name', '$campus', '$reference')");
 
     if ($insertArea) {
-        header("Location: areas.php");
+        header("Location: areaList.php");
         exit;
     } else {
         header("Location: addArea.php?error=No se pudo ingresar el recurso a la base de datos&name=$name&campus=$campus&reference=$reference");
@@ -81,7 +81,7 @@ if (filter_input(INPUT_POST, 'action', FILTER_SANITIZE_STRING) == "add") {
     $updateArea = mysqli_query($connection, "UPDATE areas SET AR_NAME = '$name', AR_CAMPUS = '$campus', AR_TYPE = '$reference'
                                               WHERE AR_ID = $idArea");
     if ($updateArea) {
-        header("Location: areas.php");
+        header("Location: areaList.php");
         exit;
     } else {
         header("Location: addArea.php?error=No se pudo actualizar el recurso en la base de datos&idArea=$idArea&name=$name&campus=$campus&reference=$reference");
