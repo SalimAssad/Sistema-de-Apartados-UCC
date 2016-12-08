@@ -1,8 +1,5 @@
 <?php
-
-function getResourceQuery($model, $alias, $serial, $inventory, $hwType, $campus, $reference){
-    include_once("../../inc/MySQLConnection.php");
-
+function getResourceQuery($connection, $model, $alias, $serial, $inventory, $hwType, $campus, $reference, $type){
     $strQuery = "select recursos.*, ubicaciones.UB_CAMPUS 
                   from recursos, ubicaciones, recursos_referencias 
                   WHERE recursos.RE_LOCATION = ubicaciones.UB_ID AND recursos.RE_ID = recursos_referencias.RR_RESOURCEID";
@@ -32,25 +29,21 @@ function getResourceQuery($model, $alias, $serial, $inventory, $hwType, $campus,
     }
 
     if(!empty($reference)){
-        $strQuery = $strQuery . " AND recrusros_referencias.RR_REFERENCEID = $reference";
+        $strQuery = $strQuery . " AND recursos_referencias.RR_REFERENCEID = $reference";
+    }
+
+    if(!empty($type)){
+        $strQuery = $strQuery . " AND recursos.RE_TYPE = '$type'";
     }
     
-    $strQuery = $strQuery . " order by recursos.RE_CREATED desc";
+    $strQuery = $strQuery . " GROUP BY recursos.RE_ID order by recursos.RE_CREATED desc";
 
     $sql = mysqli_query($connection, $strQuery);
 
-    if(mysqli_num_rows($sql) == 1){
-        //$data = mysqli_fetch_assoc($sql);
-        //header("Location: specificCharter.php?charter=".$data['CE_CVE']."&date=".$data['CE_FEC']);
-        //exit;
-    } else {
-        return $sql;
-    }
+    return $sql;
 }
 
-function getLocationQuery($campus, $pile, $floor, $room){
-    include_once("../../inc/MySQLConnection.php");
-
+function getLocationQuery($connection, $campus, $pile, $floor, $room){
     $strQuery = 'select * from ubicaciones';
     
     $flag = false;
@@ -100,9 +93,7 @@ function getLocationQuery($campus, $pile, $floor, $room){
     return $sql;
 }
 
-function getAreaQuery($name, $campus, $reference){
-    include_once("../../inc/MySQLConnection.php");
-
+function getAreaQuery($connection, $name, $campus, $reference){
     $strQuery = 'select * from areas';
 
     $flag = false;

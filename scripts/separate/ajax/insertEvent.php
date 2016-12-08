@@ -1,6 +1,6 @@
 <?php
 	// TODO LIST -->
-	// - Validar los permisos de los usuarios, todos serán administradores por el alcance
+	// - 
 	session_start();
 	if(!isset($_SESSION['id']))
 		returnFalse("SESSION ERROR");
@@ -87,6 +87,20 @@
 
 	echo "TRUE"; // Response to AJAX
 
+	/* 
+		Searches all the separatings that a resource has in the future with those
+		parameters to prevent inconsistences, so if there's a result, then, the
+		resource can't be separated because it already is, otherwise, go on! 
+		Parameters:
+			$resID: the id of the resource that they want to separate //Integer
+			$start: a "yyyy-mm-dd" formatted date, the period's beginning date //String
+			$end: 	a "yyyy-mm-dd" formatted date, the period's ending date //String
+			$from:	a "hh:mm:ss" formatted time, the resource won't be available from this hour //String
+			$to:	a "hh:mm:ss" formatted time, the resource won't be available until this hour //String
+			$connection: $connection: the connection to the DataBase 	//Mysqli connection
+		Return:
+			boolean: true if there aren't coincidences with the selection
+					 false if there are */
 	function canBeSeparated($resID, $start, $end, $from, $to, $connection) {
 		$from = date("H:i:s", strtotime("$from + 1 minute"));
 		$to = date("H:i:s", strtotime("$to - 1 minute"));
@@ -119,6 +133,7 @@
 						AND
 						(HO_TO >= '$to')
 					))
+					AND AP_CANCEL = 0
 					AND RE_ID = $resID";
 		$query = mysqli_query($connection, $sql);
 		if(!$query) returnFalse("QUERY ERROR - CBS");
@@ -129,6 +144,8 @@
 		return true; // YES, CAN BE SEPARATED
 	}
 
+	/* 
+		Function that validates a date */
 	function validateDate($date) {
         list($year,$month,$day) = array_pad(preg_split("/[\/\\-]/",$date,3),3,0);
         if(!(ctype_digit("$year$month$day") && checkdate($month, $day, $year))) {
@@ -138,9 +155,12 @@
         return "$year-$month-$day";
     }
 
+    /* 
+    	This function validates the time that the user sent 
+    	it must be between 7 and 22 due to the requirements */
     function validateTime($time) {
     	list($hr, $min, $sec) = explode(":", $time);
-    	if($hr < 0 || $hr > 23)
+    	if($hr < 7 || $hr > 22)
     		return ""; //false
     	if($min < 0 || $min > 59)
     		return ""; //false
@@ -149,6 +169,16 @@
     	return $time;
     }
 
+    /*
+    	This function searches for ids in the database
+    	Parameters:
+    		$connection: the connection to the DataBase 	//Mysqli connection
+    		$id: the id to search for 	//integer
+    		$table: the name of the table in which the id should be 	//String
+    		$field: the name of the field that should contains the id 	//String
+    	Returns:
+    		boolean true if the id does exist in the defined table 
+    		boolean false if not */
     function idExists($connection, $id, $table, $field) {
     	$sql = "SELECT $field FROM $table WHERE $field = '$id'";
     	$query = mysqli_query($connection, $sql);
@@ -165,6 +195,8 @@
 		exit($msg);
 	}
 
+    /* 
+		A function to call when some data is wrong. */
 	function returnFalse($msg) {
 		exit($msg);
 	}

@@ -1,10 +1,13 @@
 <?php
-	// TODO LIST -->
+	$userID = "";
+	$table = "";
+	$data = "<option value=''>Seleccione una opción...</option>";
+	$actualGroup = 0;
+
 	session_start();
-	//$_SESSION['id'] = 2;
 	$userID = $_SESSION["id"];
 	require_once("../../../inc/MySQLConnection.php");
-	$table = $_POST['table'];
+	$table = trim(filter_input(INPUT_POST, "table", FILTER_SANITIZE_STRING));
 
 	switch($table) {
 		case "areas":
@@ -16,8 +19,6 @@
 			$query = mysqli_query($connection, $sql);
 			if(!$query) error1();
 			if(mysqli_num_rows($query) > 0) {
-				$data = "";
-				$actualGroup = 0;
 				while($row = mysqli_fetch_assoc($query)) {
 					if($actualGroup != $row['RE_ID']) {
 						if($actualGroup != 0)
@@ -29,7 +30,7 @@
 				}
 				$data .= "</optgroup>";
 			} else {
-				$data = "<option value='na'>Unavailable data...</option>";
+				$data = "<option value=''>Unavailable data...</option>";
 			}
 			break;
 		case "usuarios":
@@ -41,7 +42,6 @@
 			$query = mysqli_query($connection, $sql);
 			if(!$query) error1();
 			if(mysqli_num_rows($query) > 0) {
-				$data = "";
 				while($row = mysqli_fetch_assoc($query)) {
 					if($row['US_ID'] == $userID) 
 						$data .= "<option value='$row[US_ID]' selected>$row[US_NAME] $row[US_LASTNAME]</option>";
@@ -49,14 +49,16 @@
 						$data .= "<option value='$row[US_ID]'>$row[US_NAME] $row[US_LASTNAME]</option>";
 				}
 			} else {
-				$data = "<option value='na'>Unavailable data...</option>";
+				$data = "<option value=''>Unavailable data...</option>";
 			}
 			break;
+		default: 
+			error1();
 	}
 
 	echo $data;
 
 	function error1() {
-		echo "An error ocurred while trying to get the data.";
+		echo "<option value=''>Unavailable data...</option>";
 		exit();
 	}

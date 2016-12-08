@@ -9,6 +9,8 @@ $query = mysqli_query($connection, "select US_SID, US_PASS, US_ID, US_PROFILEID 
 $query = mysqli_query($connection, "select * from usuarios where US_SID = $user");
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 $query2="select * from tokens where TO_NAME = $user";
 $sql2 = mysqli_query($connection, $query2);
 $row = mysqli_fetch_assoc($sql2);

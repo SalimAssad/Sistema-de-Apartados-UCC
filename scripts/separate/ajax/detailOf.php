@@ -7,7 +7,7 @@
 	$sql = "SELECT RE_ALIAS, AP_START, 
 				   AP_END, US_NAME, US_LASTNAME,
 				   AP_LESSON, AP_GRADE, AR_NAME,
-				   AP_COMMENTS
+				   AP_COMMENTS, RE_INUSE
 			FROM apartados
 			JOIN recursos ON AP_RESID = RE_ID
 			JOIN usuarios ON AP_LENDTO = US_ID
@@ -15,9 +15,9 @@
 			WHERE AP_ID = $id";
 
 	$query = mysqli_query($connection, $sql);
-	if(!$query) error1();
+	if(!$query) error1("ERR0 BAD QUERY - $sql");
 
-	if(mysqli_num_rows($query) < 1) error2();
+	if(mysqli_num_rows($query) < 1) error2("ERR1 DATA NOT FOUND");
 
 	$result = mysqli_fetch_assoc($query);
 	$response = array();
@@ -29,16 +29,17 @@
 		"name" => "$result[US_NAME] $result[US_LASTNAME]",
 		"lesson" => $result['AP_LESSON'],
 		"area" => $result['AR_NAME'],
-		"comments" => $result['AP_COMMENTS']
+		"comments" => $result['AP_COMMENTS'],
+		"inuse" => $result['RE_INUSE']
 	);
 
 	$sql = "SELECT HO_DAY, HO_FROM, HO_TO
 			FROM horarios
 			WHERE HO_SEPARATEID = $id";
 	$query = mysqli_query($connection, $sql);
-	if(!$query) error1();
+	if(!$query) error1("ERR2 BAD QUERY - $sql");
 
-	if(mysqli_num_rows($query) < 1) error2();
+	if(mysqli_num_rows($query) < 1) error2("ERR3 DATA NOT FOUND");
 
 	$daysOfWeek = "";
 	$week = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sáb"];
@@ -57,12 +58,10 @@
 
 	echo json_encode($response);
 
-    function error1() {
-		echo "An error ocurred while trying to get the data.";
-		exit();
+    function error1($msg) {
+		exit($msg);
 	}
 
-	function error2() {
-		echo "There isn't available data for the given ID";
-		exit();
+	function error2($msg) {
+		exit($msg);
 	}

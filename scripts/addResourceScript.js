@@ -31,7 +31,7 @@ function locationHandler(data){
         var d = data.replace(/[:,]/g, "");
         var arr = d.split(" ");
         $("#campus").val(arr[0]).prop("disabled", true);
-        $("#hidden-campus").val("").prop("disabled", false);
+        $("#hidden-campus").val(arr[0]).prop("disabled", false);
         $("#pile").val(arr[1]).prop("readonly", true);
         $("#floor").val(arr[2]).prop("readonly", true);
         $("#room").val(arr[3]).prop("readonly", true);

@@ -18,6 +18,7 @@ include_once("../../inc/MySQLConnection.php");
         <link href="../../css/dashboard.css" rel="stylesheet">
         <link href="../../css/global.css" rel="stylesheet">
         <link href="../../css/separate/separateResource.css" rel="stylesheet">
+        
         <link href="../../css/separate/consulta.css" rel="stylesheet">
         
         <script src="../../utils/jquery-1.12.3.min.js"></script>
@@ -74,7 +75,7 @@ include_once("../../inc/MySQLConnection.php");
             <input type="password" name="matricula" id="matricula"   >
             <button type="button" name="give" id="setDelivery" class="btn btn-sm" >Marcar como entregado</button><br> 
             <p id="eventInfo"></p>
-            <p><strong><a id="cancel" href="" target="">Cancelar apartado</a></strong></p>
+            <p><button  id="cancel" >Cancelar apartado</button></p>
         </div>
     </body>
 </html>
