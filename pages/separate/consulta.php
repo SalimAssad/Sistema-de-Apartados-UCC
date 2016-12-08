@@ -71,10 +71,10 @@ include_once("../../inc/MySQLConnection.php");
             Días: <span id="diasApartado"></span><br>
             Comentarios: <span id="comments"></span><br>
             Fecha del apartado: <span id="startTime"></span><br>
-            <input type="text" name="matricula" id="matricula"   >
-            <button type="button" name="submit" id="button" class="btn btn-sm">Marcar como entregado</button><br> 
+            <input type="password" name="matricula" id="matricula"   >
+            <button type="button" name="give" id="setDelivery" class="btn btn-sm" >Marcar como entregado</button><br> 
             <p id="eventInfo"></p>
-            <p><strong><a id="eventLink" href="" target="">Read More</a></strong></p>
+            <p><strong><a id="cancel" href="" target="">Cancelar apartado</a></strong></p>
         </div>
     </body>
 </html>
