@@ -14,11 +14,13 @@ $(function() {
 
 
     $('#calendar').fullCalendar({
+
         header: {
-          left: 'title prev next',
+            left: 'title prev next',
             center: '',
             right: 'selectDate'
         },
+
         allDaySlot: false,
         defaultView: 'agendaDay',
         slotEventOverlap: false,
@@ -28,10 +30,6 @@ $(function() {
         editable: false,
         selectable: true,
         unselectAuto: false,
-        dayNames: dayNames,
-        dayNamesShort: dayNamesShort,
-        monthNames: monthNames,
-        monthNamesShort: monthNamesShort,
         minTime: "07:00:00",
         maxTime: "22:00:00",
         eventClick: function (calEvent, jsEvent, view) {  
@@ -160,9 +158,9 @@ function showCancel(){
                         $("#calendar").fullCalendar('refetchEvents');
                     }
                     if(response == "FALSE"){
-                         $(".verification-error").text("El codigo ingresado es incorrecto.");
-            $(".verification-error").fadeIn();
-                        
+                        $(".verification-error").text("El codigo ingresado es incorrecto.");
+                        $(".verification-error").fadeIn();
+
                     }
                 }
             });
