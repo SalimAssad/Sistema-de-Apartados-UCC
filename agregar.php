@@ -81,7 +81,8 @@ include_once("inc/nav.php");
                 <div>
                 <label>Respuestas: </label><br>
                 <?php while($result2 = mysqli_fetch_object($sqlp2)){
-            echo "<input class='form-control col-sm-8' type='text' name='$result2->RE_ID' value='$result2->RE_ANSWER'> <br> ";}
+            echo "<input class='form-control col-sm-8' type='text' name='$result2->RE_ID' value='$result2->RE_ANSWER'> <br>
+            <button class='btn btn-lg btn-success btn-block' type='submit' formaction='agregar.php?QID=$result->RE_ID&contenido=$result2->RE_ANSWER'>Guardar</button>";}
                     ?><br>
                </div> 
 <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////-->
