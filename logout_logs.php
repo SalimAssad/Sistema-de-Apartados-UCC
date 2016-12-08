@@ -35,7 +35,7 @@ include_once("inc/nav.php");
             <h1 class="page-header">Sesiones cerradas</h1>
             <?php
 
-            $sql = "select * from logs where LO_INOUT = 0 AND LO_DATE >= '$date1' AND LO_DATE <= '$date2'";
+            $sql = "select logs.LO_DATE, logs.LO_IP, logs.LO_USERID, usuarios.US_NAME, usuarios.US_LASTNAME from logs, usuarios where logs.LO_USERID = usuarios.US_SID AND LO_INOUT = 0 AND LO_DATE >= '$date1' AND LO_DATE <= '$date2'";
             $result = mysqli_query($connection, $sql);
             if($result){
                 $num_registros = mysqli_num_rows($result);
@@ -43,7 +43,8 @@ include_once("inc/nav.php");
                     ?>
                     <table class="table table-striped">
                         <thead>
-                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
                         <th>Fecha y Hora</th>
                         <th>Direccion IP</th>
                         </thead>
@@ -52,7 +53,8 @@ include_once("inc/nav.php");
                         while ($fila = mysqli_fetch_assoc($result) ) {
                         ?>
                         <tr>
-                            <td><?php echo $fila["LO_USERID"] ?></td>
+                            <td><?php echo $fila["US_NAME"] ?></td>
+                            <td><?php echo $fila["US_LASTNAME"] ?></td>
                             <td><?php echo $fila["LO_DATE"] ?></td>
                             <td><?php echo $fila["LO_IP"] ?></td>
                         </tr>

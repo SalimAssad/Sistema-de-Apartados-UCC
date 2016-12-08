@@ -8,6 +8,8 @@ $code = trim(filter_input(INPUT_POST,"code", FILTER_SANITIZE_STRING));
 
 $query = mysqli_query($connection, "select * from usuarios where US_SID = $user");
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 $query2="select * from tokens where TO_NAME = $user";
 $sql2 = mysqli_query($connection, $query2);
 $row = mysqli_fetch_assoc($sql2);
