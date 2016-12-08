@@ -1,6 +1,6 @@
 <?php
 	// TODO LIST -->
-	// - Validar los permisos de los usuarios, todos serán administradores por el alcance
+	// - 
 	session_start();
 	if(!isset($_SESSION['id']))
 		returnFalse("SESSION ERROR");

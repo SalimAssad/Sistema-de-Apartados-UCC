@@ -1,4 +1,8 @@
 var eventId;
+var dayNamesShort = ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'];
+var monthNamesShort = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+var monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 $(function() {
 
     $("#setDelivery").on("click",function(){
@@ -9,18 +13,15 @@ $(function() {
 
     $("#cancel").on("click",function(){
         showCancel();
-
     });
 
 
     $('#calendar').fullCalendar({
-
         header: {
             left: 'title prev next',
             center: '',
-            right: 'selectDate'
+            right: 'month,agendaDay'
         },
-
         allDaySlot: false,
         defaultView: 'agendaDay',
         slotEventOverlap: false,
@@ -28,8 +29,10 @@ $(function() {
         selectOverlap: false,
         lazyFetching: true,
         editable: false,
-        selectable: true,
-        unselectAuto: false,
+        dayNames: dayNames,
+        dayNamesShort: dayNamesShort,
+        monthNames: monthNames,
+        monthNamesShort: monthNamesShort,
         minTime: "07:00:00",
         maxTime: "22:00:00",
         eventClick: function (calEvent, jsEvent, view) {  

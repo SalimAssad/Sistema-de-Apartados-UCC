@@ -1,7 +1,6 @@
 <?php
 include_once("../../inc/validateLogin.php");
 include_once("../../inc/MySQLConnection.php");
-//Tu código que necesites
 ?>
 <!DOCTYPE html>
 <html lang='es'>
