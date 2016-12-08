@@ -15,14 +15,23 @@ $(function() {
 
     $('#calendar').fullCalendar({
         header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'agendaWeek,agendaDay'
+          left: 'title prev next',
+            center: '',
+            right: 'selectDate'
         },
+        allDaySlot: false,
         defaultView: 'agendaDay',
-        editable: false,
-        selectable: false,
+        slotEventOverlap: false,
         eventOverlap: false,
+        selectOverlap: false,
+        lazyFetching: true,
+        editable: false,
+        selectable: true,
+        unselectAuto: false,
+        dayNames: dayNames,
+        dayNamesShort: dayNamesShort,
+        monthNames: monthNames,
+        monthNamesShort: monthNamesShort,
         minTime: "07:00:00",
         maxTime: "22:00:00",
         eventClick: function (calEvent, jsEvent, view) {  
