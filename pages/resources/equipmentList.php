@@ -44,7 +44,7 @@ if (isset($_POST['query'])) {
 <html lang='es'>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Recursos</title>
 
     <link href="../../css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/dashboard.css" rel="stylesheet">
@@ -67,7 +67,7 @@ include_once("../../inc/nav.php");
         include_once("../../inc/sidebar.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h2 class="page-header">Equipos</h2>
+            <h1 class="page-header">Equipos</h1>
 
             <form action="equipmentList.php" method="post" class="form form-inline form-multiline" role="form">
                 <div class="form-group">    
@@ -129,17 +129,21 @@ include_once("../../inc/nav.php");
                     ?>
                                   
 </select>
- </div> 
+ 
 
+      <input type="submit" class="btn btn-default"name="query" value="Buscar"></br>
 
-    <p></p><br>  <input type="submit" class="btn btn-default"name="query" value="Buscar"></br>
+       </div> 
 
-       
     </form>
-
+<p></p>
             <form action="addResource.php" method="get">
                 <button type="submit" formaction="addResource.php" class="btn btn-primary" method="get">Añadir</button>
-            </form>
+            
+                <form action="equipmentList.php" method="get">
+        
+        <button type="submit" formaction="equipmentList.php" class="btn btn-info" method="get"> Todo</button>
+        </form>
 
 
             <?php
@@ -157,7 +161,8 @@ include_once("../../inc/nav.php");
                             <th>Marca/Modelo</th>
                             <th>No. de Serie</th>
                             <th> No. de Inventario</th>
-                            <th> Asignado en</th>
+                            <th> Asignado</th>
+                            <th> Modificado</th>
                             <th> Opciones</th>
                         </tr>
                         </thead>
@@ -170,17 +175,19 @@ include_once("../../inc/nav.php");
                             <td><?php echo $fila["RE_MODEL"] ?></td>
                             <td><?php echo $fila["RE_SERIAL"] ?></td>
                             <td><?php echo $fila["RE_INVENTORY"] ?></td>
-                            <td><?php echo $fila["RE_LOCATION"] ?></td>
-                            <td><a href="specificEquipment.php?id=<?php echo $fila["RE_ID"] ?>">
-                                    <button type="button" formaction="specificEquipment.php" class="btn btn-success">Ver detalles</button></td>
+                            <td><?php echo $fila["RE_CREATED"] ?></td>
+                            <td> <?php echo $fila["RE_MODIFIED"]?></td>
+                            <td><a href="addResource.php?id=<?php echo $fila["RE_ID"] ?>">
+                                    <button type="button" formaction="addResource.php" class="btn btn-success">Editar</button>
+                                <br><br> <form action="deleteEquipment.php" method="post"> <button type="submit" class="btn btn-danger" name="RE_ID" value="<?php echo $fila["RE_ID"] ?>">Borrar </button></form></td>
                             </tr>
                         <?php }; ?>
 
                         </tbody>
                     </table>
                     <?php
-                } else {
-                    echo "No hay recursos registrados";
+                } else {?>
+    <div class="alert alert-info" role="alert">  <span class="glyphicon glyphicon-info-sign"></span>  <?php   echo "No hay registros"; ?> </div><?php
                 }
             }
             ?>

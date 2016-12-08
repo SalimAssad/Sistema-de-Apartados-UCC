@@ -30,7 +30,7 @@ if (isset($_POST['query'])) {
 <html lang='es'>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Aulas</title>
 
     <link href="../../css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/dashboard.css" rel="stylesheet">
@@ -53,65 +53,11 @@ include_once("../../inc/nav.php");
         include_once("../../inc/sidebar.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h2 class="page-header">Aulas</h2>
+            <h1 class="page-header">Aulas</h1>
 
-
-            <form action="addResource.php" method="get">
-                <button type="submit" formaction="addResource.php" class="btn btn-primary" method="get">Dar de alta
-                </button>
-            </form>
-
-
-            <?php
-            if ($resultado) {
-                $cantidad_recursos = mysqli_num_rows($resultado);
-
-                if ($cantidad_recursos > 0) {
-                    ?>
-
-
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Nombre del equipo</th>
-                            <th>Marca/Modelo</th>
-                            <th>No. de Serie</th>
-                            <th> No. de Inventario</th>
-                            <th> Asignado en</th>
-                            <th> Opciones</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                        while ($fila = mysqli_fetch_assoc($resultado)) {
-                            ?>
-
-                            <td><?php echo $fila["RE_ALIAS"] ?></td>
-                            <td><?php echo $fila["RE_MODEL"] ?></td>
-                            <td><?php echo $fila["RE_SERIAL"] ?></td>
-                            <td><?php echo $fila["RE_INVENTORY"] ?></td>
-                            <td><?php echo $fila["RE_LOCATION"] ?></td>
-                            <td><a href="specificEquipment.php?id=<?php echo $fila["RE_ID"] ?>">
-                                    <button type="button" class="btn btn-success">Ver detalles</button></td>
-                            </tr>
-                        <?php }; ?>
-
-                        </tbody>
-                    </table>
-                    <?php
-                } else {
-                    echo "No hay Aulas registrados";
-                }
-            }
-            ?>
-
-
-        
-        
-        
-        
-        
-            <form action="roomList.php" method="post" class="form form-inline form-multiline" role="form">
+            
+            
+                     <form action="roomList.php" method="post" class="form form-inline form-multiline" role="form">
                 
                 <div class="form-group">
                     <br><label for="alias">Nombre de Aula:</label></br>
@@ -142,12 +88,69 @@ include_once("../../inc/nav.php");
                     }
                     ?>
                 </select>
-    </div>
-                <br>
-                <br> <input type="submit" class="btn btn-default" name="query" value="Buscar">
-
+    
+                
+                 <input type="submit" class="btn btn-default" name="query" value="Buscar">
+</div>
 
             </form>
+            
+            
+<p></p>
+            
+
+
+            <?php
+            if ($resultado) {
+                $cantidad = mysqli_num_rows($resultado);
+
+                if ($cantidad > 0) {
+                    ?>
+
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Nombre del aula</th>
+                            <th>Campus</th>
+                            <th>Referencia</th>
+                            
+                            <th> Opciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        while ($fila = mysqli_fetch_assoc($resultado)) {
+                            ?>
+
+                            <td><?php echo $fila["RE_ALIAS"] ?></td>
+                            
+                            
+                            <td><?php echo $fila["UB_CAMPUS"] ?></td>
+                             <td><?php echo $fila["RE_DESCRIPTION"] ?></td>
+                            <td><form action="deleteRoom.php" method="post"> <button type="submit" class="btn btn-danger" name="UB_ID" value="<?php echo $fila["UB_ID"] ?>">Eliminar </button></form></td>
+                            </tr>
+                        <?php }; ?>
+
+                        </tbody>
+                    </table>
+                    <?php
+                } else {?>
+    <div class="alert alert-info" role="alert">  <span class="glyphicon glyphicon-info-sign"></span>  <?php   echo "No hay registros"; ?> </div><?php
+                }
+            }
+            ?>
+
+
+
+
+
+        
+        
+        
+        
+        
+   
 
 
         </div>

@@ -29,7 +29,7 @@ if (isset($_POST['query'])) {
 <html lang='es'>
 <head>
     <meta charset="utf-8">
-    <title>Eliminar un salón></title>
+    <title> Área</title>
 
     <link href="../../css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/dashboard.css" rel="stylesheet">
@@ -52,17 +52,16 @@ include_once("../../inc/nav.php");
         include_once("../../inc/sidebar.php");
         ?>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header"></h1>
+            <h1 class="page-header">Áreas</h1>
 
 
-            <h3 class="sub-header">Área</h3>
             
 
             <form action="areaList.php" method="post" class="form form-inline form-multiline">
 
  <div class="form-group">
      <br><label for="name">Nombre:</label> </br>
-                <input type="text" name="name"  class="form-control" placeholder="Escribe el Nombre"  value="<?php echo $name; ?>" required>
+                <input type="text" name="name"  class="form-control" placeholder="Escribe el Nombre"  value="<?php echo $name; ?>" >
 
                 </div>
             
@@ -89,16 +88,25 @@ include_once("../../inc/nav.php");
                         echo ">$referenceRow[RE_DESCRIPTION]</option>";
                     }
                     ?>
-                </select></div>
+                </select>
 
-                <p></p><input type="submit" name="query" class="btn btn-default" value=" Buscar">
-
+                <input type="submit" name="query" class="btn btn-default" value=" Buscar">
+            </div>
             </form>
+<p></p>
+                <form action="addArea.php" method="get">
+                <button type="submit"  class="btn btn-primary" method="get">Añadir</button>
+            
+   
+        
+        <form action="areaList.php" method="get">
+        
+        <button type="submit" formaction="areaList.php" class="btn btn-info" method="get"> Todo</button>
+        </form>
+        
+                
 
-
-           
-
-            <button type="button" class="btn btn-primary">Dar de alta</button>
+            
             <table class="table">
 
                 <?php
@@ -114,7 +122,7 @@ include_once("../../inc/nav.php");
                                 <th>Nombre</th>
                                 <th>Campus</th>
                                 <th>Referencias</th>
-                                <th> Opciones</th>
+                                
 
                             </tr>
                             </thead>
@@ -133,8 +141,8 @@ include_once("../../inc/nav.php");
                             </tbody>
                         </table>
                         <?php
-                    } else {
-                        echo "No hay recursos registrados";
+                    } else {?>
+    <div class="alert alert-info" role="alert">  <span class="glyphicon glyphicon-info-sign"></span>  <?php   echo "No hay  registros"; ?> </div><?php
                     }
                 }
 

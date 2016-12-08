@@ -33,7 +33,7 @@ if (isset($_POST['query'])) {
 <html lang='es'>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Lista de ubicaciones</title>
 
     <link href="../../css/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/dashboard.css" rel="stylesheet">
@@ -60,11 +60,7 @@ include_once("../../inc/nav.php");
 
 
             <h3 class="sub-header">Ubicación</h3>
-            <form action="addLocation.php" method="get">
-                <div>
-                    <button type="submit" class="btn btn-primary">Dar de alta</button>
-                </div>
-            </form>
+            
 
 
             
@@ -98,14 +94,21 @@ include_once("../../inc/nav.php");
         <br><label for="room">Departamento:</label> </br>
                 <input type="text" name="room" class="form-control" placeholder="Escribe el departamento" value="<?php echo $room; ?>" required>
 
+  
+                 <input type="submit" class="btn btn-default" name="query" value="Buscar">
     </div>
-                                
-<p></p>
-                <br> <input type="submit" class="btn btn-default" name="query" value="Buscar">
-
             </form>
 
-
+    <p></p>
+<form action="addLocation.php" method="get">
+                <button type="submit"  class="btn btn-primary" method="get">Añadir</button>
+            
+   
+        
+        <form action="locationList.php" method="get">
+        
+        <button type="submit" formaction="locationList.php" class="btn btn-info" method="get"> Todo</button>
+        </form>
             
 
             <table class="table">
@@ -140,8 +143,7 @@ include_once("../../inc/nav.php");
                     <td>
 
 
-                        <form action="deleteEquipment.php" method="get">
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                       <form action="deleteLocation.php" method="post"> <button type="submit" class="btn btn-danger" name="UB_ID" value="<?php echo $fila["UB_ID"] ?>">Eliminar </button></form>
                     </td>
 
                     </tr>
@@ -151,8 +153,8 @@ include_once("../../inc/nav.php");
                 </tbody>
             </table>
             <?php
-            } else {
-                echo "No hay recursos registrados";
+            } else {?>
+    <div class="alert alert-info" role="alert">  <span class="glyphicon glyphicon-info-sign"></span>  <?php   echo "No hay registros"; ?> </div><?php
             }
             }
 
