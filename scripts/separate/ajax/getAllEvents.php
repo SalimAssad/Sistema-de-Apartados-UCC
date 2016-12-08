@@ -11,7 +11,7 @@
 		$resID = trim(filter_input(INPUT_POST, "resourceID", FILTER_SANITIZE_NUMBER_INT));
 
 	if($start == "" || $end == ""){
-		exit("Error en los datos recibidos");
+		exit("ERROR RANGE UNDEFINED");
 	}
 	
 	$sql = "SELECT HO_FROM, HO_TO, HO_DAY, AP_START, 
@@ -84,18 +84,7 @@
         return "$year-$month-$day";
     }
 
-    function validateTime($time) {
-    	list($hr, $min, $sec) = explode(":", $time);
-    	if($hr < 0 || $hr > 23)
-    		return false;
-    	if($min < 0 || $min > 59)
-    		return false;
-    	if($sec < 0 || $sec > 59)
-    		return false;
-    	return $time;
-    }
-
     function error1($sql) {
-		echo "$sql - An error ocurred while trying to get the data.";
+		echo "$sql - ERROR UNAVAILABLE DATA";
 		exit();
 	}
