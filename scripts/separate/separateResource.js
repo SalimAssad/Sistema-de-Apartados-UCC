@@ -3,8 +3,8 @@ var dayNamesShort = ['Dom','Lun','Mar','Mie','Jue','Vie','Sáb'];
 var monthNamesShort = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 var dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
 var monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-var input;
 $(function() {
+    var input;
     var minSelection;
     var maxSelection;
     var options = {
@@ -47,7 +47,7 @@ $(function() {
             }
         },
         header: {
-            left: 'title next',
+            left: 'title prev next',
             center: '',
             right: 'selectDate'
         },
@@ -513,7 +513,6 @@ function getAvailableResources(resourceType) {
         },
         success: function(response) {
             $("#resource").html(response);
-            $("#resource").prepend("<option value=''>Seleccione un recurso...</option>");
             $("#resource").val("").change();
         },
         type: "POST",
@@ -584,9 +583,10 @@ function getDataFromTable(table, divId) {
             alert("Error al conseguir la información");
         },
         success: function(response) {
-            $("#"+divId).html(response);
-            $("#"+divId).prepend("<option value=''>Seleccione una opción...</option>");
-            $("#"+divId).val("").change();
+            if(response != "") {
+                $("#"+divId).html(response);
+                $("#"+divId).val("").change();
+            }
         },
         type: "POST",
         url: "../../scripts/separate/ajax/getDataFromTable.php"

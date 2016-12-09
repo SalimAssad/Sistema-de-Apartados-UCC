@@ -4,7 +4,7 @@
     $quienloenvio="CCA-UNIVERSIDAD CRISTOBAL COLON";    //Quien envia el correo
     $cuenta="password@proyectoucc2016.edusite.me";      //cuaenta desde donde se envia
     $pass="GHE-eZA-M3p-WM4";                            //clave de la cuenta
-    $puerto="2525";                                     //puerto de salida SMTP del servidor
+    $puerto="25";                                     //puerto de salida SMTP del servidor
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ?><!--///////////////codigo antes de modificacion dinamica///////////////////////////////////////////////
 if($_SERVER["REQUEST_METHOD"]=="POST") {

@@ -1,3 +1,11 @@
+<?php
+include_once("validateLogin.php");
+$nombre = $_SESSION['nombre'];
+$apellidos = $_SESSION['apellidos'];
+?>
+<header>
+    <meta charset="ISO-8859-1">
+</header>
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -7,13 +15,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/inicio.php">CCA - UCC</a>
+            <a class="navbar-brand" href="/inicio.php">CCA - UCC - Bienvenido <?php echo $nombre ?> <?php echo $apellidos ?></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="/pages/separate/consulta.php">Consultar recursos</a></li>
                 <li><a href="/pages/separate/separateResource.php">Apartar recurso</a></li>
-                <li><a href="#">OPTION 3</a></li>
                 <li><a href="/inc/byebye.php">Salir</a></li>
             </ul>
         </div>
