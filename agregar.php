@@ -88,11 +88,7 @@ include_once("inc/nav.php");
 <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////-->
             </div><br>
                <div class="container">
-                <input class="btn btn-warning btn-lg " type="submit" name="accion" value="Cancelar" formaction="index.php">
-                
-                <input class="btn  btn-success btn-lg" type="submit" name="accion" value="Guardar">
-                
-                
+                <input class="btn btn-warning btn-lg " type="submit" name="accion" value="Cancelar" formaction="inicio.php"> 
                </div>
           </form>
 <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////-->
