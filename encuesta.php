@@ -5,7 +5,7 @@ header("Location: index.php");
 else {
     include("inc/MySQLConnection.php");
         //  Query de encuestas.
-    $sql = "SELECT * FROM evaluaciones";
+    $sql = "SELECT * FROM evaluaciones ";
     $req = mysqli_query($connection,$sql);
         //  Query de preguntas
     $pregunta="select * from preguntas where PR_ACTIVE = 1";
